@@ -32,3 +32,31 @@ def eliminar_resultado(request, resultado_id):
     resultado = get_object_or_404(Resultado, id=resultado_id)
     resultado.delete()
     return redirect('lista_resultados')
+
+@login_required
+@user_passes_test(verificar_profesor)
+def eliminar_resultados_seleccionados(request):
+    if request.method == "POST":
+        ids = request.POST.getlist('resultados_seleccionados')
+        if ids:
+            Resultado.objects.filter(id__in=ids).delete()
+    return redirect('lista_resultados')
+
+@login_required
+@user_passes_test(verificar_profesor)
+def editar_resultado(request, resultado_id):
+    resultado = get_object_or_404(Resultado, id=resultado_id)
+    if request.method == 'POST':
+        estudiante_id = request.POST.get('estudiante')
+        tipo_examen = request.POST.get('tipo_examen')
+        nivel = request.POST.get('nivel')
+        if estudiante_id:
+            resultado.estudiante = Usuario.objects.get(id=estudiante_id)
+        if tipo_examen:
+            resultado.tipo_examen = tipo_examen
+        if nivel:
+            resultado.nivel = nivel
+        resultado.save()
+        return redirect('lista_resultados')
+    estudiantes = Usuario.objects.filter(tipo_usuario='estudiante')
+    return render(request, 'resultados/editar_resultado.html', {'resultado': resultado, 'estudiantes': estudiantes})

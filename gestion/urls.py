@@ -6,21 +6,29 @@ urlpatterns = [
     path('usuarios/', vista_usuario.lista_usuarios, name='lista_usuarios'),
     path('usuarios/crear/', vista_usuario.crear_usuario, name='crear_usuario'),
     path('usuarios/editar/<int:usuario_id>/', vista_usuario.editar_usuario, name='editar_usuario'),
-    path('usuarios/eliminar/<int:usuario_id>/', vista_usuario.eliminar_usuario, name='eliminar_usuario'),
+    path('usuarios/eliminar/<int:usuario_id>/', vista_usuario.eliminar_usuario, 
+    name='eliminar_usuario'),
+    path('usuarios/eliminar-seleccionados/',vista_usuario.eliminar_usuarios_seleccionados, name='eliminar_usuarios_seleccionados'),
+
 
     # URLs para Convocatoria
     path('convocatorias/', vista_convocatoria.lista_convocatorias, name='lista_convocatorias'),
     path('convocatorias/crear/', vista_convocatoria.crear_convocatoria, name='crear_convocatoria'),
     path('convocatorias/editar/<int:convocatoria_id>/', vista_convocatoria.editar_convocatoria, name='editar_convocatoria'),
     path('convocatorias/eliminar/<int:convocatoria_id>/', vista_convocatoria.eliminar_convocatoria, name='eliminar_convocatoria'),
+    path('convocatorias/eliminar-seleccionadas/', vista_convocatoria.eliminar_convocatorias_seleccionadas, name='eliminar_convocatorias_seleccionadas'),
 
     # URLs para Resultado
     path('resultados/', vista_resultado.lista_resultados, name='lista_resultados'),
     path('resultados/crear/', vista_resultado.crear_resultado, name='crear_resultado'),
+    path('resultados/editar/<int:resultado_id>/', vista_resultado.editar_resultado, name='editar_resultado'),
     path('resultados/eliminar/<int:resultado_id>/', vista_resultado.eliminar_resultado, name='eliminar_resultado'),
+    path('resultados/eliminar-seleccionados/', vista_resultado.eliminar_resultados_seleccionados, name='eliminar_resultados_seleccionados'),
 
     # URLs para Inscripcion
     path('inscripciones/', vista_inscripcion.lista_inscripciones, name='lista_inscripciones'),
     path('inscripciones/crear/', vista_inscripcion.crear_inscripcion, name='crear_inscripcion'),
+    path('inscripciones/editar/<int:inscripcion_id>/', vista_inscripcion.editar_inscripcion, name='editar_inscripcion'),
     path('inscripciones/eliminar/<int:inscripcion_id>/', vista_inscripcion.eliminar_inscripcion, name='eliminar_inscripcion'),
+    path('inscripciones/eliminar-seleccionadas/', vista_inscripcion.eliminar_inscripciones_seleccionadas, name='eliminar_inscripciones_seleccionadas'),
 ]

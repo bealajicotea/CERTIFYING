@@ -13,7 +13,7 @@
         <input type="email" class="form-control" id="correo_uci" name="correo_uci" required>
     </div>
     <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre Completo</label>
+        <label for="nombre" id="name_tag" class="form-label">Nombre Completo</label>
         <input type="text" class="form-control" id="nombre" name="nombre" required>
     </div>
     <div class="mb-3">
@@ -29,4 +29,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Crear</button>
 </form>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/validations.js' %}"></script>
 {% endblock %}

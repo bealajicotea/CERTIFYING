@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}CERTIFYING{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Paleta de colores azules */
+  :root {
+    --blue-light: #e3f2fd;
+    --blue: #2196f3;
+    --blue-dark: #1565c0;
+    --blue-accent: #64b5f6;
+    --text-dark: #0d47a1;
+  }
+</style>
+<link rel="stylesheet" href="{% static 'css/pagina_principal.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Carrusel de bienvenida -->
+<div id="welcomeCarousel" class="carousel slide full-width-carousel mb-5" data-bs-ride="carousel" style="width: 100%;">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'images/hero1.jpg' %}" class="d-block w-100" alt="Certificación de Inglés">
+      <div class="carousel-caption d-none d-md-block">
+        <h2 class="text-white">Bienvenido a CERTIFYING</h2>
+        <p>Tu plataforma para gestionar exámenes de validación de inglés.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/hero2.jpg' %}" class="d-block w-100" alt="Preparación">
+      <div class="carousel-caption d-none d-md-block">
+        <h2 class="text-white">Prepárate con nuestros recursos</h2>
+        <p>Materiales y guías de estudio disponibles 24/7.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/hero3.jpg' %}" class="d-block w-100" alt="Resultados">
+      <div class="carousel-caption d-none d-md-block">
+        <h2 class="text-white">Consulta tus resultados al instante</h2>
+        <p>Acceso rápido y seguro a tus calificaciones.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#welcomeCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#welcomeCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+</div>
+
+
+<!-- Texto informativo -->
+<div class="container my-5">
+  <div class="row align-items-start">
+    <!-- Columna de texto (3/5 del ancho total) -->
+    <div class="col-md-7">
+      <h2 class="mb-3 text-primary">Pasos para realizar un examen de certificación de inglés</h2>
+
+      <!-- Parte visible por defecto -->
+      <p>
+        La certificación de inglés es un proceso académico que permite validar el nivel de competencia lingüística de los estudiantes conforme a estándares internacionales. Para realizar este examen, es necesario seguir una serie de pasos organizados que garantizan una evaluación integral y justa.
+      </p>
+      <p>
+        Primero, algunos estudiantes deben realizar un examen de colocación que determina su nivel actual de inglés. Esta prueba es esencial para ubicar al estudiante en el nivel adecuado o permitirle acceder directamente al examen de certificación si ya posee los conocimientos requeridos.
+      </p>
+      <p>
+        Una vez determinado el nivel, el siguiente paso es inscribirse en una convocatoria. Las convocatorias son publicadas por la institución y contienen las fechas y condiciones para presentar el examen.
+      </p>
+
+      <!-- Parte oculta inicialmente -->
+      <div class="collapse" id="moreCertInfo">
+        <p>
+          El estudiante debe registrarse a través de la plataforma habilitada, completando sus datos personales y académicos. En caso de que el resultado del examen de colocación no sea suficiente para certificar el nivel requerido, el estudiante debe participar en cursos de nivelación. Estos cursos están diseñados para reforzar las habilidades en comprensión auditiva, lectura, escritura y expresión oral, y son impartidos por docentes especializados del centro de idiomas.
+        </p>
+        <p>
+          Concluido el curso (si aplica), el estudiante puede presentarse al examen de certificación, el cual está compuesto por diferentes secciones: comprensión lectora, comprensión auditiva, expresión escrita y expresión oral. Es importante asistir en las fechas y horarios establecidos, llevando la documentación requerida.
+        </p>
+        <p>
+          Una vez realizado el examen, los resultados se procesan y publican en la plataforma. Los estudiantes pueden consultarlos en línea y, en caso de no aprobar, tienen la oportunidad de presentarse nuevamente en una futura convocatoria.
+        </p>
+        <p>
+          Finalmente, aquellos que aprueban el examen obtienen la certificación oficial de su nivel de inglés, la cual queda registrada en su expediente académico y puede ser utilizada para cumplir requisitos institucionales o para procesos laborales.
+        </p>
+      </div>
+
+      <!-- Botón para expandir el texto -->
+      <button class="btn btn-outline-primary mt-2" type="button"  data-bs-toggle="collapse" data-bs-target="#moreCertInfo" aria-expanded="false" aria-controls="moreCertInfo" id="toggleCertInfoBtn">
+        Leer más
+      </button>
+    </div>
+
+    <!-- Columna de imagen (2/5 del ancho total) -->
+    <div class="col-md-5 text-center">
+      <img src="{% static 'images/hero7.jpg' %}" alt="Certificación de inglés" class="img-fluid rounded shadow">
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Panel de fotos relacionadas -->
+<div class="container mb-5">
+  <h3 class="text-center text-dark mb-4">Fotos de Certificación de Inglés</h3>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <img src="{% static 'images/hero4.png' %}" class="card-img-top" alt="Examen Oral">
+        <div class="card-body text-center">
+          <h5 class="card-title text-dark">Examen Oral</h5>
+          <a href="#" class="btn btn-primary">Ver Detalles</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <img src="{% static 'images/hero5.png' %}" class="card-img-top" alt="Examen Escrito">
+        <div class="card-body text-center">
+          <h5 class="card-title text-dark">Examen Escrito</h5>
+          <a href="#" class="btn btn-primary">Ver Detalles</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <img src="{% static 'images/hero6.png' %}"  class="card-img-top" alt="Entrevista">
+        <div class="card-body text-center">
+          <h5 class="card-title text-dark">Entrevista Técnica</h5>
+          <a href="#" class="btn btn-primary">Ver Detalles</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/pagina_principal.js' %}"></script>
+{% endblock %}

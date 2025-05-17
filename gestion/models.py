@@ -8,7 +8,12 @@ class Usuario(AbstractUser):
     ]
 
     tipo_usuario = models.CharField(max_length=20, choices=TIPO_USUARIO)
-
+    facultad = models.CharField(max_length=20)
+    grupo = models.CharField(max_length=20,null=True, blank=True)
+    anio_escolar = models.CharField(max_length=30,null=True, blank=True)
+    carrera = models.CharField(max_length=100,null=True, blank=True)
+    curso = models.CharField(max_length=30, blank=True, null=True)
+    nivel = models.CharField(max_length=10,null=True, blank=True)
     def es_profesor(self):
         return self.tipo_usuario == 'profesor'
 

@@ -5,14 +5,12 @@ from gestion.models import Convocatoria
 def verificar_profesor(user):
     return user.es_profesor()
 
-@login_required
 
 def lista_convocatorias(request):
     convocatorias = Convocatoria.objects.all()
     return render(request, 'convocatorias/lista_convocatorias.html', {'convocatorias': convocatorias})
 
-@login_required
-@user_passes_test(verificar_profesor)
+
 def crear_convocatoria(request):
     if request.method == 'POST':
         tipo = request.POST.get('tipo')
@@ -34,8 +32,7 @@ def crear_convocatoria(request):
 
     return render(request, 'convocatorias/crear_convocatoria.html')
 
-@login_required
-@user_passes_test(verificar_profesor)
+
 def editar_convocatoria(request, convocatoria_id):
     convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
 
@@ -50,9 +47,15 @@ def editar_convocatoria(request, convocatoria_id):
 
     return render(request, 'convocatorias/editar_convocatoria.html', {'convocatoria': convocatoria})
 
-@login_required
-@user_passes_test(verificar_profesor)
 def eliminar_convocatoria(request, convocatoria_id):
     convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
     convocatoria.delete()
+    return redirect('lista_convocatorias')
+
+
+def eliminar_convocatorias_seleccionadas(request):
+    if request.method == "POST":
+        ids = request.POST.getlist('convocatorias_seleccionadas')
+        if ids:
+            Convocatoria.objects.filter(id__in=ids).delete()
     return redirect('lista_convocatorias')

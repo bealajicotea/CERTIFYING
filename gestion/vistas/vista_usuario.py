@@ -2,18 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.hashers import make_password
 from gestion.models import Usuario
+from django.contrib import messages
 
-def verificar_profesor(user):
-    return user.es_profesor()
-
-@login_required
 
 def lista_usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
 
-@login_required
-@user_passes_test(verificar_profesor)
+
 def crear_usuario(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -34,8 +30,7 @@ def crear_usuario(request):
 
     return render(request, 'usuarios/crear_usuario.html')
 
-@login_required
-@user_passes_test(verificar_profesor)
+
 def editar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
@@ -49,9 +44,18 @@ def editar_usuario(request, usuario_id):
 
     return render(request, 'usuarios/editar_usuario.html', {'usuario': usuario})
 
-@login_required
-@user_passes_test(verificar_profesor)
+
 def eliminar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
     usuario.delete()
+    return redirect('lista_usuarios')
+
+def eliminar_usuarios_seleccionados(request):
+    if request.method == "POST":
+        ids = request.POST.getlist('usuarios_seleccionados')
+        if ids:
+            User.objects.filter(id__in=ids).delete()
+            messages.success(request, "Usuarios eliminados correctamente.")
+        else:
+            messages.warning(request, "No se seleccionó ningún usuario.")
     return redirect('lista_usuarios')
