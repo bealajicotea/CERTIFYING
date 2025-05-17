@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Lista de Resultados</h2>
+<a href="{% url 'crear_resultado' %}" class="btn btn-primary mb-3">Crear Resultado</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Estudiante</th>
+            <th>Tipo de Examen</th>
+            <th>Nivel</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for resultado in resultados %}
+        <tr>
+            <td>{{ resultado.id }}</td>
+            <td>{{ resultado.estudiante.username }}</td>
+            <td>{{ resultado.get_tipo_examen_display }}</td>
+            <td>{{ resultado.nivel }}</td>
+            <td>
+                <a href="{% url 'eliminar_resultado' resultado.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

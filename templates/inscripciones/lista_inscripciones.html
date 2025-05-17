@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h2>Lista de Inscripciones</h2>
+<a href="{% url 'crear_inscripcion' %}" class="btn btn-primary mb-3">Crear Inscripción</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Estudiante</th>
+            <th>Tipo de Examen</th>
+            <th>Fecha de Inscripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inscripcion in inscripciones %}
+        <tr>
+            <td>{{ inscripcion.id }}</td>
+            <td>{{ inscripcion.estudiante.username }}</td>
+            <td>{{ inscripcion.get_tipo_examen_display }}</td>
+            <td>{{ inscripcion.fecha_inscripcion }}</td>
+            <td>
+                <a href="{% url 'eliminar_inscripcion' inscripcion.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

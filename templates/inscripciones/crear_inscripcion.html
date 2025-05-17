@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h2>Crear Inscripción</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="estudiante" class="form-label">Estudiante</label>
+        <select class="form-select" id="estudiante" name="estudiante" required>
+            {% for estudiante in estudiantes %}
+            <option value="{{ estudiante.id }}">{{ estudiante.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="tipo_examen" class="form-label">Tipo de Examen</label>
+        <select class="form-select" id="tipo_examen" name="tipo_examen" required>
+            <option value="certificacion">Certificación</option>
+            <option value="entrevista">Entrevista</option>
+            <option value="curso">Curso</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>
+{% endblock %}

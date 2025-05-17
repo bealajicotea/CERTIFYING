@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h2>Lista de Convocatorias</h2>
+<a href="{% url 'crear_convocatoria' %}" class="btn btn-primary mb-3">Crear Convocatoria</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Descripción</th>
+            <th>Lugar</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for convocatoria in convocatorias %}
+        <tr>
+            <td>{{ convocatoria.id }}</td>
+            <td>{{ convocatoria.get_tipo_display }}</td>
+            <td>{{ convocatoria.descripcion }}</td>
+            <td>{{ convocatoria.lugar }}</td>
+            <td>{{ convocatoria.fecha }}</td>
+            <td>{{ convocatoria.hora }}</td>
+            <td>
+                <a href="{% url 'editar_convocatoria' convocatoria.id %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'eliminar_convocatoria' convocatoria.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

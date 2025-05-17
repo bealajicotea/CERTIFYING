@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h2>Editar Convocatoria</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="tipo" class="form-label">Tipo</label>
+        <select class="form-select" id="tipo" name="tipo" required>
+            <option value="entrevista" {% if convocatoria.tipo == 'entrevista' %}selected{% endif %}>Entrevista</option>
+            <option value="certificacion" {% if convocatoria.tipo == 'certificacion' %}selected{% endif %}>Certificación</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ convocatoria.descripcion }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="lugar" class="form-label">Lugar</label>
+        <input type="text" class="form-control" id="lugar" name="lugar" value="{{ convocatoria.lugar }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="fecha" class="form-label">Fecha</label>
+        <input type="date" class="form-control" id="fecha" name="fecha" value="{{ convocatoria.fecha }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="hora" class="form-label">Hora</label>
+        <input type="time" class="form-control" id="hora" name="hora" value="{{ convocatoria.hora }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>
+{% endblock %}

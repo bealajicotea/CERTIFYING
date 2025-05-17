@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Resultado</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body class="container mt-5">
+    <h2>Registrar Resultado de Examen</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="estudiante">Estudiante:</label>
+            <select name="estudiante" id="estudiante" class="form-control">
+                {% for usuario in estudiantes %}
+                    <option value="{{ usuario.id }}">{{ usuario.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="tipo_examen">Tipo de examen:</label>
+            <select name="tipo_examen" id="tipo_examen" class="form-control">
+                <option value="certificacion">Certificación</option>
+                <option value="entrevista">Entrevista</option>
+                <option value="curso">Curso</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="nivel">Nivel alcanzado:</label>
+            <input type="text" name="nivel" id="nivel" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar Resultado</button>
+    </form>
+</body>
+</html>
