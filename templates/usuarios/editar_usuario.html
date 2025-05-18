@@ -23,6 +23,30 @@
             <option value="profesor" {% if usuario.tipo_usuario == 'profesor' %}selected{% endif %}>Profesor</option>
         </select>
     </div>
+    <div class="mb-3">
+        <label for="facultad" class="form-label">Facultad</label>
+        <input type="text" class="form-control" id="facultad" name="facultad" value="{{ usuario.facultad }}">
+    </div>
+    <div class="mb-3">
+        <label for="grupo" class="form-label">Grupo</label>
+        <input type="text" class="form-control" id="grupo" name="grupo" value="{{ usuario.grupo }}">
+    </div>
+    <div class="mb-3">
+        <label for="anio_escolar" class="form-label">Año Escolar</label>
+        <input type="text" class="form-control" id="anio_escolar" name="anio_escolar" value="{{ usuario.anio_escolar }}">
+    </div>
+    <div class="mb-3">
+        <label for="carrera" class="form-label">Carrera</label>
+        <input type="text" class="form-control" id="carrera" name="carrera" value="{{ usuario.carrera }}">
+    </div>
+    <div class="mb-3">
+        <label for="curso" class="form-label">Curso</label>
+        <input type="text" class="form-control" id="curso" name="curso" value="{{ usuario.curso }}">
+    </div>
+    <div class="mb-3">
+        <label for="nivel" class="form-label">Nivel</label>
+        <input type="text" class="form-control" id="nivel" name="nivel" value="{{ usuario.nivel }}">
+    </div>
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>
 {% endblock %}

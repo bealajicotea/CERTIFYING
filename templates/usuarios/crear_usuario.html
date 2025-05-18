@@ -24,6 +24,30 @@
         </select>
     </div>
     <div class="mb-3">
+        <label for="facultad" class="form-label">Facultad</label>
+        <input type="text" class="form-control" id="facultad" name="facultad" required>
+    </div>
+    <div class="mb-3">
+        <label for="grupo" class="form-label">Grupo</label>
+        <input type="text" class="form-control" id="grupo" name="grupo">
+    </div>
+    <div class="mb-3">
+        <label for="anio_escolar" class="form-label">Año Escolar</label>
+        <input type="text" class="form-control" id="anio_escolar" name="anio_escolar">
+    </div>
+    <div class="mb-3">
+        <label for="carrera" class="form-label">Carrera</label>
+        <input type="text" class="form-control" id="carrera" name="carrera">
+    </div>
+    <div class="mb-3">
+        <label for="curso" class="form-label">Curso</label>
+        <input type="text" class="form-control" id="curso" name="curso">
+    </div>
+    <div class="mb-3">
+        <label for="nivel" class="form-label">Nivel</label>
+        <input type="text" class="form-control" id="nivel" name="nivel">
+    </div>
+    <div class="mb-3">
         <label for="password" class="form-label">Contraseña</label>
         <input type="password" class="form-control" id="password" name="password" required>
     </div>
@@ -31,5 +55,5 @@
 </form>
 {% endblock %}
 {% block extra_scripts %}
-<script src="{% static 'js/validations.js' %}"></script>
+
 {% endblock %}
