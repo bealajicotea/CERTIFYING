@@ -4,13 +4,26 @@ from django.contrib.auth.hashers import make_password
 from gestion.models import Usuario
 from django.contrib import messages
 
+def lista_usuarios(request): 
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    if not es_profesor(request.user):
+        messages.warning(request, "No tienes permisos para acceder a esta sección.")
+        return redirect('pagina_principal')
 
-def lista_usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
 
 
 def crear_usuario(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    if not es_profesor(request.user):
+        messages.warning(request, "No tienes permisos para acceder a esta sección.")
+        return redirect('pagina_principal')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         correo_uci = request.POST.get('correo_uci')
@@ -44,6 +57,13 @@ def crear_usuario(request):
 
 
 def editar_usuario(request, usuario_id):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    if not es_profesor(request.user):
+        messages.warning(request, "No tienes permisos para acceder a esta sección.")
+        return redirect('pagina_principal')
+
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
     if request.method == 'POST':
@@ -64,12 +84,26 @@ def editar_usuario(request, usuario_id):
 
 
 def eliminar_usuario(request, usuario_id):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    if not es_profesor(request.user):
+        messages.warning(request, "No tienes permisos para acceder a esta sección.")
+        return redirect('pagina_principal')
+
     usuario = get_object_or_404(Usuario, id=usuario_id)
     usuario.delete()
     return redirect('lista_usuarios')
 
 
 def eliminar_usuarios_seleccionados(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    if not es_profesor(request.user):
+        messages.warning(request, "No tienes permisos para acceder a esta sección.")
+        return redirect('pagina_principal')
+
     if request.method == "POST":
         ids = request.POST.getlist('usuarios_seleccionados')
         if ids:
