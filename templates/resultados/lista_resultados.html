@@ -24,11 +24,15 @@
         <tbody>
           {% for resultado in resultados %}
           <tr>
-            <td class="text-truncate" style="max-width: 200px;">{{ resultado.estudiante.username }}</td>
-            <td class="text-truncate" style="max-width: 140px;">{{ resultado.get_tipo_examen_display }}</td>
-            <td class="text-truncate" style="max-width: 120px;">{{ resultado.nivel }}</td>
+            <td class="text-truncate" style="max-width: 200px;">
+              {{ resultado.inscripcion.estudiante.get_full_name }}
+            </td>
+            <td class="text-truncate" style="max-width: 140px;">
+              {{ resultado.inscripcion.convocatoria.get_tipo_display }}
+            </td>
+            <td class="text-truncate" style="max-width: 120px;">{{ resultado.nota }}</td>
             <td class="text-nowrap" style="min-width: 180px;">
-              <a href="#" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+              <a href="{% url 'detalle_resultado' resultado.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
                 <i class="bi bi-eye"></i>
               </a>
               <a href="{% url 'editar_resultado' resultado.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>

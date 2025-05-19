@@ -5,35 +5,121 @@
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Inscripciones</h2>
 
+  <!-- Formulario de filtros para buscar inscripciones por facultad, grupo, año escolar, tipo de convocatoria y nivel -->
+  <form method="get" class="mb-4 row g-2">
+    <!-- Filtro por facultad -->
+    <div class="col-md-2">
+      <select name="facultad" class="form-select" onchange="this.form.submit()">
+        <option value="">Facultad</option>
+        {% for f in facultades %}
+          <option value="{{ f }}" {% if selected_facultad == f %}selected{% endif %}>{{ f }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <!-- Filtro por grupo -->
+    <div class="col-md-2">
+      <select name="grupo" class="form-select" onchange="this.form.submit()">
+        <option value="">Grupo</option>
+        {% for g in grupos %}
+          <option value="{{ g }}" {% if selected_grupo == g %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <!-- Filtro por año escolar -->
+    <div class="col-md-2">
+      <select name="anio_escolar" class="form-select" onchange="this.form.submit()">
+        <option value="">Año Escolar</option>
+        {% for val, label in anios %}
+          <option value="{{ val }}" {% if selected_anio == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <!-- Filtro por tipo de convocatoria -->
+    <div class="col-md-2">
+      <select name="tipo_convocatoria" class="form-select" onchange="this.form.submit()">
+        <option value="">Tipo Convocatoria</option>
+        {% for val, label in tipos_convocatoria %}
+          <option value="{{ val }}" {% if selected_tipo_convocatoria == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <!-- Filtro por curso -->
+    <div class="col-md-2">
+      <select name="nivel" class="form-select" onchange="this.form.submit()">
+        <option value="">Curso</option>
+        {% for val, label in niveles %}
+          <option value="{{ val }}" {% if selected_nivel == val %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <!-- Botón para aplicar los filtros -->
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
+    </div>
+  </form>
+
+  <!-- Formulario para eliminar inscripciones seleccionadas -->
   <form id="formEliminarInscripciones" method="post" action="{% url 'eliminar_inscripciones_seleccionadas' %}">
     {% csrf_token %}
+    <!-- Inputs ocultos para mantener los filtros al eliminar -->
+    <input type="hidden" name="facultad" id="hidden_facultad" value="{{ selected_facultad }}">
+    <input type="hidden" name="grupo" id="hidden_grupo" value="{{ selected_grupo }}">
+    <input type="hidden" name="anio_escolar" id="hidden_anio_escolar" value="{{ selected_anio }}">
+    <input type="hidden" name="tipo_convocatoria" id="hidden_tipo_convocatoria" value="{{ selected_tipo_convocatoria }}">
+    <input type="hidden" name="nivel" id="hidden_nivel" value="{{ selected_nivel }}">
 
     <div class="table-responsive shadow rounded">
       <table class="table table-hover align-middle">
         <thead class="table-light">
           <tr>
-            <th style="width: 28%;">Estudiante</th>
-            <th style="width: 23%;">Tipo de Examen</th>
-            <th style="width: 19%;">Fecha de Inscripción</th>
-            <th style="width: 20%; min-width: 180px;" class="text-nowrap">Acciones</th>
+            <!-- Encabezados de la tabla de inscripciones -->
+            <th style="width: 18%;">Estudiante</th>
+            <th style="width: 15%;">Facultad</th>
+            <th style="width: 10%;">Grupo</th>
+            <th style="width: 10%;">Año</th>
+            <th style="width: 13%;">Tipo de Examen</th>
+            <th style="width: 10%;">Fecha de Inscripción</th>
+            <th style="width: 20%; min-width: 220px;" class="text-nowrap">Acciones</th>
             <th style="width: 5%;" class="text-center align-middle">
+              <!-- Checkbox para seleccionar/deseleccionar todas las inscripciones -->
               <input type="checkbox" id="selectAllInscripciones" title="Seleccionar/Deseleccionar todos" class="align-middle">
             </th>
           </tr>
         </thead>
         <tbody>
+          <!-- Itera sobre cada inscripción y muestra sus datos -->
           {% for inscripcion in inscripciones %}
           <tr>
-            <td class="text-truncate" style="max-width: 200px;">{{ inscripcion.estudiante.username }}</td>
-            <td class="text-truncate" style="max-width: 140px;">{{ inscripcion.get_tipo_examen_display }}</td>
-            <td class="text-truncate" style="max-width: 120px;">{{ inscripcion.fecha_inscripcion }}</td>
-            <td class="text-nowrap" style="min-width: 180px;">
-              <a href="#" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+            <td class="text-truncate" style="max-width: 140px;">{{ inscripcion.estudiante.username }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ inscripcion.estudiante.facultad }}</td>
+            <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.grupo }}</td>
+            <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.get_anio_escolar_display }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ inscripcion.convocatoria.get_tipo_display }}</td>
+            <td class="text-truncate" style="max-width: 90px;">{{ inscripcion.fecha_inscripcion }}</td>
+            <td class="text-nowrap" style="min-width: 220px;">
+              <!-- Botón para ver detalles de la inscripción -->
+              <a href="{% url 'detalle_inscripcion' inscripcion.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
                 <i class="bi bi-eye"></i>
               </a>
+              <!-- Botón para editar la inscripción -->
               <a href="{% url 'editar_inscripcion' inscripcion.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>
+              <!-- Botón para eliminar la inscripción -->
               <a href="{% url 'eliminar_inscripcion' inscripcion.id %}" class="btn btn-outline-danger btn-sm me-1" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+              <!-- Agregar nota si no existe resultado -->
+              {% if not inscripcion.resultado %}
+                <div class="agregar-nota-wrapper d-inline">
+                  <button type="button" class="btn btn-outline-success btn-sm me-1 agregar-nota-btn" data-inscripcion="{{ inscripcion.id }}">Agregar Nota</button>
+                  <span class="inputs-agregar-nota" style="display:none;">
+                    <input type="hidden" name="inscripcion_id" value="{{ inscripcion.id }}">
+                    <input type="text" name="nota" maxlength="2" pattern="[A-Za-z0-9]{2}" class="form-control form-control-sm d-inline" style="width:50px;" required>
+                    <button type="button" class="btn btn-success btn-sm aceptar-nota-btn">Aceptar</button>
+                  </span>
+                </div>
+              {% else %}
+                <span class="badge bg-success">Nota: {{ inscripcion.resultado.nota }}</span>
+              {% endif %}
             </td>
+            <!-- Checkbox para seleccionar la inscripción -->
             <td class="text-center align-middle">
               <input type="checkbox" name="inscripciones_seleccionadas" value="{{ inscripcion.id }}" class="form-check-input inscripcion-checkbox">
             </td>
@@ -43,6 +129,7 @@
       </table>
     </div>
 
+    <!-- Botones para crear nueva inscripción o eliminar seleccionadas -->
     <div class="d-flex justify-content-between mt-4">
       <a href="{% url 'crear_inscripcion' %}" class="btn btn-primary">
         <i class="bi bi-plus-circle me-1"></i>Crear Inscripción
@@ -53,16 +140,68 @@
     </div>
   </form>
 </div>
+<form id="formOculto" style="display:none;">
+  {% csrf_token %}
+  <input type="hidden" name="elemento_id" id="elemento_id">
+  <input type="text" name="codigo" id="codigo" maxlength="2" pattern="[A-Za-z0-9]{2}">
+  <!-- Inputs ocultos para mantener los filtros -->
+  <input type="hidden" name="facultad" value="{{ selected_facultad }}">
+  <input type="hidden" name="grupo" value="{{ selected_grupo }}">
+  <input type="hidden" name="anio_escolar" value="{{ selected_anio }}">
+  <input type="hidden" name="tipo_convocatoria" value="{{ selected_tipo_convocatoria }}">
+  <input type="hidden" name="nivel" value="{{ selected_nivel }}">
+</form>
 {% endblock %}
 {% block extra_scripts %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar/deseleccionar todos los checkboxes de inscripciones
     const selectAll = document.getElementById('selectAllInscripciones');
     if (selectAll) {
       selectAll.addEventListener('change', function() {
         document.querySelectorAll('.inscripcion-checkbox').forEach(cb => cb.checked = selectAll.checked);
       });
     }
+
+    document.querySelectorAll('.agregar-nota-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const wrapper = btn.closest('.agregar-nota-wrapper');
+        btn.style.display = 'none';
+        wrapper.querySelector('.inputs-agregar-nota').style.display = 'inline-block';
+        wrapper.querySelector('input[name="nota"]').focus();
+      });
+    });
+
+    // Ejemplo de manejo del botón aceptar (puedes adaptarlo a tu lógica)
+    document.querySelectorAll('.aceptar-nota-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const wrapper = btn.closest('.agregar-nota-wrapper');
+        const inscripcionId = wrapper.querySelector('input[name="inscripcion_id"]').value;
+        const nota = wrapper.querySelector('input[name="nota"]').value;
+
+        // Asignar valores al formulario oculto
+        document.getElementById('elemento_id').value = inscripcionId;
+        document.getElementById('codigo').value = nota;
+
+        // Cambiar la acción del formulario oculto
+        const formOculto = document.getElementById('formOculto');
+        formOculto.action = "{% url 'evaluar_inscripcion' %}";
+        formOculto.method = "post";
+
+        // Agregar CSRF token si es necesario
+        let csrfInput = formOculto.querySelector('input[name="csrfmiddlewaretoken"]');
+        if (!csrfInput) {
+          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+          if (csrfToken) {
+            csrfInput = csrfToken.cloneNode();
+            formOculto.prepend(csrfInput);
+          }
+        }
+
+        // Enviar el formulario oculto
+        formOculto.submit();
+      });
+    });
   });
 </script>
 {% endblock %}

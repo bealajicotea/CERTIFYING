@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Detalle de Inscripción</h2>
+<table class="table">
+    <tr><th>Estudiante</th><td>{{ inscripcion.estudiante.username }}</td></tr>
+    <tr><th>Convocatoria</th><td>{{ inscripcion.convocatoria }}</td></tr>
+    <tr><th>Fecha de Inscripción</th><td>{{ inscripcion.fecha_inscripcion }}</td></tr>
+</table>
+<a href="{% url 'lista_inscripciones' %}" class="btn btn-secondary">Volver</a>
+{% endblock %}

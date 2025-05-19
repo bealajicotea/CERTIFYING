@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
-<h2>Editar Convocatoria</h2>
+<h2>Editar Inscripción</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

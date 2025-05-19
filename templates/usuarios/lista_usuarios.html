@@ -28,7 +28,7 @@
             <td class="text-truncate" style="max-width: 180px;">{{ usuario.email }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ usuario.get_tipo_usuario_display }}</td>
             <td class="text-nowrap" style="min-width: 220px;">
-              <a href="#" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+              <a href="{% url 'detalle_usuario' usuario.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
                 <i class="bi bi-eye"></i>
               </a>
               <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>

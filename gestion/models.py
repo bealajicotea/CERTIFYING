@@ -6,11 +6,16 @@ class Usuario(AbstractUser):
         ('estudiante', 'Estudiante'),
         ('profesor', 'Profesor del Centro')
     ]
-
+    anios =[
+        ('1', 'primero'),
+        ('2', 'segundo'),
+        ('3', 'tercero'),
+        ('4', 'cuarto'),
+    ]
     tipo_usuario = models.CharField(max_length=20, choices=TIPO_USUARIO)
     facultad = models.CharField(max_length=20)
     grupo = models.CharField(max_length=20,null=True, blank=True)
-    anio_escolar = models.CharField(max_length=30,null=True, blank=True)
+    anio_escolar = models.CharField(max_length=30, choices=anios, null=True, blank=True)
     carrera = models.CharField(max_length=100,null=True, blank=True)
     curso = models.CharField(max_length=30, blank=True, null=True)
     nivel = models.CharField(max_length=10,null=True, blank=True)
@@ -23,43 +28,73 @@ class Usuario(AbstractUser):
 class Convocatoria(models.Model):
     TIPO_CONVOCATORIA = [
         ('entrevista', 'Entrevista'),
-        ('certificacion', 'Certificación')
+        ('certificacion', 'Certificación'),
+        ('curso', 'Curso'),
+        ('colocacion', 'Colocacion'),
+        ('revalorizacion', 'revalorizacion')
     ]
-
+    niveles = [
+        ('A1', 'A1'),
+        ('A2', 'A2'),
+        ('B1', 'B1'),
+        ('B2', 'B2'),
+        ('C1', 'C1'),
+        ('C2', 'C2')
+    ]
+    nivel = models.CharField(max_length=2, choices=niveles, null=True, blank=True)
     tipo = models.CharField(max_length=20, choices=TIPO_CONVOCATORIA)
     descripcion = models.TextField()
     lugar = models.CharField(max_length=100)
     fecha = models.DateField()
     hora = models.TimeField()
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)  # Creador
+    profesor = models.ForeignKey(
+        Usuario,
+        on_delete=models.CASCADE,
+        limit_choices_to={'tipo_usuario': 'profesor'},
+        null=True,  # <-- Permitir nulos temporalmente
+        blank=True
+    )  # Creador
+    estado = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.tipo.capitalize()} - {self.fecha}"
 
-class Resultado(models.Model):
-    TIPO_EXAMEN = [
-        ('certificacion', 'Certificación'),
-        ('entrevista', 'Entrevista'),
-        ('curso', 'Curso')
-    ]
-
-    estudiante = models.ForeignKey(Usuario, on_delete=models.CASCADE, limit_choices_to={'tipo_usuario': 'estudiante'})
-    tipo_examen = models.CharField(max_length=20, choices=TIPO_EXAMEN)
-    nivel = models.CharField(max_length=10)
-
-    def __str__(self):
-        return f"{self.estudiante.username} - {self.tipo_examen} - {self.nivel}"
-
 class Inscripcion(models.Model):
-    TIPO_EXAMEN = [
-        ('certificacion', 'Certificación'),
-        ('entrevista', 'Entrevista'),
-        ('curso', 'Curso')
-    ]
-
-    estudiante = models.ForeignKey(Usuario, on_delete=models.CASCADE, limit_choices_to={'tipo_usuario': 'estudiante'})
-    tipo_examen = models.CharField(max_length=20, choices=TIPO_EXAMEN)
+    estudiante = models.ForeignKey(
+        Usuario,
+        on_delete=models.CASCADE,
+        limit_choices_to={'tipo_usuario': 'estudiante'}
+    )
+    convocatoria = models.ForeignKey(Convocatoria, on_delete=models.CASCADE)
     fecha_inscripcion = models.DateField(auto_now_add=True)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['estudiante', 'convocatoria'], name='unique_inscripcion_estudiante_convocatoria')
+        ]
 
     def __str__(self):
-        return f"{self.estudiante.username} - {self.tipo_examen}"
+        return f"{self.estudiante.username} - {self.convocatoria} - {self.estado}"
+
+    @property
+    def resultado(self):
+        try:
+            return self.resultado_set.get()
+        except Resultado.DoesNotExist:
+            return None
+
+class Resultado(models.Model):
+    niveles = [
+        ('A1', 'A1'),
+        ('A2', 'A2'),
+        ('B1', 'B1'),
+        ('B2', 'B2'),
+        ('C1', 'C1'),
+        ('C2', 'C2')
+    ]
+    nota = models.CharField(max_length=2, choices=niveles)
+    inscripcion = models.OneToOneField('Inscripcion', on_delete=models.CASCADE)
+    # Otros campos que necesites
+
+    def __str__(self):
+        return f"{self.inscripcion.estudiante.username} - {self.inscripcion.convocatoria} - {self.nota}"

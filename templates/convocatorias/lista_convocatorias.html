@@ -30,7 +30,7 @@
             <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.fecha }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.hora }}</td>
             <td class="text-nowrap" style="min-width: 180px;">
-              <a href="#" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+              <a href="{% url 'detalle_convocatoria' convocatoria.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
                 <i class="bi bi-eye"></i>
               </a>
               <a href="{% url 'editar_convocatoria' convocatoria.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>

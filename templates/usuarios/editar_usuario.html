@@ -4,49 +4,7 @@
 <h2>Editar Usuario</h2>
 <form method="post">
     {% csrf_token %}
-    <div class="mb-3">
-        <label for="username" class="form-label">Usuario</label>
-        <input type="text" class="form-control" id="username" name="username" value="{{ usuario.username }}" required>
-    </div>
-    <div class="mb-3">
-        <label for="correo_uci" class="form-label">Correo</label>
-        <input type="email" class="form-control" id="correo_uci" name="correo_uci" value="{{ usuario.email }}" required>
-    </div>
-    <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre Completo</label>
-        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ usuario.first_name }}" required>
-    </div>
-    <div class="mb-3">
-        <label for="tipo_usuario" class="form-label">Tipo de Usuario</label>
-        <select class="form-select" id="tipo_usuario" name="tipo_usuario" required>
-            <option value="estudiante" {% if usuario.tipo_usuario == 'estudiante' %}selected{% endif %}>Estudiante</option>
-            <option value="profesor" {% if usuario.tipo_usuario == 'profesor' %}selected{% endif %}>Profesor</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="facultad" class="form-label">Facultad</label>
-        <input type="text" class="form-control" id="facultad" name="facultad" value="{{ usuario.facultad }}">
-    </div>
-    <div class="mb-3">
-        <label for="grupo" class="form-label">Grupo</label>
-        <input type="text" class="form-control" id="grupo" name="grupo" value="{{ usuario.grupo }}">
-    </div>
-    <div class="mb-3">
-        <label for="anio_escolar" class="form-label">Año Escolar</label>
-        <input type="text" class="form-control" id="anio_escolar" name="anio_escolar" value="{{ usuario.anio_escolar }}">
-    </div>
-    <div class="mb-3">
-        <label for="carrera" class="form-label">Carrera</label>
-        <input type="text" class="form-control" id="carrera" name="carrera" value="{{ usuario.carrera }}">
-    </div>
-    <div class="mb-3">
-        <label for="curso" class="form-label">Curso</label>
-        <input type="text" class="form-control" id="curso" name="curso" value="{{ usuario.curso }}">
-    </div>
-    <div class="mb-3">
-        <label for="nivel" class="form-label">Nivel</label>
-        <input type="text" class="form-control" id="nivel" name="nivel" value="{{ usuario.nivel }}">
-    </div>
+    {{ form.as_p }}
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>
 {% endblock %}
