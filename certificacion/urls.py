@@ -25,7 +25,8 @@ urlpatterns = [
     path('', views.login_view, name='login'),
 
     path('pagina_principal/', views.index_view, name='pagina_principal'),
-    
+    path('pagina_principal_e/', views.index_view_e, name='pagina_principal_e'),
+
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('', include('gestion.urls')),
     

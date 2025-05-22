@@ -1,5 +1,5 @@
 from django.urls import path
-from gestion.vistas import vista_usuario, vista_convocatoria, vista_resultado, vista_inscripcion
+from gestion.vistas import vista_usuario, vista_convocatoria, vista_resultado, vista_inscripcion,vistas_rol_estudiante
 
 urlpatterns = [
     # URLs para Usuario
@@ -38,4 +38,7 @@ urlpatterns = [
     path('inscripciones/detalle/<int:inscripcion_id>/', vista_inscripcion.detalle_inscripcion, name='detalle_inscripcion'),
     path('resultados/evaluar/<int:inscripcion_id>/<str:nota>/', vista_inscripcion.evaluar, name='evaluar_resultado'),
     path('inscripciones/evaluar/', vista_inscripcion.evaluarInscripcion, name='evaluar_inscripcion'),
+
+    path('convocatorias_e/', vistas_rol_estudiante.lista_convocatorias_e, name='lista_convocatorias_e'),
+
 ]

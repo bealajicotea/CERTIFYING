@@ -8,7 +8,9 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('pagina_principal')  # Redirige a la página principal
+            if user.es_profesor():
+                return redirect('pagina_principal')
+            return redirect('pagina_principal_e')  # Redirige a la página principal
         else:
             # Renderiza la página con un mensaje de error
             return render(request, 'login.html', {'error': 'Credenciales inválidas'})
@@ -21,3 +23,6 @@ def logout_view(request):
 
 def index_view(request):
     return render(request, 'pagina_principal.html')
+
+def index_view_e(request):
+    return render(request, 'rol_estudiante/pagina_principal_e.html')
