@@ -6,12 +6,7 @@ from gestion.forms import UsuarioForm
 from django.contrib import messages
 
 def lista_usuarios(request): 
-    if not request.user.is_authenticated:
-        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
-        return redirect('login')
-    if not request.user.es_profesor():
-        messages.warning(request, "No tienes permisos para acceder a esta sección.")
-        return redirect('pagina_principal')
+    
 
     usuarios = Usuario.objects.all()
     return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
