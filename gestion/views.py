@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 
@@ -26,3 +27,10 @@ def index_view(request):
 
 def index_view_e(request):
     return render(request, 'rol_estudiante/pagina_principal_e.html')
+
+def perfil(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    
+    return render(request, 'rol_estudiante/perfil_e.html')
