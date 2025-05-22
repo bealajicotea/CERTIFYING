@@ -33,4 +33,4 @@ def perfil(request):
         messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
         return redirect('login')
     
-    return render(request, 'rol_estudiante/perfil_e.html')
+    return render(request, 'rol_estudiante/perfil.html')

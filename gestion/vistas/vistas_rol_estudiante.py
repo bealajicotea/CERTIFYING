@@ -17,6 +17,5 @@ def perfil_e(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
         return redirect('login')
-    resultados = Resultado.objects.filter(inscripcion__estudiante=request.user).select_related('inscripcion__convocatoria')
-
-    return render(request, 'rol_estudiante/perfil_e.html', {'resultados': resultados})
+    
+    return render(request, 'rol_estudiante/perfil_e.html')

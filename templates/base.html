@@ -50,20 +50,25 @@
         </li>
 
         <!-- Ícono y nombre de usuario -->
-        <li class="nav-item d-flex align-items-center me-lg-3">
-          <a href="{% url 'perfil'%}" class="d-flex align-items-center text-reset text-decoration-none">
-          <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
-          <span class="text-nowrap">{{ request.user.username }}</span>
-          </a>
-        </li>
-
-        <!-- Cerrar sesión -->
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-            <form action="{% url 'logout' %}" method="post"     style="display: inline;">
+        <li class="nav-item dropdown d-flex align-items-center me-lg-3">
+          <a class="nav-link dropdown-toggle d-flex align-items-center text-reset text-decoration-none"
+             href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+            <span class="text-nowrap">{{ request.user.username }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
+            <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a></li>
+            <li><a class="dropdown-item" href="{% url 'perfil' %}">Resultados</a></li>
+            <li><a class="dropdown-item" href="#">Ajustes</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form action="{% url 'logout' %}" method="post" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar sesión</button>
-            </form>
+                <button type="submit" class="dropdown-item text-danger">Cerrar sesión</button>
+              </form>
+            </li>
+          </ul>
         </li>
         {% else %}
         <li class="nav-item">
