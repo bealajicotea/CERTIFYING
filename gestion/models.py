@@ -15,7 +15,6 @@ class Usuario(AbstractUser):
         ('3', 'tercero'),
         ('4', 'cuarto'),
     ]
-    prieba_git = models.CharField(max_length=20, default='prueba', null=True, blank=True)
     tipo_usuario = models.CharField(max_length=20, choices=TIPO_USUARIO)
     facultad = models.CharField(max_length=20)
     grupo = models.CharField(max_length=20,null=True, blank=True)
