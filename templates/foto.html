@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Foto de perfil de {{ user.username }}</h1>
+        {% if user.foto_perfil %}
+            
+            <img src="{{ user.foto_perfil.url }}" alt="Foto de perfil" width="150" height="150">
+        {% else %}
+            <p>No tienes foto de perfil.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

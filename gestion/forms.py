@@ -7,7 +7,7 @@ class UsuarioForm(forms.ModelForm):
         fields = [
             'username', 'password', 'email', 'first_name', 'last_name',
             'tipo_usuario', 'facultad', 'grupo', 'anio_escolar',
-            'carrera', 'curso', 'nivel'
+            'carrera', 'curso', 'nivel', 'foto_perfil'  # <-- Agregado aquí
         ]
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control username-field'}),
@@ -22,6 +22,7 @@ class UsuarioForm(forms.ModelForm):
             'carrera': forms.TextInput(attrs={'class': 'form-control carrera-field'}),
             'curso': forms.TextInput(attrs={'class': 'form-control curso-field'}),
             'nivel': forms.TextInput(attrs={'class': 'form-control nivel-field'}),
+            'foto_perfil': forms.ClearableFileInput(attrs={'class': 'form-control foto-perfil-field'}),  # <-- Agregado aquí
         }
 
 class ConvocatoriaForm(forms.ModelForm):

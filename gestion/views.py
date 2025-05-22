@@ -34,3 +34,9 @@ def perfil(request):
         return redirect('login')
     
     return render(request, 'perfil.html')
+
+def foto(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    return render(request, 'foto.html')
