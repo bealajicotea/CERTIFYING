@@ -1,0 +1,39 @@
+{% extends 'base_e.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow" style="max-width: 500px; margin: auto;">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Perfil de Usuario</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Nombre:</strong> {{ usuario.first_name }} {{ usuario.last_name }}</p>
+            <p><strong>Correo:</strong> {{ usuario.email }}</p>
+            <p><strong>Carrera:</strong> {{ usuario.carrera }}</p>
+            {% if usuario.tipo_usuario == 'estudiante' %}
+                <hr>
+                <p><strong>Año Escolar:</strong> {{ usuario.get_anio_escolar_display }}</p>
+                <p><strong>Grupo:</strong> {{ usuario.grupo }}</p>
+                <p><strong>Facultad:</strong> {{ usuario.facultad }}</p>
+                <p><strong>Nivel actual de inglés:</strong> 
+                    {% if usuario.ultimo_resultado %}
+                        {{ usuario.ultimo_resultado.nivel }}
+                    {% else %}
+                        No actualizado
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px;
+    }
+    .card-header {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+</style>
+{% endblock %}
