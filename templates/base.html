@@ -58,7 +58,7 @@
             <span class="text-nowrap">{{ request.user.username }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
-            <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a></li>
+            <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a></li>
             <li><a class="dropdown-item" href="{% url 'perfil' %}">Resultados</a></li>
             <li><a class="dropdown-item" href="#">Ajustes</a></li>
             <li><hr class="dropdown-divider"></li>
@@ -72,7 +72,7 @@
         </li>
         {% else %}
         <li class="nav-item">
-            <a href="{% url 'login' %}" class="btn btn-outline-primary  btn-sm">Iniciar sesión</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Iniciar sesión</a>
         </li>
         {% endif %}
       </ul>
