@@ -1,12 +1,16 @@
-#elcomeCarousel{
-    width: 100%;;
+#elcomeCarousel {
+    width: 100%;
 }
+
 .card-img-top {
     height: 250px; /* Ajusta esta altura a tu diseño */
     object-fit: cover;
     object-position: center;
 }
+
 #welcomeCarousel .carousel-item img {
     height: 400px; /* Cambia este valor según la altura deseada */
     object-fit: cover; /* Asegura que las imágenes se ajusten sin deformarse */
-  }
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Sombra para el carrusel */
+}
+

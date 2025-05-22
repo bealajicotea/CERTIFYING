@@ -5,6 +5,7 @@
 
 {% block extra_head %}
 <style>
+  
   /* Paleta de colores azules */
   :root {
     --blue-light: #e3f2fd;
@@ -12,6 +13,11 @@
     --blue-dark: #1565c0;
     --blue-accent: #64b5f6;
     --text-dark: #0d47a1;
+  }
+
+   /* Aplicar fuente globalmente */
+  body {
+    font-family: 'Poppins', sans-serif;
   }
 </style>
 <link rel="stylesheet" href="{% static 'css/pagina_principal.css' %}">
@@ -31,8 +37,8 @@
     <div class="carousel-item">
       <img src="{% static 'images/hero2.jpg' %}" class="d-block w-100" alt="Preparación">
       <div class="carousel-caption d-none d-md-block">
-        <h2 class="text-white">Prepárate con nuestros recursos</h2>
-        <p>Materiales y guías de estudio disponibles 24/7.</p>
+        <h2 class="text-white"> Inscríbete en tus exámenes fácilmente</h2>
+        <p>Regístrate en las convocatorias y asegura tu lugar para certificar tu nivel de inglés.</p>
       </div>
     </div>
     <div class="carousel-item">
