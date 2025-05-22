@@ -40,5 +40,6 @@ urlpatterns = [
     path('inscripciones/evaluar/', vista_inscripcion.evaluarInscripcion, name='evaluar_inscripcion'),
 
     path('convocatorias_e/', vistas_rol_estudiante.lista_convocatorias_e, name='lista_convocatorias_e'),
+    path('perfil_e/', vistas_rol_estudiante.perfil_e, name='perfil_e'),
 
 ]
