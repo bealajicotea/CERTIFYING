@@ -2,38 +2,85 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card shadow" style="max-width: 500px; margin: auto;">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Perfil de Usuario</h4>
+    <div class="card perfil-card shadow-lg">
+        <div class="card-header perfil-header text-white">
+            <h4 class="mb-0"><i class="bi bi-person-circle me-2"></i>Perfil de Usuario</h4>
         </div>
-        <div class="card-body">
-            <p><strong>Nombre:</strong> {{ usuario.first_name }} {{ usuario.last_name }}</p>
-            <p><strong>Correo:</strong> {{ usuario.email }}</p>
-            <p><strong>Carrera:</strong> {{ usuario.carrera }}</p>
-            {% if usuario.tipo_usuario == 'estudiante' %}
-                <hr>
-                <p><strong>Año Escolar:</strong> {{ usuario.get_anio_escolar_display }}</p>
-                <p><strong>Grupo:</strong> {{ usuario.grupo }}</p>
-                <p><strong>Facultad:</strong> {{ usuario.facultad }}</p>
-                <p><strong>Nivel actual de inglés:</strong> 
+        <div class="card-body perfil-body">
+            <div class="row mb-2">
+                <div class="col-5 text-end text-blue-dark"><strong>Nombre completo:</strong></div>
+                <div class="col-7">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5 text-end text-blue-dark"><strong>Correo UCI:</strong></div>
+                <div class="col-7">{{ request.user.email }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5 text-end text-blue-dark"><strong>Carrera:</strong></div>
+                <div class="col-7">{{ request.user.carrera }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5 text-end text-blue-dark"><strong>Año Escolar:</strong></div>
+                <div class="col-7">{{ request.user.get_anio_escolar_display }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5 text-end text-blue-dark"><strong>Grupo:</strong></div>
+                <div class="col-7">{{ request.user.grupo }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5 text-end text-blue-dark"><strong>Facultad:</strong></div>
+                <div class="col-7">{{ request.user.facultad }}</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-5 text-end text-blue-dark"><strong>Nivel actual de inglés:</strong></div>
+                <div class="col-7">
                     {% if usuario.ultimo_resultado %}
-                        {{ usuario.ultimo_resultado.nivel }}
+                        <span class="badge bg-blue-accent text-dark">{{ usuario.ultimo_resultado.nivel }}</span>
                     {% else %}
-                        No actualizado
+                        <span class="text-muted">No actualizado</span>
                     {% endif %}
-                </p>
-            {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <style>
-    .card {
-        border-radius: 15px;
+    :root {
+        --blue-light: #e3f2fd;
+        --blue: #2196f3;
+        --blue-dark: #1565c0;
+        --blue-accent: #64b5f6;
+        --text-dark: #0d47a1;
     }
-    .card-header {
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
+    .perfil-card {
+        border-radius: 18px;
+        background: var(--blue-light);
+        border: 1.5px solid var(--blue-accent);
+        box-shadow: 0 6px 24px 0 rgba(33, 150, 243, 0.10);
+        max-width: 520px;
+        margin: auto;
+    }
+    .perfil-header {
+        background: linear-gradient(90deg, var(--blue-dark) 60%, var(--blue) 100%);
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        padding: 1.2rem 1.5rem;
+    }
+    .perfil-body {
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        background: var(--blue-light);
+    }
+    .text-blue-dark {
+        color: var(--text-dark);
+    }
+    .bg-blue-accent {
+        background-color: var(--blue-accent) !important;
+    }
+    .badge {
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 0.7em;
     }
 </style>
 {% endblock %}
