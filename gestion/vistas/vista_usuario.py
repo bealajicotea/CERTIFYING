@@ -26,7 +26,7 @@ def crear_usuario(request):
         return redirect('pagina_principal')'''
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST)
+        form = UsuarioForm(request.POST, request.FILES)
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.password = make_password(form.cleaned_data['password'])
@@ -48,7 +48,7 @@ def editar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST, instance=usuario)
+        form = UsuarioForm(request.POST, request.FILES, instance=usuario)  # <-- CORREGIDO
         if form.is_valid():
             usuario = form.save(commit=False)
             # No cambiar contraseña aquí a menos que se provea una nueva

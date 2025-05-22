@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+def ruta_foto_perfil(instance, filename):
+    return f'fotos_perfil/user_{instance.id}/{filename}'
+
 class Usuario(AbstractUser): 
     TIPO_USUARIO = [
         ('estudiante', 'Estudiante'),
@@ -19,6 +22,8 @@ class Usuario(AbstractUser):
     carrera = models.CharField(max_length=100,null=True, blank=True)
     curso = models.CharField(max_length=30, blank=True, null=True)
     nivel = models.CharField(max_length=10,null=True, blank=True)
+    foto_perfil = models.ImageField(upload_to=ruta_foto_perfil, null=True, blank=True)
+
     def es_profesor(self):
         return self.tipo_usuario == 'profesor'
 
