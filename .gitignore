@@ -74,3 +74,4 @@ docker-compose.override.yml
 
 __pycache__/
 *.pyc
+db.sqlite3
