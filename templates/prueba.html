@@ -1,0 +1,152 @@
+{% extends 'base_e.html' %}
+
+{% block content %}
+<div class="profile-wrapper">
+    <div class="profile-card glass-effect shadow-lg">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <h2 class="profile-name">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+            <p class="profile-role">Usuario del sistema de certificación de inglés</p>
+        </div>
+        <div class="profile-body">
+            <div class="info-row">
+                <label><i class="bi bi-envelope-fill"></i>Correo UCI</label>
+                <span>{{ request.user.email }}</span>
+            </div>
+            <div class="info-row">
+                <label><i class="bi bi-mortarboard-fill"></i>Carrera</label>
+                <span>{{ request.user.carrera }}</span>
+            </div>
+            <div class="info-row">
+                <label><i class="bi bi-calendar-week-fill"></i>Año Escolar</label>
+                <span>{{ request.user.get_anio_escolar_display }}</span>
+            </div>
+            <div class="info-row">
+                <label><i class="bi bi-people-fill"></i>Grupo</label>
+                <span>{{ request.user.grupo }}</span>
+            </div>
+            <div class="info-row">
+                <label><i class="bi bi-building"></i>Facultad</label>
+                <span>{{ request.user.facultad }}</span>
+            </div>
+            <div class="info-row">
+                <label><i class="bi bi-translate"></i>Nivel de Inglés</label>
+                {% if usuario.ultimo_resultado %}
+                    <span class="nivel-badge">{{ usuario.ultimo_resultado.nivel }}</span>
+                {% else %}
+                    <span class="text-muted">No actualizado</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --blue-1: #e3f2fd;
+        --blue-2: #bbdefb;
+        --blue-3: #64b5f6;
+        --blue-4: #2196f3;
+        --blue-5: #1565c0;
+        --blue-dark: #0d47a1;
+        --text: #0f172a;
+        --background: #f8fbff;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to right top, var(--blue-1), var(--blue-2));
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .profile-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1rem;
+    }
+
+    .profile-card {
+        width: 100%;
+        max-width: 620px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 30px rgba(21, 101, 192, 0.2);
+        overflow: hidden;
+    }
+
+    .profile-header {
+        background: linear-gradient(to right, var(--blue-5), var(--blue-4));
+        color: white;
+        padding: 2rem 1.5rem 1rem 1.5rem;
+        text-align: center;
+    }
+
+    .profile-avatar i {
+        font-size: 4rem;
+        color: #ffffff;
+        margin-bottom: 0.5rem;
+    }
+
+    .profile-name {
+        font-size: 1.7rem;
+        margin: 0.5rem 0 0;
+    }
+
+    .profile-role {
+        font-size: 0.9rem;
+        color: #e3f2fd;
+        margin-bottom: 0;
+    }
+
+    .profile-body {
+        padding: 2rem 2.5rem;
+        background: var(--background);
+    }
+
+    .info-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.2rem;
+    }
+
+    .info-row label {
+        font-size: 0.95rem;
+        color: var(--blue-dark);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-row span {
+        font-size: 1rem;
+        color: var(--text);
+        margin-top: 0.2rem;
+        word-break: break-word;
+    }
+
+    .nivel-badge {
+        display: inline-block;
+        padding: 0.4em 1em;
+        background-color: var(--blue-3);
+        color: var(--blue-dark);
+        font-weight: bold;
+        border-radius: 1em;
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
+    }
+
+    @media (max-width: 576px) {
+        .profile-body {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}

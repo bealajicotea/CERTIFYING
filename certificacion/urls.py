@@ -33,6 +33,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('', include('gestion.urls')),
     path('foto/', views.foto, name='foto'),
+    path('prueba/', views.prueba, name='prueba'),
 ]
 
 if settings.DEBUG:

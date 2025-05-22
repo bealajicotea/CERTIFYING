@@ -40,3 +40,9 @@ def foto(request):
         messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
         return redirect('login')
     return render(request, 'foto.html')
+
+def prueba(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
+        return redirect('login')
+    return render(request, 'prueba.html')
