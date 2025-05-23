@@ -111,7 +111,14 @@
                   <button type="button" class="btn btn-outline-success btn-sm me-1 agregar-nota-btn" data-inscripcion="{{ inscripcion.id }}">Agregar Nota</button>
                   <span class="inputs-agregar-nota" style="display:none;">
                     <input type="hidden" name="inscripcion_id" value="{{ inscripcion.id }}">
-                    <input type="text" name="nota" maxlength="2" pattern="[A-Za-z0-9]{2}" class="form-control form-control-sm d-inline" style="width:50px;" required>
+                    <select name="nota" class="form-select form-select-sm d-inline" style="width:70px; display:inline-block;" required>
+                      <option value="A1">A1</option>
+                      <option value="A2">A2</option>
+                      <option value="B1">B1</option>
+                      <option value="B2">B2</option>
+                      <option value="C1">C1</option>
+                      <option value="C2">C2</option>
+                    </select>
                     <button type="button" class="btn btn-success btn-sm aceptar-nota-btn">Aceptar</button>
                   </span>
                 </div>
@@ -168,7 +175,7 @@
         const wrapper = btn.closest('.agregar-nota-wrapper');
         btn.style.display = 'none';
         wrapper.querySelector('.inputs-agregar-nota').style.display = 'inline-block';
-        wrapper.querySelector('input[name="nota"]').focus();
+        wrapper.querySelector('select[name="nota"]').focus();
       });
     });
 
@@ -177,7 +184,7 @@
       btn.addEventListener('click', function() {
         const wrapper = btn.closest('.agregar-nota-wrapper');
         const inscripcionId = wrapper.querySelector('input[name="inscripcion_id"]').value;
-        const nota = wrapper.querySelector('input[name="nota"]').value;
+        const nota = wrapper.querySelector('select[name="nota"]').value;
 
         // Asignar valores al formulario oculto
         document.getElementById('elemento_id').value = inscripcionId;

@@ -12,75 +12,72 @@
     {% endblock %}
 </head>
 <body style="margin: 0; padding: 0;">
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm px-3">
-  <div class="container-fluid">
-    <!-- Nombre del sitio -->
-    <a class="navbar-brand fw-bold text-primary" href="{% url 'pagina_principal' %}">CERTIFYING</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm px-3">
+        <div class="container-fluid">
+            <!-- Nombre del sitio -->
+            <a class="navbar-brand fw-bold text-primary" href="{% url 'pagina_principal' %}">CERTIFYING</a>
 
-    <!-- Botón hamburguesa (móvil) -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+            <!-- Botón hamburguesa (móvil) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <!-- Contenido del menú -->
-    <div class="collapse navbar-collapse" id="navbarMain">
-      <!-- Enlaces a la izquierda -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contáctenos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Sobre Nosotros</a>
-        </li>
-      </ul>
+            <!-- Contenido del menú -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <!-- Enlaces a la izquierda -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contáctenos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sobre Nosotros</a>
+                    </li>
+                </ul>
 
-      <!-- Usuario + Servicios + Cerrar sesión -->
-      <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-lg-center">
-        <!-- Menú desplegable Servicios -->
-        <li class="nav-item dropdown me-lg-3">
-          <a class="nav-link dropdown-toggle" href="#" id="serviciosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Servicios
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="serviciosDropdown">
-           
-      
-            <li><a class="dropdown-item" href="{% url 'lista_convocatorias_e' %}">Convocatorias</a></li>
-         
-          </ul>
-        </li>
+                <!-- Usuario + Servicios + Cerrar sesión -->
+                <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-lg-center">
+                    <!-- Menú desplegable Servicios -->
+                    <li class="nav-item dropdown me-lg-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="serviciosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Servicios
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="serviciosDropdown">
+                            <li><a class="dropdown-item" href="{% url 'lista_convocatorias_e' %}">Convocatorias</a></li>
+                        </ul>
+                    </li>
 
-        <!-- Ícono y nombre de usuario -->
-         {% if request.user.is_authenticated %}
-        <li class="nav-item dropdown d-flex align-items-center me-lg-3">
-          <a class="nav-link dropdown-toggle d-flex align-items-center text-reset text-decoration-none"
-             href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
-            <span class="text-nowrap">{{ request.user.username }}</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
-            <a class="dropdown-item" href="{% url 'perfil_e' %}">Perfil</a></li>
-            <li><a class="dropdown-item" href="{% url 'perfil_e' %}">Resultados</a></li>
-            <li><a class="dropdown-item" href="#">Ajustes</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <form action="{% url 'logout' %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="dropdown-item text-danger">Cerrar sesión</button>
-              </form>
-            </li>
-          </ul>
-        {% else %}
-        <li class="nav-item">
-            <a href="{% url 'login' %}" class="btn btn-outline-primary  btn-sm">Iniciar sesión</a>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</nav>
+                    <!-- Ícono y nombre de usuario -->
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item dropdown d-flex align-items-center me-lg-3">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center text-reset text-decoration-none"
+                               href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+                                <span class="text-nowrap">{{ request.user.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
+                                <li><a class="dropdown-item" href="{% url 'perfil_e' %}">Perfil</a></li>
+                                <li><a class="dropdown-item" href="{% url 'perfil_e' %}">Resultados</a></li>
+                                <li><a class="dropdown-item" href="#">Ajustes</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item text-danger">Cerrar sesión</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Iniciar sesión</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
     <main id="main" style="margin: 0; padding: 0; width: 100%">
         {% block content %}
-        
         {% endblock %}
     </main>
     <footer class="text-center mt-5 bg-dark text-white py-4">

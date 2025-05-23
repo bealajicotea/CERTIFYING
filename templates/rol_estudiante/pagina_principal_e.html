@@ -15,7 +15,12 @@
   --blue-accent: #64b5f6;
   --text-dark: #0d47a1;
 }
-
+.carousel-inner, .carousel, .carousel-section {
+    z-index: 1;
+}
+.dropdown-menu {
+    z-index: 1055 !important; /* Bootstrap usa 1000+ para modals y dropdowns */
+}
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -148,6 +153,9 @@ body {
 {% endblock %}
 
 {% block content %}
+<!-- Separador visual entre navbar y carrusel -->
+<div style="height: 1px;"></div>
+
 <!-- Carrusel de bienvenida -->
 <div id="welcomeCarousel" class="carousel slide full-width-carousel mb-5" data-bs-ride="carousel" style="width: 100%;">
   <div class="carousel-inner">
@@ -163,7 +171,6 @@ body {
       <div class="carousel-caption d-none d-md-block">
         <h2 class="text-white">Inscríbete en tus exámenes fácilmente</h2>
         <p>Regístrate en las convocatorias y asegura tu lugar para certificar tu nivel de inglés.</p>
-      </div>
       </div>
     </div>
     <div class="carousel-item">

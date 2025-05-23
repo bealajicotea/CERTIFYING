@@ -1,0 +1,40 @@
+{% extends 'base_e.html' %}
+{% load static %}
+
+{% block title %}Mis Resultados{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-primary text-center">Mis Resultados</h2>
+    {% if resultados %}
+        <div class="table-responsive shadow rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Convocatoria</th>
+                        <th>Fecha</th>
+                        <th>Nota</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resultado in resultados %}
+                        <tr>
+                            <td>{{ resultado.inscripcion.convocatoria }}</td>
+                            <td>{{ resultado.inscripcion.convocatoria.fecha|date:"d/m/Y" }}</td>
+                            <td>
+                                <span class="badge bg-success fs-6">{{ resultado.nota }}</span>
+                            </td>
+                            <td>{{ resultado.observaciones|default:"-" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No tienes resultados disponibles aún.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

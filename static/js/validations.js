@@ -1,7 +1,7 @@
 console.log("Validations script loaded.");
 const form = document.querySelector("form");
-const nombreInput = document.getElementById("id-first_name");
-const nombreTag = document.getElementById("name_tag");
+const first_nameInput = document.getElementById("id-first_name");
+const first_nameTag = document.getElementById("id-first_name");
 const passwordInput = document.getElementById("id-password");
 const emailInput = document.getElementById("id-email");
 const usernameInput = document.getElementById("id-username");
@@ -16,23 +16,22 @@ const emailTag = document.createElement("small");
 emailTag.className = "text-danger";
 emailInput.parentNode.appendChild(emailTag);
 
-// Validar nombre y apellido (ambos con mayúscula inicial y al menos un apellido)
-function validarNombre() {
-    const nombre = nombreInput.value.trim();
-    // Debe tener al menos dos palabras, ambas con mayúscula inicial y minúsculas después
-    const nombreRegex = /^([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)(\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$/;
+// Validar first name: debe comenzar con mayúscula
+function validarFirst_name() {
+    const first_name = first_nameInput.value.trim();
+    const first_nameRegex = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*/;
 
-    if (!nombre) {
-        nombreTag.style.color = "red";
-        nombreTag.textContent = "El campo nombre no puede estar vacío.";
+    if (!first_name) {
+        first_nameTag.style.color = "red";
+        first_nameTag.textContent = "El campo nombre no puede estar vacío.";
         return false;
-    } else if (!nombreRegex.test(nombre)) {
-        nombreTag.style.color = "red";
-        nombreTag.textContent = "Ingrese nombre y al menos un apellido, ambos con mayúscula inicial.";
+    } else if (!first_nameRegex.test(first_name)) {
+        first_nameTag.style.color = "red";
+        first_nameTag.textContent = "El nombre debe comenzar con mayúscula.";
         return false;
     } else {
-        nombreTag.style.color = "black";
-        nombreTag.textContent = "";
+        first_nameTag.style.color = "black";
+        first_nameTag.textContent = "";
         return true;
     }
 }
@@ -71,16 +70,16 @@ function validarEmail() {
 }
 
 // Eventos de validación
-nombreInput.addEventListener("blur", validarNombre);
+first_nameInput.addEventListener("blur", validarFirst_name);
 passwordInput.addEventListener("blur", validarPassword);
 emailInput.addEventListener("blur", validarEmail);
 
 form.addEventListener("submit", function (event) {
-    const esNombreValido = validarNombre();
+    const esFirstNameValido = validarFirst_name();
     const esPasswordValido = validarPassword();
     const esEmailValido = validarEmail();
 
-    if (!esNombreValido || !esPasswordValido || !esEmailValido) {
+    if (!esFirstNameValido || !esPasswordValido || !esEmailValido) {
         event.preventDefault();
         alert("Por favor, corrija los errores antes de enviar el formulario.");
     }
