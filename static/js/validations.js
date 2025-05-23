@@ -55,3 +55,4 @@ form.addEventListener("submit", function (event) {
         alert("Por favor, corrija los errores antes de enviar el formulario.");
     }
 });
+

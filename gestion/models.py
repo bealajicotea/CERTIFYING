@@ -35,8 +35,8 @@ class Convocatoria(models.Model):
         ('entrevista', 'Entrevista'),
         ('certificacion', 'Certificación'),
         ('curso', 'Curso'),
-        ('colocacion', 'Colocacion'),
-        ('revalorizacion', 'revalorizacion')
+        ('colocacion', 'Colocación'),
+        ('revalorizacion', 'Revalorización')
     ]
     niveles = [
         ('A1', 'A1'),
@@ -46,10 +46,20 @@ class Convocatoria(models.Model):
         ('C1', 'C1'),
         ('C2', 'C2')
     ]
+    
+    lugares = [
+        ('Docente 1', 'Docente 1'),
+        ('Docente 2', 'Docente 2'),
+        ('Docente 3', 'Docente 3'),
+        ('Docente 4', 'Docente 4'),
+        ('Docente 5', 'Docente 5'),
+        ('Docente 6', 'Docente 6')
+        
+    ]
     nivel = models.CharField(max_length=2, choices=niveles, null=True, blank=True)
     tipo = models.CharField(max_length=20, choices=TIPO_CONVOCATORIA)
-    descripcion = models.TextField()
-    lugar = models.CharField(max_length=100)
+    descripcion = models.TextField(max_length=300)
+    lugar = models.CharField(max_length=100, choices=lugares)
     fecha = models.DateField()
     hora = models.TimeField()
     profesor = models.ForeignKey(
@@ -79,7 +89,7 @@ class Inscripcion(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.estudiante.username} - {self.convocatoria} - {self.estado}"
+        return f"{self.estudiante.username} - {self.convocatoria}"
 
     @property
     def resultado(self):

@@ -32,7 +32,7 @@ class ConvocatoriaForm(forms.ModelForm):
         widgets = {
             'tipo': forms.Select(attrs={'class': 'form-control tipo-field'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control descripcion-field'}),
-            'lugar': forms.TextInput(attrs={'class': 'form-control lugar-field'}),
+            'lugar': forms.Select(attrs={'class': 'form-control lugar-field'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control fecha-field', 'type': 'date'}),
             'hora': forms.TimeInput(attrs={'class': 'form-control hora-field', 'type': 'time'}),
             'profesor': forms.Select(attrs={'class': 'form-control profesor-field'}),
