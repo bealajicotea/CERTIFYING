@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/crear_usuario.css' %}">
+{% endblock %}
+
 {% block content %}
 <h2>Crear Usuario</h2>
 <form method="post" enctype="multipart/form-data" id="usuario-form">
