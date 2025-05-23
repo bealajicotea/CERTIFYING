@@ -6,23 +6,23 @@ class UsuarioForm(forms.ModelForm):
         model = Usuario
         fields = [
             'username', 'password', 'email', 'first_name', 'last_name',
-            'tipo_usuario', 'facultad', 'grupo', 'anio_escolar',
-            'carrera', 'curso', 'nivel', 'foto_perfil'  # <-- Agregado aquí
+            'tipo_usuario', 'facultad', 'anio_escolar', 'grupo',
+            'carrera', 'curso', 'nivel', 'foto_perfil'
         ]
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control username-field'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control password-field'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control email-field'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control first-name-field'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control last-name-field'}),
-            'tipo_usuario': forms.Select(attrs={'class': 'form-control tipo-usuario-field'}),
-            'facultad': forms.TextInput(attrs={'class': 'form-control facultad-field'}),
-            'grupo': forms.TextInput(attrs={'class': 'form-control grupo-field'}),
-            'anio_escolar': forms.Select(attrs={'class': 'form-control anio-escolar-field'}),
-            'carrera': forms.TextInput(attrs={'class': 'form-control carrera-field'}),
-            'curso': forms.TextInput(attrs={'class': 'form-control curso-field'}),
-            'nivel': forms.TextInput(attrs={'class': 'form-control nivel-field'}),
-            'foto_perfil': forms.ClearableFileInput(attrs={'class': 'form-control foto-perfil-field'}),  # <-- Agregado aquí
+            'username': forms.TextInput(attrs={'class': 'form-control username-field', 'id': 'id-username'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control password-field', 'id': 'id-password'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control email-field', 'id': 'id-email'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control first-name-field', 'id': 'id-first_name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control last-name-field', 'id': 'id-last_name'}),
+            'tipo_usuario': forms.Select(attrs={'class': 'form-control tipo-usuario-field', 'id': 'id-tipo_usuario'}),
+            'facultad': forms.Select(attrs={'class': 'form-control', 'id': 'id-facultad'}),
+            'anio_escolar': forms.Select(attrs={'class': 'form-control', 'id': 'id-anio_escolar'}),
+            'grupo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly', 'id': 'id-grupo'}),
+            'carrera': forms.Select(attrs={'class': 'form-control carrera-field', 'id': 'id-carrera'}),
+            'curso': forms.TextInput(attrs={'class': 'form-control curso-field', 'id': 'id-curso'}),
+            'nivel': forms.Select(attrs={'class': 'form-control nivel-field', 'id': 'id-nivel'}),
+            'foto_perfil': forms.ClearableFileInput(attrs={'class': 'form-control foto-perfil-field', 'id': 'id-foto_perfil'}),
         }
 
 class ConvocatoriaForm(forms.ModelForm):

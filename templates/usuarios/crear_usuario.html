@@ -6,11 +6,12 @@
 
 {% block content %}
 <h2>Crear Usuario</h2>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="usuario-form">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary">Crear</button>
 </form>
 {% endblock %}
 {% block extra_scripts %}
+<script src="{% static 'js/validations.js' %}"></script>
 {% endblock %}
