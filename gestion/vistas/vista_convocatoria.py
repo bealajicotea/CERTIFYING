@@ -29,6 +29,7 @@ def crear_convocatoria(request):
             convocatoria = form.save(commit=False)
             convocatoria.profesor = request.user
             convocatoria.save()
+            # maria mmmmmmmm
             # Inscribir automáticamente estudiantes de primer año si es de tipo colocacion
             if convocatoria.tipo == 'colocacion':
                 print("Convocatoria de colocación")
