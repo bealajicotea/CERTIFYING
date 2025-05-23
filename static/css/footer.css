@@ -1,0 +1,13 @@
+#footer {
+    background-color:  #1565c0;
+    color: white;
+    
+    text-align: justify;
+    font-size:0.75em;
+
+
+
+}
+.bg-dark {
+    --bs-bg-opacity: 1;
+    background-color :#1565c0 !important;}
