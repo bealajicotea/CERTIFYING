@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/detalles_convocatoria.css' %}">
+{% endblock %}
+
 {% block content %}
 <h2>Detalle de Convocatoria</h2>
 <table class="table">
@@ -11,5 +16,7 @@
     <tr><th>Nivel</th><td>{{ convocatoria.get_nivel_display }}</td></tr>
     <tr><th>Estado</th><td>{{ convocatoria.estado|yesno:"Activa,Inactiva" }}</td></tr>
 </table>
-<a href="{% url 'lista_convocatorias' %}" class="btn btn-secondary">Volver</a>
+<div class="text-center">
+    <a href="{% url 'lista_convocatorias' %}" class="btn btn-primary">Volver</a>
+</div>
 {% endblock %}

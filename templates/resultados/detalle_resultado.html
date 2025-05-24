@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/detalles_resultados.css' %}">
+{% endblock %}
+
 {% block content %}
 <h2>Detalle de Resultado</h2>
 <table class="table">
@@ -6,5 +11,7 @@
     <tr><th>Convocatoria</th><td>{{ resultado.inscripcion.convocatoria }}</td></tr>
     <tr><th>Nota</th><td>{{ resultado.get_nota_display }}</td></tr>
 </table>
-<a href="{% url 'lista_resultados' %}" class="btn btn-secondary">Volver</a>
+<div class="text-center">
+    <a href="{% url 'lista_resultados' %}" class="btn btn-primary">Volver</a>
+</div>
 {% endblock %}
