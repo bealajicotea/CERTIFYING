@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/detalles_de_usuarios.css' %}">
+{% endblock %}
+
 {% block content %}
 <h2>Detalle de Usuario</h2>
 <table class="table">
@@ -16,7 +21,9 @@
     <tr><th>Año Escolar</th><td>{{ usuario.get_anio_escolar_display }}</td></tr>
     <tr><th>Carrera</th><td>{{ usuario.carrera }}</td></tr>
     <tr><th>Curso</th><td>{{ usuario.curso }}</td></tr>
-    <tr><th>Nivel</th><td>{{ usuario.nivel }}</td></tr>
+    <tr><th class= "nivel">Nivel</th><td class="nivelb">{{ usuario.nivel }}</td></tr>
 </table>
-<a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">Volver</a>
+<div class="text-center">
+    <img src="{{ usuario.foto.url }}" alt="Foto de {{ usuario.username }}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+<a href="{% url 'lista_usuarios' %}" class="btn btn-primary">Volver</a></div>
 {% endblock %}

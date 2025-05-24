@@ -148,6 +148,26 @@ body {
     margin: 0 auto;
   }
 }
+
+
+.card {
+    border: none !important;
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18);
+    transition: box-shadow 0.3s, transform 0.3s;
+    background: #fff;
+    overflow: visible;
+    position: relative;
+}
+.card-img-top {
+    height: 250px; 
+    object-fit: cover;
+    object-position: center;
+    border:none; 
+}
+.card:hover {
+    box-shadow: 0 16px 48px rgba(44, 62, 80, 0.28);
+    transform: translateY(-12px) scale(1.03);
+}
 </style>
 <link rel="stylesheet" href="{% static 'css/pagina_principal.css' %}">
 {% endblock %}
