@@ -42,9 +42,18 @@ class Usuario(AbstractUser):
         ('5','CITEC'),
         ('6','FTE'),
     ]
+
+    group = [
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+        ('6', '6'), ]
+        
     facultad = models.CharField(max_length=2, choices=fac, null=True, blank=True)
     anio_escolar = models.CharField(max_length=1, choices=anios, null=True, blank=True)
-    grupo = models.CharField(max_length=20, blank=True)
+    grupo = models.CharField(max_length=20,choices= group, blank=True)
     carrera = models.CharField(max_length=100,choices=car, null=True, blank=True)
     curso = models.CharField(max_length=30, blank=True, null=True)
     nivel = models.CharField(max_length=10,choices= niveles,null=True, blank=True)

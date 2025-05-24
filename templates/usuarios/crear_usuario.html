@@ -9,9 +9,47 @@
 <form method="post" enctype="multipart/form-data" id="usuario-form">
     {% csrf_token %}
     {{ form.as_p }}
+    <div class="mb-3">
+        <label for="id_grupo" class="form-label">Grupo</label>
+        <input type="text" name="grupo" id="id_grupo" class="form-control" readonly>
+    </div>
     <button type="submit" class="btn btn-primary">Crear</button>
 </form>
 {% endblock %}
 {% block extra_scripts %}
 <script src="{% static 'js/validations.js' %}"></script>
+<script>
+  // Mapear valores de facultad a nombre
+  const facultadNombres = {
+    '1': 'FTL',
+    '2': 'FCS',
+    '3': 'FIO',
+    '4': 'FTI',
+    '5': 'CITEC',
+    '6': 'FTE'
+  };
+  function pad(num, size) {
+    let s = String(num);
+    while (s.length < size) s = "0" + s;
+    return s;
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    const fac = document.getElementById('id_facultad');
+    const anio = document.getElementById('id_anio_escolar');
+    const grupo = document.getElementById('id_grupo');
+    function updateGrupo() {
+      const facVal = fac ? fac.value : '';
+      const anioVal = anio ? anio.value : '';
+      if (facVal && anioVal) {
+        // Generar IDF: facultad + año + 4 dígitos random + nombre fac + 0 + año
+        const idf = facVal + anioVal + pad(Math.floor(Math.random()*10000), 4) + facultadNombres[facVal] + '0' + anioVal;
+        grupo.value = idf;
+      } else {
+        grupo.value = '';
+      }
+    }
+    if (fac) fac.addEventListener('change', updateGrupo);
+    if (anio) anio.addEventListener('change', updateGrupo);
+  });
+</script>
 {% endblock %}

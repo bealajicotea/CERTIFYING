@@ -2,6 +2,7 @@ from django.urls import path
 from gestion.vistas import vista_usuario, vista_convocatoria, vista_resultado, vista_inscripcion,vistas_rol_estudiante
 
 urlpatterns = [
+
     # URLs para Usuario
     path('usuarios/', vista_usuario.lista_usuarios, name='lista_usuarios'),
     path('usuarios/crear/', vista_usuario.crear_usuario, name='crear_usuario'),
@@ -41,6 +42,11 @@ urlpatterns = [
 
     path('convocatorias_e/', vistas_rol_estudiante.lista_convocatorias_e, name='lista_convocatorias_e'),
     path('perfil_e/', vistas_rol_estudiante.perfil_e, name='perfil_e'),
+
     
+    path('resultados_e/', vistas_rol_estudiante.mis_resultados_estudiante, name='lista_resultados_e'),
+
+    # URL para editar perfil
+    path('editar_perfil/', vista_usuario.editar_perfil, name='editar_perfil'),
 
 ]

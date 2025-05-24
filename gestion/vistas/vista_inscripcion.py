@@ -55,10 +55,16 @@ def lista_inscripciones(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
         return redirect('login')
-    if not request.user.es_profesor():
-        messages.warning(request, "No tienes permisos para acceder a esta sección.")
-        return redirect('pagina_principal')
-
+    # Si el usuario es estudiante, solo mostrar sus inscripciones
+    if hasattr(request.user, 'tipo_usuario') and request.user.tipo_usuario == 'estudiante':
+        inscripciones = Inscripcion.objects.filter(estudiante=request.user)
+        # Puedes agregar aquí los filtros si lo deseas
+        contexto = {
+            'inscripciones': inscripciones,
+            # ...otros contextos necesarios para los filtros...
+        }
+        return render(request, 'inscripciones/lista_inscripciones.html', contexto)
+    # Si es profesor, mostrar todas (comportamiento original)
     filtros = {
         'facultad': request.GET.get('facultad', ''),
         'grupo': request.GET.get('grupo', ''),
@@ -66,9 +72,7 @@ def lista_inscripciones(request):
         'tipo_convocatoria': request.GET.get('tipo_convocatoria', ''),
         'nivel': request.GET.get('nivel', ''),
     }
-
     contexto = obtener_inscripciones_filtradas(filtros)
-
     return render(request, 'inscripciones/lista_inscripciones.html', contexto)
 
 def crear_inscripcion(request):

@@ -2,12 +2,17 @@
 {% block content %}
 <h2>Detalle de Usuario</h2>
 <table class="table">
-    <tr><th>Usuario</th><td>{{ usuario.username }}</td></tr>
-    <tr><th>Correo</th><td>{{ usuario.email }}</td></tr>
-    <tr><th>Nombre</th><td>{{ usuario.first_name }} {{ usuario.last_name }}</td></tr>
-    <tr><th>Tipo</th><td>{{ usuario.get_tipo_usuario_display }}</td></tr>
-    <tr><th>Facultad</th><td>{{ usuario.facultad }}</td></tr>
-    <tr><th>Grupo</th><td>{{ usuario.grupo }}</td></tr>
+    <tr><th>Nombre de usuario</th><td>{{ usuario.username }}</td></tr>
+    <tr><th>Correo electrónico</th><td>{{ usuario.email }}</td></tr>
+    <tr><th>Facultad</th><td>{{ usuario.get_facultad_display }}</td></tr>
+    <tr><th>Año escolar</th><td>{{ usuario.get_anio_escolar_display }}</td></tr>
+    <tr><th>Grupo</th><td>
+        {% if usuario.facultad and usuario.anio_escolar and usuario.grupo %}
+            IDF {{ usuario.facultad }}{{ usuario.anio_escolar }}0{{ usuario.grupo|slice:'-2:' }}
+        {% else %}
+            {{ usuario.grupo }}
+        {% endif %}
+    </td></tr>
     <tr><th>Año Escolar</th><td>{{ usuario.get_anio_escolar_display }}</td></tr>
     <tr><th>Carrera</th><td>{{ usuario.carrera }}</td></tr>
     <tr><th>Curso</th><td>{{ usuario.curso }}</td></tr>

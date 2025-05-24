@@ -18,7 +18,7 @@ class UsuarioForm(forms.ModelForm):
             'tipo_usuario': forms.Select(attrs={'class': 'form-control tipo-usuario-field', 'id': 'id-tipo_usuario'}),
             'facultad': forms.Select(attrs={'class': 'form-control', 'id': 'id-facultad'}),
             'anio_escolar': forms.Select(attrs={'class': 'form-control', 'id': 'id-anio_escolar'}),
-            'grupo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly', 'id': 'id-grupo'}),
+            'grupo': forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly', 'id': 'id-grupo'}),
             'carrera': forms.Select(attrs={'class': 'form-control carrera-field', 'id': 'id-carrera'}),
             'curso': forms.TextInput(attrs={'class': 'form-control curso-field', 'id': 'id-curso'}),
             'nivel': forms.Select(attrs={'class': 'form-control nivel-field', 'id': 'id-nivel'}),
