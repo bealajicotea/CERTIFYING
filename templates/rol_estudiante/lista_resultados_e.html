@@ -8,23 +8,21 @@
     <table class="table table-hover align-middle">
       <thead class="table-light">
         <tr>
-          <th style="width: 50%">Tipo de Examen</th>
-          <th style="width: 50%">Nivel</th>
+          <th style="width: 50%;">Tipo de Examen</th>
+          <th style="width: 50%;">Nivel</th>
         </tr>
       </thead>
       <tbody>
-        
         {% for resultado in resultados %}
-        {% if resultado.inscripcion.estudiante.id == request.user.id %}
-        <tr>
-          <td class="text-truncate" style="max-width: 200px;">
-            {{ resultado.inscripcion.convocatoria.get_tipo_display }}
-          </td>
-          <td class="text-truncate" style="max-width: 120px;">{{ resultado.nota }}</td>
-        </tr>
-        {% endif %}
+          <tr>
+            <td class="text-truncate" style="max-width: 200px;">
+              {{ resultado.inscripcion.convocatoria.get_tipo_display }}
+            </td>
+            <td class="text-truncate" style="max-width: 120px;">{{ resultado.nota }}</td>
+          </tr>
+          {% endif %}
         {% empty %}
-        <tr><td colspan="2" class="text-center">No tienes resultados disponibles.</td></tr>
+          <tr><td colspan="2" class="text-center">No tienes resultados disponibles.</td></tr>
         {% endfor %}
       </tbody>
     </table>

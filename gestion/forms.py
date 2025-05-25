@@ -20,7 +20,7 @@ class UsuarioForm(forms.ModelForm):
             'anio_escolar': forms.Select(attrs={'class': 'form-control', 'id': 'id-anio_escolar'}),
             'grupo': forms.Select(attrs={'class': 'form-control', 'readonly': 'readonly', 'id': 'id-grupo'}),
             'carrera': forms.Select(attrs={'class': 'form-control carrera-field', 'id': 'id-carrera'}),
-            'curso': forms.TextInput(attrs={'class': 'form-control curso-field', 'id': 'id-curso'}),
+            'curso': forms.Select(attrs={'class': 'form-control curso-field', 'id': 'id-curso'}),
             'nivel': forms.Select(attrs={'class': 'form-control nivel-field', 'id': 'id-nivel'}),
             'foto_perfil': forms.ClearableFileInput(attrs={'class': 'form-control foto-perfil-field', 'id': 'id-foto_perfil'}),
         }
