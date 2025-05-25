@@ -1,5 +1,6 @@
 from django.urls import path
 from gestion.vistas import vista_usuario, vista_convocatoria, vista_resultado, vista_inscripcion,vistas_rol_estudiante
+from gestion import views
 
 urlpatterns = [
 
@@ -42,11 +43,7 @@ urlpatterns = [
 
     path('convocatorias_e/', vistas_rol_estudiante.lista_convocatorias_e, name='lista_convocatorias_e'),
     path('perfil_e/', vistas_rol_estudiante.perfil_e, name='perfil_e'),
-
-    
+    path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
     path('resultados_e/', vistas_rol_estudiante.mis_resultados_estudiante, name='lista_resultados_e'),
-
-    # URL para editar perfil
-    path('editar_perfil/', vista_usuario.editar_perfil, name='editar_perfil'),
 
 ]

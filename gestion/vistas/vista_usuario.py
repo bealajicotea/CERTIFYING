@@ -4,7 +4,6 @@ from django.contrib.auth.hashers import make_password
 from gestion.models import Usuario
 from gestion.forms import UsuarioForm
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
 
 def lista_usuarios(request): 
     
@@ -91,23 +90,3 @@ def detalle_usuario(request, usuario_id):
         return redirect('login')
     usuario = get_object_or_404(Usuario, id=usuario_id)
     return render(request, 'usuarios/detalle_usuario.html', {'usuario': usuario})
-
-def editar_perfil(request):
-    if not request.user.is_authenticated:
-        messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
-        return redirect('login')
-    usuario = get_object_or_404(Usuario, id=request.user.id)
-    if request.method == 'POST':
-        form = UsuarioForm(request.POST, request.FILES, instance=usuario)
-        if form.is_valid():
-            usuario = form.save()
-            # Si el usuario cambió la contraseña, actualizar la sesión
-            if 'password' in form.cleaned_data and form.cleaned_data['password']:
-                usuario.set_password(form.cleaned_data['password'])
-                usuario.save()
-                update_session_auth_hash(request, usuario)
-            messages.success(request, 'Perfil actualizado correctamente.')
-            return redirect('perfil')
-    else:
-        form = UsuarioForm(instance=usuario)
-    return render(request, 'editar_perfil.html', {'form': form})
