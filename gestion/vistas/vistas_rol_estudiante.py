@@ -44,3 +44,7 @@ def mis_resultados_estudiante(request):
         return redirect('login')
     resultados = Resultado.objects.filter(inscripcion__estudiante_id=request.user.id)
     return render(request, 'rol_estudiante/lista_resultados_e.html', {'resultados': resultados})
+
+def detalle_convocatoriae(request, convocatoria_id):
+    convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
+    return render(request, 'rol_estudiante/detalle_convocatoriae.html', {'convocatoria': convocatoria})

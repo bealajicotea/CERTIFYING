@@ -31,21 +31,16 @@
           {% for convocatoria in convocatorias %}
           <tr>
             <td class="text-truncate" style="max-width: 120px;">{{ convocatoria.get_tipo_display }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.descripcion }}</td>
             <td class="text-truncate" style="max-width: 120px;">{{ convocatoria.lugar }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.fecha }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.hora }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.estado|yesno:"Activa,Inactiva" }}</td>
             <td class="text-nowrap" style="min-width: 180px;">
-              <a href="#" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
-                <i class="bi bi-eye"></i>
-              </a>
-              <form method="post" action="" style="display:inline;">
-                {% csrf_token %}
-                <input type="hidden" name="convocatoria_id" value="{{ convocatoria.id }}">
-                <button type="submit" class="btn btn-inscribirse btn-sm me-1">Inscribirse</button>
-              </form>
-            </td>
-            <td class="text-center align-middle">
-              <input type="checkbox" name="convocatorias_seleccionadas" value="{{ convocatoria.id }}" class="form-check-input convocatoria-checkbox">
+             <a href="{% url 'detalle_convocatoriae' convocatoria_id=convocatoria.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+               <i class="bi bi-eye"></i>
+             </a> 
+              <button type="submit" name="convocatoria_id" value="{{ convocatoria.id }}" class="btn btn-outline-warning btn-sm me-1">Inscribirse</button>
             </td>
           </tr>
           {% endfor %}
