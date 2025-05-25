@@ -40,7 +40,15 @@
              <a href="{% url 'detalle_convocatoriae' convocatoria_id=convocatoria.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
                <i class="bi bi-eye"></i>
              </a> 
-              <button type="submit" name="convocatoria_id" value="{{ convocatoria.id }}" class="btn btn-outline-warning btn-sm me-1">Inscribirse</button>
+              
+              <form method="post" action="" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="convocatoria_id" value="{{ convocatoria.id }}">
+                <button type="submit" class="btn btn-inscribirse btn-sm me-1">Inscribirse</button>
+              </form>
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox" name="convocatorias_seleccionadas" value="{{ convocatoria.id }}" class="form-check-input convocatoria-checkbox">
             </td>
           </tr>
           {% endfor %}
