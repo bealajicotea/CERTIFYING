@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/detalles_convocatoria.css' %}">
+{% endblock %}
+
+{% block content %}
+<h2>Detalle de Convocatoria</h2>
+<table class="table">
+    <tr><th>Tipo</th><td>{{ convocatoria.get_tipo_display }}</td></tr>
+    <tr><th>Descripción</th><td>{{ convocatoria.descripcion }}</td></tr>
+    <tr><th>Lugar</th><td>{{ convocatoria.lugar }}</td></tr>
+    <tr><th>Fecha</th><td>{{ convocatoria.fecha }}</td></tr>
+    <tr><th>Hora</th><td>{{ convocatoria.hora }}</td></tr>
+    <tr><th>Profesor</th><td>{{ convocatoria.profesor.username }}</td></tr>
+    <tr><th>Nivel</th><td>{{ convocatoria.get_nivel_display }}</td></tr>
+    <tr><th>Estado</th><td>{{ convocatoria.estado|yesno:"Activa,Inactiva" }}</td></tr>
+</table>
+<div class="text-center">
+    <a href="{% url 'lista_convocatorias_e' %}" class="btn btn-primary">Volver</a>
+ 
+</div>
+{% endblock %}

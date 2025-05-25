@@ -20,7 +20,10 @@ urlpatterns = [
     path('convocatorias/eliminar/<int:convocatoria_id>/', vista_convocatoria.eliminar_convocatoria, name='eliminar_convocatoria'),
     path('convocatorias/eliminar-seleccionadas/', vista_convocatoria.eliminar_convocatorias_seleccionadas, name='eliminar_convocatorias_seleccionadas'),
     path('convocatorias/detalle/<int:convocatoria_id>/', vista_convocatoria.detalle_convocatoria, name='detalle_convocatoria'),
-
+    path('convocatorias_e/detalle/<int:convocatoria_id>/', vistas_rol_estudiante.detalle_convocatoriae, name='detalle_convocatoriae'),
+    path('convocatorias_e/', vistas_rol_estudiante.lista_convocatorias_e, name='lista_convocatorias_e'),
+    
+    
     # URLs para Resultado
     path('resultados/', vista_resultado.lista_resultados, name='lista_resultados'),
     path('resultados/crear/', vista_resultado.crear_resultado, name='crear_resultado'),

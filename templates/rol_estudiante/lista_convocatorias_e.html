@@ -29,13 +29,15 @@
           {% for convocatoria in convocatorias %}
           <tr>
             <td class="text-truncate" style="max-width: 120px;">{{ convocatoria.get_tipo_display }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.descripcion }}</td>
             <td class="text-truncate" style="max-width: 120px;">{{ convocatoria.lugar }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.fecha }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.hora }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.estado|yesno:"Activa,Inactiva" }}</td>
             <td class="text-nowrap" style="min-width: 180px;">
-              <a href="#" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
-                <i class="bi bi-eye"></i>
-              </a>
+             <a href="{% url 'detalle_convocatoriae' convocatoria_id=convocatoria.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+               <i class="bi bi-eye"></i>
+             </a> 
               <button type="submit" name="convocatoria_id" value="{{ convocatoria.id }}" class="btn btn-outline-warning btn-sm me-1">Inscribirse</button>
             </td>
           </tr>
