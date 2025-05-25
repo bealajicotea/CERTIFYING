@@ -5,9 +5,14 @@
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Convocatorias</h2>
 
-  <form id="formEliminarConvocatorias" method="post" action="{% url 'eliminar_convocatorias_seleccionadas' %}">
+  {% if mensaje %}
+    <div class="alert alert-{{ mensaje.tipo }} alert-dismissible fade show" role="alert">
+      {{ mensaje.texto }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+  {% endif %}
+  
     {% csrf_token %}
-
     <div class="table-responsive shadow rounded">
       <table class="table table-hover align-middle">
         <thead class="table-light">
@@ -35,19 +40,39 @@
              <a href="{% url 'detalle_convocatoriae' convocatoria_id=convocatoria.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
                <i class="bi bi-eye"></i>
              </a> 
-              <button type="submit" name="convocatoria_id" value="{{ convocatoria.id }}" class="btn btn-outline-warning btn-sm me-1">Inscribirse</button>
+              
+              <form method="post" action="" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="convocatoria_id" value="{{ convocatoria.id }}">
+                <button type="submit" class="btn btn-inscribirse btn-sm me-1">Inscribirse</button>
+              </form>
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox" name="convocatorias_seleccionadas" value="{{ convocatoria.id }}" class="form-check-input convocatoria-checkbox">
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-
-
   </form>
 </div>
 {% endblock %}
 {% block extra_scripts %}
+<style>
+.btn-inscribirse {
+  background-color: #ffc107;
+  color: #212529;
+  border: 1px solid #ffc107;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.btn-inscribirse:hover, .btn-inscribirse:focus {
+  background-color: #ffecb3;
+  color: #856404;
+  border: 1px solid #ffecb3;
+  box-shadow: 0 0 0 0.2rem rgba(255,193,7,.25);
+}
+</style>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const selectAll = document.getElementById('selectAllConvocatorias');
@@ -59,3 +84,4 @@
   });
 </script>
 {% endblock %}
+
