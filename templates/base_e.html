@@ -98,11 +98,11 @@
                             {% if notificaciones %}
                                 {% for noti in notificaciones %}
                                     <li>
-                                        <a class="dropdown-item small" href="{{ noti.url }}">
+                                        <a class="dropdown-item small" href="{% url 'leer_notificacion' noti.pk %}">
                                             <i class="bi bi-info-circle text-primary"></i>
-                                            {{ noti.mensaje }}
+                                            {{ noti.verb }}
                                             <br>
-                                            <small class="text-muted">{{ noti.fecha|date:"d/m/Y H:i" }}</small>
+                                            <small class="text-muted">{{ noti.created_at|date:"d/m/Y H:i" }}</small>
                                         </a>
                                     </li>
                                 {% endfor %}

@@ -32,6 +32,7 @@ urlpatterns = [
     path('', include('apps.resultados.urls')),
     path('', include('apps.inscripciones.urls')),
     path('', include('apps.convocatorias.urls')),
+    path('', include('apps.notificaciones.urls')),
 
     path('pagina_principal/', teacher_views.index_view, name='pagina_principal'),
     path('pagina_principal_e/', student_views.index_view_e, name='pagina_principal_e'),

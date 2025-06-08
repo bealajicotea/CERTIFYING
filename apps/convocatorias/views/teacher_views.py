@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from apps.convocatorias.models import Convocatoria
+from apps.notificaciones.models import Notification
 from apps.inscripciones.models import Inscripcion
 from apps.usuarios.models import Usuario
 from django.contrib import messages
@@ -36,6 +37,10 @@ def crear_convocatoria(request):
             estado=True if data.get('estado') == 'on' else False,
         )
         convocatoria.save()
+        Notification.objects.create(
+            verb=f"Se ha creado una nueva {convocatoria.tipo} :",
+            url=f"/convocatorias_e/detalle/{convocatoria.id}/"
+        )
         # Inscribir automáticamente estudiantes de primer año si es de tipo colocacion
         if convocatoria.tipo == 'colocacion':
             estudiantes = Usuario.objects.filter(tipo_usuario='estudiante', anio_escolar='1')
