@@ -73,6 +73,9 @@ class Usuario(AbstractUser):
     def es_profesor(self):
         return self.tipo_usuario == 'profesor'
 
+    def es_estudiante(self):
+        return self.tipo_usuario == 'estudiante'
+
     def __str__(self):
         return f"{self.username} ({self.tipo_usuario})"
 
