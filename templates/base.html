@@ -55,7 +55,11 @@
         <li class="nav-item dropdown d-flex align-items-center me-lg-3">
           <a class="nav-link dropdown-toggle d-flex align-items-center text-reset text-decoration-none"
              href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+            {% if request.user.foto_perfil %}
+                <img src="{{ request.user.foto_perfil.url }}" alt="Foto de perfil" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover;">
+            {% else %}
+                <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+            {% endif %}
             <span class="text-nowrap">{{ request.user.username }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">

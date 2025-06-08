@@ -37,9 +37,12 @@ urlpatterns = [
     path('pagina_principal_e/', student_views.index_view_e, name='pagina_principal_e'),
 
     path('prueba/', views.prueba, name='prueba'),
-    
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+
 
