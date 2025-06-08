@@ -1,12 +1,60 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/convocatorias/lista_convocatorias.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Convocatorias</h2>
 
+  <div class="row mb-3 align-items-center">
+    <div class="col-auto">
+      <form method="get" class="row g-2">
+        <div class="col-auto">
+          <input type="text" name="buscar" class="form-control form-control-sm" style="width: 180px;" placeholder="Buscar por lugar, fecha..." value="{{ buscar }}">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col text-end">
+      <div class="dropdown">
+        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
+          Seleccionar filtros
+        </button>
+        <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
+          <li>
+            <div class="form-check">
+              <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo" id="filtroTipo" {% if selected_tipo %}checked{% endif %}>
+              <label class="form-check-label" for="filtroTipo">Tipo de Convocatoria</label>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="filtros mb-4">
+    <form method="get" class="row g-2">
+      <div class="col-md-3 d-none" data-filtro="tipo">
+        <select name="tipo" class="form-select form-select-sm" onchange="this.form.submit()">
+          <option value="">Tipo de Convocatoria</option>
+          {% for val, label in tipos_convocatoria %}
+            <option value="{{ val }}" {% if selected_tipo == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </form>
+  </div>
+
+
   <form id="formEliminarConvocatorias" method="post" action="{% url 'eliminar_convocatorias_seleccionadas' %}">
     {% csrf_token %}
+
+    <input type="hidden" name="buscar" value="{{ buscar }}">
+    <input type="hidden" name="tipo" value="{{ selected_tipo }}">
 
     <div class="table-responsive shadow rounded">
       <table class="table table-hover align-middle">
@@ -56,15 +104,53 @@
   </form>
 </div>
 {% endblock %}
+
 {% block extra_scripts %}
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const selectAll = document.getElementById('selectAllConvocatorias');
-    if (selectAll) {
-      selectAll.addEventListener('change', function() {
-        document.querySelectorAll('.convocatoria-checkbox').forEach(cb => cb.checked = selectAll.checked);
-      });
-    }
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Script de lista_convocatorias cargado.');
+
+  /**
+   * MANEJO DE LA VISIBILIDAD DE LOS FILTROS
+   */
+  const filtroCheckboxes = document.querySelectorAll('.filtro-checkbox');
+  function actualizarVisibilidadFiltros() {
+    const filtrosSeleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
+    document.querySelectorAll('.filtros [data-filtro]').forEach(divFiltro => {
+      const nombreFiltro = divFiltro.getAttribute('data-filtro');
+      if (filtrosSeleccionados.includes(nombreFiltro)) {
+        divFiltro.classList.remove('d-none');
+      } else {
+        divFiltro.classList.add('d-none');
+      }
+    });
+  }
+  filtroCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', actualizarVisibilidadFiltros);
   });
+  actualizarVisibilidadFiltros();
+
+  /**
+   * EVITAR CIERRE DEL DROPDOWN DE FILTROS
+   */
+  const elementosDelDropdown = document.querySelectorAll('.dropdown-menu .filtro-checkbox, .dropdown-menu .form-check-label');
+  elementosDelDropdown.forEach(elemento => {
+    elemento.addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+  });
+
+  /**
+   * SELECCIONAR / DESELECCIONAR TODAS LAS CONVOCATORIAS
+   */
+  const selectAll = document.getElementById('selectAllConvocatorias');
+  if (selectAll) {
+    selectAll.addEventListener('change', function () {
+      document.querySelectorAll('.convocatoria-checkbox').forEach(checkbox => {
+        checkbox.checked = this.checked;
+      });
+    });
+  }
+});
 </script>
 {% endblock %}
