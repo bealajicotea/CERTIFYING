@@ -197,55 +197,21 @@
 {% block extra_scripts %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Seleccionar/deseleccionar todos los checkboxes de inscripciones
-    const selectAll = document.getElementById('selectAllInscripciones');
-    if (selectAll) {
-      selectAll.addEventListener('change', function() {
-        document.querySelectorAll('.inscripcion-checkbox').forEach(cb => cb.checked = selectAll.checked);
+    // --- Mantener selección múltiple sin Ctrl ---
+    const selectFiltros = document.getElementById('selectFiltros');
+    if (selectFiltros) {
+      selectFiltros.addEventListener('mousedown', function(e) {
+        if (e.target.tagName === 'OPTION') {
+          e.preventDefault();
+          e.target.selected = !e.target.selected;
+          // Disparar el evento change manualmente
+          const event = new Event('change', { bubbles: true });
+          selectFiltros.dispatchEvent(event);
+        }
       });
     }
 
-    document.querySelectorAll('.agregar-nota-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const wrapper = btn.closest('.agregar-nota-wrapper');
-        btn.style.display = 'none';
-        wrapper.querySelector('.inputs-agregar-nota').style.display = 'inline-block';
-        wrapper.querySelector('select[name="nota"]').focus();
-      });
-    });
-
-    // Ejemplo de manejo del botón aceptar (puedes adaptarlo a tu lógica)
-    document.querySelectorAll('.aceptar-nota-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const wrapper = btn.closest('.agregar-nota-wrapper');
-        const inscripcionId = wrapper.querySelector('input[name="inscripcion_id"]').value;
-        const nota = wrapper.querySelector('select[name="nota"]').value;
-
-        // Asignar valores al formulario oculto
-        document.getElementById('elemento_id').value = inscripcionId;
-        document.getElementById('codigo').value = nota;
-
-        // Cambiar la acción del formulario oculto
-        const formOculto = document.getElementById('formOculto');
-        formOculto.action = "{% url 'evaluar_inscripcion' %}";
-        formOculto.method = "post";
-
-        // Agregar CSRF token si es necesario
-        let csrfInput = formOculto.querySelector('input[name="csrfmiddlewaretoken"]');
-        if (!csrfInput) {
-          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
-          if (csrfToken) {
-            csrfInput = csrfToken.cloneNode();
-            formOculto.prepend(csrfInput);
-          }
-        }
-
-        // Enviar el formulario oculto
-        formOculto.submit();
-      });
-    });
-
-    const selectFiltros = document.getElementById('selectFiltros');
+    // --- Resto de tu código existente ---
     const filtroMap = {
       'facultad': 0,
       'grupo': 1,
@@ -269,9 +235,50 @@
     }
 
     selectFiltros.addEventListener('change', actualizarFiltros);
-
-    // Opcional: mantener selección tras recarga si usas JS para setear valores
     actualizarFiltros();
+
+    // Seleccionar/deseleccionar todos los checkboxes de inscripciones
+    const selectAll = document.getElementById('selectAllInscripciones');
+    if (selectAll) {
+      selectAll.addEventListener('change', function() {
+        document.querySelectorAll('.inscripcion-checkbox').forEach(cb => cb.checked = selectAll.checked);
+      });
+    }
+
+    document.querySelectorAll('.agregar-nota-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const wrapper = btn.closest('.agregar-nota-wrapper');
+        btn.style.display = 'none';
+        wrapper.querySelector('.inputs-agregar-nota').style.display = 'inline-block';
+        wrapper.querySelector('select[name="nota"]').focus();
+      });
+    });
+
+    document.querySelectorAll('.aceptar-nota-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const wrapper = btn.closest('.agregar-nota-wrapper');
+        const inscripcionId = wrapper.querySelector('input[name="inscripcion_id"]').value;
+        const nota = wrapper.querySelector('select[name="nota"]').value;
+
+        document.getElementById('elemento_id').value = inscripcionId;
+        document.getElementById('codigo').value = nota;
+
+        const formOculto = document.getElementById('formOculto');
+        formOculto.action = "{% url 'evaluar_inscripcion' %}";
+        formOculto.method = "post";
+
+        let csrfInput = formOculto.querySelector('input[name="csrfmiddlewaretoken"]');
+        if (!csrfInput) {
+          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+          if (csrfToken) {
+            csrfInput = csrfToken.cloneNode();
+            formOculto.prepend(csrfInput);
+          }
+        }
+
+        formOculto.submit();
+      });
+    });
   });
 </script>
 {% endblock %}
