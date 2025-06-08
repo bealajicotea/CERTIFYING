@@ -1,3 +1,18 @@
 from django.db import models
 
-# Create your models here.
+class Resultado(models.Model):
+    niveles = [
+        ('A1', 'A1'),
+        ('A2', 'A2'),
+        ('B1', 'B1'),
+        ('B2', 'B2'),
+        ('C1', 'C1'),
+        ('C2', 'C2')
+    ]
+    nota = models.CharField(max_length=2, choices=niveles)
+    inscripcion = models.OneToOneField('Inscripcion', on_delete=models.CASCADE)
+    # Otros campos que necesites
+
+    def __str__(self):
+        return f"{self.inscripcion.estudiante.username} - {self.inscripcion.convocatoria} - {self.nota}"
+
