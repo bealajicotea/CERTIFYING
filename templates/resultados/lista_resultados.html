@@ -1,12 +1,77 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/resultados/lista_resultados.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Resultados</h2>
 
+  <div class="row mb-3 align-items-center">
+    <div class="col-auto">
+      <form method="get" class="row g-2">
+        <div class="col-auto">
+          <input type="text" name="buscar" class="form-control form-control-sm" style="width: 180px;" placeholder="Buscar..." value="{{ buscar }}">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
+        </div>
+      </form>
+    </div>
+    <div class="col text-end">
+      <div class="desbloquear_filtros">
+        <div class="dropdown">
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
+            Seleccionar filtros
+          </button>
+          <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_examen" id="filtroTipoExamen" {% if selected_tipo_examen %}checked{% endif %}>
+                <label class="form-check-label" for="filtroTipoExamen">Tipo de Examen</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel_nota" id="filtroNivelNota" {% if selected_nivel_nota %}checked{% endif %}>
+                <label class="form-check-label" for="filtroNivelNota">Nivel (Nota)</label>
+              </div>
+            </li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filtros">
+    <form method="get" class="mb-4 row g-2">
+      <div class="col-md-2 d-none">
+        <select name="tipo_examen" class="form-select" onchange="this.form.submit()">
+          <option value="">Tipo de Examen</option>
+          {% for val, label in tipos_examen %}
+            <option value="{{ val }}" {% if selected_tipo_examen == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2 d-none">
+        <select name="nivel_nota" class="form-select" onchange="this.form.submit()">
+          <option value="">Nivel</option>
+          {% for val, label in niveles_nota %}
+            <option value="{{ val }}" {% if selected_nivel_nota == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2 d-none">
+        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
+      </div>
+    </form>
+  </div>
+
   <form id="formEliminarResultados" method="post" action="{% url 'eliminar_resultados_seleccionados' %}">
     {% csrf_token %}
+    <input type="hidden" name="buscar" value="{{ buscar }}">
+    <input type="hidden" name="tipo_examen" value="{{ selected_tipo_examen }}">
+    <input type="hidden" name="nivel_nota" value="{{ selected_nivel_nota }}">
 
     <div class="table-responsive shadow rounded">
       <table class="table table-hover align-middle">
@@ -59,14 +124,5 @@
 </div>
 {% endblock %}
 {% block extra_scripts %}
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const selectAll = document.getElementById('selectAllResultados');
-    if (selectAll) {
-      selectAll.addEventListener('change', function() {
-        document.querySelectorAll('.resultado-checkbox').forEach(cb => cb.checked = selectAll.checked);
-      });
-    }
-  });
-</script>
+<script src="{% static 'js/resultados/lista_resultados.js' %}"></script>
 {% endblock %}
