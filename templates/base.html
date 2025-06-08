@@ -56,9 +56,11 @@
           <a class="nav-link dropdown-toggle d-flex align-items-center text-reset text-decoration-none"
              href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {% if request.user.foto_perfil %}
-                <img src="{{ request.user.foto_perfil.url }}" alt="Foto de perfil" class="rounded-circle me-2" style="width:32px; height:32px; object-fit:cover;">
+                <img src="{{ request.user.foto_perfil.url }}" alt="Foto de perfil"
+                     class="rounded-circle shadow-sm me-2"
+                     style="width:24px; height:24px; object-fit:cover; border:2px solid #e3e3e3;">
             {% else %}
-                <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+                <i class="bi bi-person-circle fs-5 text-primary me-2" style="font-size: 1.5rem !important;"></i>
             {% endif %}
             <span class="text-nowrap">{{ request.user.username }}</span>
           </a>
