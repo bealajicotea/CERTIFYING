@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password
 from apps.usuarios.models import Usuario
-from apps.usuarios.forms import UsuarioForm
 from django.contrib import messages
 
 def lista_usuarios(request): 
@@ -20,16 +19,29 @@ def crear_usuario(request):
         return redirect('pagina_principal')'''
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST, request.FILES)
-        if form.is_valid():
-            usuario = form.save(commit=False)
-            usuario.password = make_password(form.cleaned_data['password'])
-            usuario.save()
-            return redirect('lista_usuarios')
-    else:
-        form = UsuarioForm()
-    return render(request, 'usuarios/crear_usuario.html', {'form': form})
-
+        data = request.POST
+        files = request.FILES
+        usuario = Usuario(
+            username=data.get('username'),
+            email=data.get('email'),
+            first_name=data.get('first_name'),
+            last_name=data.get('last_name'),
+            tipo_usuario=data.get('tipo_usuario'),
+            facultad=data.get('facultad') or None,
+            anio_escolar=data.get('anio_escolar') or None,
+            grupo=data.get('grupo') or '',
+            carrera=data.get('carrera') or None,
+            curso=data.get('curso') or None,
+            nivel=data.get('nivel') or None,
+        )
+        password = data.get('password')
+        if password:
+            usuario.password = make_password(password)
+        if files.get('foto_perfil'):
+            usuario.foto_perfil = files.get('foto_perfil')
+        usuario.save()
+        return redirect('lista_usuarios')
+    return render(request, 'usuarios/crear_usuario.html')
 
 def editar_usuario(request, usuario_id):
     if not request.user.is_authenticated:
@@ -42,15 +54,27 @@ def editar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
 
     if request.method == 'POST':
-        form = UsuarioForm(request.POST, request.FILES, instance=usuario)  # <-- CORREGIDO
-        if form.is_valid():
-            usuario = form.save(commit=False)
-            # No cambiar contraseña aquí a menos que se provea una nueva
-            usuario.save()
-            return redirect('lista_usuarios')
-    else:
-        form = UsuarioForm(instance=usuario)
-    return render(request, 'usuarios/editar_usuario.html', {'form': form})
+        data = request.POST
+        files = request.FILES
+        usuario.username = data.get('username')
+        usuario.email = data.get('email')
+        usuario.first_name = data.get('first_name')
+        usuario.last_name = data.get('last_name')
+        usuario.tipo_usuario = data.get('tipo_usuario')
+        usuario.facultad = data.get('facultad') or None
+        usuario.anio_escolar = data.get('anio_escolar') or None
+        usuario.grupo = data.get('grupo') or ''
+        usuario.carrera = data.get('carrera') or None
+        usuario.curso = data.get('curso') or None
+        usuario.nivel = data.get('nivel') or None
+        password = data.get('password')
+        if password:
+            usuario.password = make_password(password)
+        if files.get('foto_perfil'):
+            usuario.foto_perfil = files.get('foto_perfil')
+        usuario.save()
+        return redirect('lista_usuarios')
+    return render(request, 'usuarios/editar_usuario.html', {'usuario': usuario})
 
 
 def eliminar_usuario(request, usuario_id):

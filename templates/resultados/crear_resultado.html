@@ -1,10 +1,38 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <h2>Crear Resultado</h2>
-<form method="post">
+<form method="post" id="resultado-form" class="resultado-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="mb-3">
+        <label for="id-inscripcion">Inscripción</label>
+        <select id="id-inscripcion" class="form-control inscripcion-field" name="inscripcion" required>
+            <option value="">---------</option>
+            {% for inscripcion in inscripciones %}
+                <option value="{{ inscripcion.id }}">{{ inscripcion }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-profesor">Profesor</label>
+        <select id="id-profesor" class="form-control profesor-field" name="profesor" required>
+            <option value="">---------</option>
+            {% for profesor in profesores %}
+                <option value="{{ profesor.id }}">{{ profesor.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-resultado">Resultado</label>
+        <select id="id-resultado" class="form-control resultado-field" name="resultado" required>
+            <option value="aprobado">Aprobado</option>
+            <option value="desaprobado">Desaprobado</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-observaciones">Observaciones</label>
+        <textarea id="id-observaciones" class="form-control observaciones-field" name="observaciones" maxlength="300"></textarea>
+    </div>
     <button type="submit" class="btn btn-primary">Crear</button>
 </form>
 {% endblock %}

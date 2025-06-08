@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
-from apps.usuarios.forms import UsuarioForm
 
 def editar_perfil(request):
     if not request.user.is_authenticated:
@@ -10,22 +9,32 @@ def editar_perfil(request):
 
     usuario = request.user
     if request.method == 'POST':
-        form = UsuarioForm(request.POST, request.FILES, instance=usuario)
-        if form.is_valid():
-            user = form.save(commit=False)
-            # Si el usuario cambió la contraseña, actualizarla correctamente
-            password = form.cleaned_data.get('password')
-            if password and password != usuario.password:
-                user.set_password(password)
-                user.save()
-                update_session_auth_hash(request, user)  # Mantiene la sesión activa tras cambiar contraseña
-            else:
-                user.save()
-            messages.success(request, 'Perfil actualizado correctamente.')
-            return redirect('perfil')
-    else:
-        form = UsuarioForm(instance=usuario)
-    return render(request, 'editar_perfil.html', {'form': form})
+        data = request.POST
+        files = request.FILES
+        usuario.username = data.get('username')
+        usuario.email = data.get('email')
+        usuario.first_name = data.get('first_name')
+        usuario.last_name = data.get('last_name')
+        usuario.tipo_usuario = data.get('tipo_usuario')
+        usuario.facultad = data.get('facultad') or None
+        usuario.anio_escolar = data.get('anio_escolar') or None
+        usuario.grupo = data.get('grupo') or ''
+        usuario.carrera = data.get('carrera') or None
+        usuario.curso = data.get('curso') or None
+        usuario.nivel = data.get('nivel') or None
+        password = data.get('password')
+        if password and password != usuario.password:
+            usuario.set_password(password)
+            usuario.save()
+            update_session_auth_hash(request, usuario)
+        else:
+            usuario.save()
+        if files.get('foto_perfil'):
+            usuario.foto_perfil = files.get('foto_perfil')
+            usuario.save()
+        messages.success(request, 'Perfil actualizado correctamente.')
+        return redirect('perfil')
+    return render(request, 'editar_perfil.html', {'usuario': usuario})
 
 def perfil(request):
     if not request.user.is_authenticated:

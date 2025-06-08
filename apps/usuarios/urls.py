@@ -11,5 +11,6 @@ urlpatterns = [
     path('usuarios/eliminar-seleccionados/',teacher_views.eliminar_usuarios_seleccionados, name='eliminar_usuarios_seleccionados'),
     path('usuarios/detalle/<int:usuario_id>/', teacher_views.detalle_usuario, name='detalle_usuario'),  
     path('perfil/', views.perfil, name='perfil'),
+    path('editar/perfil/', views.editar_perfil, name='editar_perfil'),
     path('foto/', views.foto, name='foto'),
 ]

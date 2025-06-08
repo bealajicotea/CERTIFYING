@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from apps.resultados.models import Resultado
-from apps.resultados.forms import ResultadoForm
+from apps.inscripciones.models import Inscripcion
+from apps.usuarios.models import Usuario
 from django.contrib import messages
 
 def lista_resultados(request):
@@ -22,14 +23,23 @@ def crear_resultado(request):
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('pagina_principal')
 
+    inscripciones = Inscripcion.objects.all()
+    profesores = Usuario.objects.filter(tipo_usuario='profesor')
     if request.method == 'POST':
-        form = ResultadoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_resultados')
-    else:
-        form = ResultadoForm()
-    return render(request, 'resultados/crear_resultado.html', {'form': form})
+        data = request.POST
+        resultado = Resultado(
+            inscripcion_id=data.get('inscripcion'),
+            profesor_id=data.get('profesor'),
+            resultado=data.get('resultado'),
+            observaciones=data.get('observaciones', '')
+        )
+        resultado.save()
+        messages.success(request, "Resultado creado exitosamente.")
+        return redirect('lista_resultados')
+    return render(request, 'resultados/crear_resultado.html', {
+        'inscripciones': inscripciones,
+        'profesores': profesores
+    })
 
 def eliminar_resultado(request, resultado_id):
     if not request.user.is_authenticated:
@@ -66,14 +76,22 @@ def editar_resultado(request, resultado_id):
         return redirect('pagina_principal')
 
     resultado = get_object_or_404(Resultado, id=resultado_id)
+    inscripciones = Inscripcion.objects.all()
+    profesores = Usuario.objects.filter(tipo_usuario='profesor')
     if request.method == 'POST':
-        form = ResultadoForm(request.POST, instance=resultado)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_resultados')
-    else:
-        form = ResultadoForm(instance=resultado)
-    return render(request, 'resultados/editar_resultado.html', {'form': form})
+        data = request.POST
+        resultado.inscripcion_id = data.get('inscripcion')
+        resultado.profesor_id = data.get('profesor')
+        resultado.resultado = data.get('resultado')
+        resultado.observaciones = data.get('observaciones', '')
+        resultado.save()
+        messages.success(request, "Resultado editado exitosamente.")
+        return redirect('lista_resultados')
+    return render(request, 'resultados/editar_resultado.html', {
+        'resultado': resultado,
+        'inscripciones': inscripciones,
+        'profesores': profesores
+    })
 
 def detalle_resultado(request, resultado_id):
     if not request.user.is_authenticated:

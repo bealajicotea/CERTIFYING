@@ -2,9 +2,112 @@
 {% load static %}
 {% block content %}
 <h2>Editar Usuario</h2>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="usuario-form" class="usuario-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="mb-3">
+        <label for="id-username">Usuario</label>
+        <input type="text" id="id-username" class="form-control username-field" name="username" value="{{ usuario.username }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="id-password">Contraseña</label>
+        <input type="password" id="id-password" class="form-control password-field" name="password" placeholder="Dejar en blanco para no cambiar">
+    </div>
+    <div class="mb-3">
+        <label for="id-email">Email</label>
+        <input type="email" id="id-email" class="form-control email-field" name="email" value="{{ usuario.email }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="id-first_name">Nombre</label>
+        <input type="text" id="id-first_name" class="form-control first-name-field" name="first_name" value="{{ usuario.first_name }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="id-last_name">Apellido</label>
+        <input type="text" id="id-last_name" class="form-control last-name-field" name="last_name" value="{{ usuario.last_name }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="id-tipo_usuario">Tipo de Usuario</label>
+        <select id="id-tipo_usuario" class="form-control tipo-usuario-field" name="tipo_usuario" required>
+            <option value="">---------</option>
+            <option value="estudiante" {% if usuario.tipo_usuario == "estudiante" %}selected{% endif %}>Estudiante</option>
+            <option value="profesor" {% if usuario.tipo_usuario == "profesor" %}selected{% endif %}>Profesor del Centro</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-facultad">Facultad</label>
+        <select id="id-facultad" class="form-control" name="facultad">
+            <option value="">---------</option>
+            <option value="1" {% if usuario.facultad == "1" %}selected{% endif %}>FTL</option>
+            <option value="2" {% if usuario.facultad == "2" %}selected{% endif %}>FCS</option>
+            <option value="3" {% if usuario.facultad == "3" %}selected{% endif %}>FIO</option>
+            <option value="4" {% if usuario.facultad == "4" %}selected{% endif %}>FTI</option>
+            <option value="5" {% if usuario.facultad == "5" %}selected{% endif %}>CITEC</option>
+            <option value="6" {% if usuario.facultad == "6" %}selected{% endif %}>FTE</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-anio_escolar">Año Escolar</label>
+        <select id="id-anio_escolar" class="form-control" name="anio_escolar">
+            <option value="">---------</option>
+            <option value="1" {% if usuario.anio_escolar == "1" %}selected{% endif %}>Primero</option>
+            <option value="2" {% if usuario.anio_escolar == "2" %}selected{% endif %}>Segundo</option>
+            <option value="3" {% if usuario.anio_escolar == "3" %}selected{% endif %}>Tercero</option>
+            <option value="4" {% if usuario.anio_escolar == "4" %}selected{% endif %}>Cuarto</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-grupo">Grupo</label>
+        <select id="id-grupo" class="form-control" name="grupo">
+            <option value="">---------</option>
+            <option value="1" {% if usuario.grupo == "1" %}selected{% endif %}>1</option>
+            <option value="2" {% if usuario.grupo == "2" %}selected{% endif %}>2</option>
+            <option value="3" {% if usuario.grupo == "3" %}selected{% endif %}>3</option>
+            <option value="4" {% if usuario.grupo == "4" %}selected{% endif %}>4</option>
+            <option value="5" {% if usuario.grupo == "5" %}selected{% endif %}>5</option>
+            <option value="6" {% if usuario.grupo == "6" %}selected{% endif %}>6</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-carrera">Carrera</label>
+        <select id="id-carrera" class="form-control carrera-field" name="carrera">
+            <option value="">---------</option>
+            <option value="1" {% if usuario.carrera == "1" %}selected{% endif %}>Ingenieria en Ciencias Informáticas</option>
+            <option value="2" {% if usuario.carrera == "2" %}selected{% endif %}>Ciberseguridad</option>
+            <option value="3" {% if usuario.carrera == "3" %}selected{% endif %}>Bioinformática</option>
+            <option value="4" {% if usuario.carrera == "4" %}selected{% endif %}>Redes y Seguridad Informática</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-curso">Curso</label>
+        <select id="id-curso" class="form-control curso-field" name="curso">
+            <option value="">---------</option>
+            <option value="Below A1" {% if usuario.curso == "Below A1" %}selected{% endif %}>Below A1</option>
+            <option value="A1" {% if usuario.curso == "A1" %}selected{% endif %}>A1</option>
+            <option value="A2" {% if usuario.curso == "A2" %}selected{% endif %}>A2</option>
+            <option value="B1" {% if usuario.curso == "B1" %}selected{% endif %}>B1</option>
+            <option value="B2" {% if usuario.curso == "B2" %}selected{% endif %}>B2</option>
+            <option value="C1" {% if usuario.curso == "C1" %}selected{% endif %}>C1</option>
+            <option value="C2" {% if usuario.curso == "C2" %}selected{% endif %}>C2</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-nivel">Nivel</label>
+        <select id="id-nivel" class="form-control nivel-field" name="nivel">
+            <option value="">---------</option>
+            <option value="A1" {% if usuario.nivel == "A1" %}selected{% endif %}>A1</option>
+            <option value="A2" {% if usuario.nivel == "A2" %}selected{% endif %}>A2</option>
+            <option value="B1" {% if usuario.nivel == "B1" %}selected{% endif %}>B1</option>
+            <option value="B2" {% if usuario.nivel == "B2" %}selected{% endif %}>B2</option>
+            <option value="C1" {% if usuario.nivel == "C1" %}selected{% endif %}>C1</option>
+            <option value="C2" {% if usuario.nivel == "C2" %}selected{% endif %}>C2</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-foto_perfil">Foto de Perfil</label>
+        <input type="file" id="id-foto_perfil" class="form-control foto-perfil-field" name="foto_perfil">
+        {% if usuario.foto_perfil %}
+            <img src="{{ usuario.foto_perfil.url }}" alt="Foto actual" width="100">
+        {% endif %}
+    </div>
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>
 {% endblock %}

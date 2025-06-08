@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from apps.convocatorias.models import Convocatoria
 from apps.inscripciones.models import Inscripcion
 from apps.usuarios.models import Usuario
-from apps.resultados.models import Resultado
-from apps.inscripciones.forms import InscripcionForm
+from apps.convocatorias.models import Convocatoria
 from django.contrib import messages
 
 def obtener_inscripciones_filtradas(filtros):
@@ -70,7 +68,7 @@ def lista_inscripciones(request):
 
     contexto = obtener_inscripciones_filtradas(filtros)
 
-    return render(request, 'inscripciones/lista_inscripciones.html', contexto)
+    return render(request, 'inscripciones/lista_inscripciones.html', {'inscripciones': contexto['inscripciones']})
 
 def crear_inscripcion(request):
     if not request.user.is_authenticated:
@@ -79,14 +77,23 @@ def crear_inscripcion(request):
     if not request.user.es_profesor():
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('pagina_principal')
+
+    estudiantes = Usuario.objects.filter(tipo_usuario='estudiante')
+    convocatorias = Convocatoria.objects.all()
     if request.method == 'POST':
-        form = InscripcionForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_inscripciones')
-    else:
-        form = InscripcionForm()
-    return render(request, 'inscripciones/crear_inscripcion.html', {'form': form})
+        data = request.POST
+        inscripcion = Inscripcion(
+            estudiante_id=data.get('estudiante'),
+            convocatoria_id=data.get('convocatoria'),
+            estado=data.get('estado')
+        )
+        inscripcion.save()
+        messages.success(request, "Inscripción creada exitosamente.")
+        return redirect('lista_inscripciones')
+    return render(request, 'inscripciones/crear_inscripcion.html', {
+        'estudiantes': estudiantes,
+        'convocatorias': convocatorias
+    })
 
 def eliminar_inscripcion(request, inscripcion_id):
     if not request.user.is_authenticated:
@@ -130,15 +137,23 @@ def editar_inscripcion(request, inscripcion_id):
     if not request.user.es_profesor():
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('pagina_principal')
+
     inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
+    estudiantes = Usuario.objects.filter(tipo_usuario='estudiante')
+    convocatorias = Convocatoria.objects.all()
     if request.method == 'POST':
-        form = InscripcionForm(request.POST, instance=inscripcion)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_inscripciones')
-    else:
-        form = InscripcionForm(instance=inscripcion)
-    return render(request, 'inscripciones/editar_inscripcion.html', {'form': form})
+        data = request.POST
+        inscripcion.estudiante_id = data.get('estudiante')
+        inscripcion.convocatoria_id = data.get('convocatoria')
+        inscripcion.estado = data.get('estado')
+        inscripcion.save()
+        messages.success(request, "Inscripción editada exitosamente.")
+        return redirect('lista_inscripciones')
+    return render(request, 'inscripciones/editar_inscripcion.html', {
+        'inscripcion': inscripcion,
+        'estudiantes': estudiantes,
+        'convocatorias': convocatorias
+    })
 
 def detalle_inscripcion(request, inscripcion_id):
     if not request.user.is_authenticated:

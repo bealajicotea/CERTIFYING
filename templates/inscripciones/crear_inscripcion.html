@@ -2,9 +2,34 @@
 {% load static %}
 {% block content %}
 <h2>Crear Inscripción</h2>
-<form method="post">
+<form method="post" id="inscripcion-form" class="inscripcion-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="mb-3">
+        <label for="id-estudiante">Estudiante</label>
+        <select id="id-estudiante" class="form-control estudiante-field" name="estudiante" required>
+            <option value="">---------</option>
+            {% for estudiante in estudiantes %}
+                <option value="{{ estudiante.id }}">{{ estudiante.username }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-convocatoria">Convocatoria</label>
+        <select id="id-convocatoria" class="form-control convocatoria-field" name="convocatoria" required>
+            <option value="">---------</option>
+            {% for convocatoria in convocatorias %}
+                <option value="{{ convocatoria.id }}">{{ convocatoria }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-estado">Estado</label>
+        <select id="id-estado" class="form-control estado-field" name="estado" required>
+            <option value="pendiente">Pendiente</option>
+            <option value="aprobado">Aprobado</option>
+            <option value="rechazado">Rechazado</option>
+        </select>
+    </div>
     <button type="submit" class="btn btn-primary">Crear</button>
 </form>
 {% endblock %}

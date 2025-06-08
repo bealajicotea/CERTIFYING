@@ -2,9 +2,59 @@
 {% load static %}
 {% block content %}
 <h2>Editar Convocatoria</h2>
-<form method="post">
+<form method="post" id="convocatoria-form" class="convocatoria-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="mb-3">
+        <label for="id-tipo">Tipo</label>
+        <select id="id-tipo" class="form-control tipo-field" name="tipo" required>
+            <option value="">---------</option>
+            <option value="entrevista" {% if convocatoria.tipo == "entrevista" %}selected{% endif %}>Entrevista</option>
+            <option value="certificacion" {% if convocatoria.tipo == "certificacion" %}selected{% endif %}>Certificación</option>
+            <option value="curso" {% if convocatoria.tipo == "curso" %}selected{% endif %}>Curso</option>
+            <option value="colocacion" {% if convocatoria.tipo == "colocacion" %}selected{% endif %}>Colocación</option>
+            <option value="revalorizacion" {% if convocatoria.tipo == "revalorizacion" %}selected{% endif %}>Revalorización</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-descripcion">Descripción</label>
+        <textarea id="id-descripcion" class="form-control descripcion-field" name="descripcion" maxlength="300" required>{{ convocatoria.descripcion }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="id-lugar">Lugar</label>
+        <select id="id-lugar" class="form-control lugar-field" name="lugar" required>
+            <option value="">---------</option>
+            <option value="Docente 1" {% if convocatoria.lugar == "Docente 1" %}selected{% endif %}>Docente 1</option>
+            <option value="Docente 2" {% if convocatoria.lugar == "Docente 2" %}selected{% endif %}>Docente 2</option>
+            <option value="Docente 3" {% if convocatoria.lugar == "Docente 3" %}selected{% endif %}>Docente 3</option>
+            <option value="Docente 4" {% if convocatoria.lugar == "Docente 4" %}selected{% endif %}>Docente 4</option>
+            <option value="Docente 5" {% if convocatoria.lugar == "Docente 5" %}selected{% endif %}>Docente 5</option>
+            <option value="Docente 6" {% if convocatoria.lugar == "Docente 6" %}selected{% endif %}>Docente 6</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="id-fecha">Fecha</label>
+        <input type="date" id="id-fecha" class="form-control fecha-field" name="fecha" value="{{ convocatoria.fecha|date:'Y-m-d' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="id-hora">Hora</label>
+        <input type="time" id="id-hora" class="form-control hora-field" name="hora" value="{{ convocatoria.hora|time:'H:i' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="id-nivel">Nivel</label>
+        <select id="id-nivel" class="form-control nivel-field" name="nivel">
+            <option value="">---------</option>
+            <option value="A1" {% if convocatoria.nivel == "A1" %}selected{% endif %}>A1</option>
+            <option value="A2" {% if convocatoria.nivel == "A2" %}selected{% endif %}>A2</option>
+            <option value="B1" {% if convocatoria.nivel == "B1" %}selected{% endif %}>B1</option>
+            <option value="B2" {% if convocatoria.nivel == "B2" %}selected{% endif %}>B2</option>
+            <option value="C1" {% if convocatoria.nivel == "C1" %}selected{% endif %}>C1</option>
+            <option value="C2" {% if convocatoria.nivel == "C2" %}selected{% endif %}>C2</option>
+        </select>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" id="id-estado" class="form-check-input" name="estado" {% if convocatoria.estado %}checked{% endif %}>
+        <label for="id-estado" class="form-check-label">Activo</label>
+    </div>
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>
 {% endblock %}
