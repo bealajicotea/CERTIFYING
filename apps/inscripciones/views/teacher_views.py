@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, user_passes_test
-from gestion.models import Inscripcion, Usuario, Resultado, Convocatoria
-from gestion.forms import InscripcionForm
+from apps.convocatorias.models import Convocatoria
+from apps.inscripciones.models import Inscripcion
+from apps.usuarios.models import Usuario
+from apps.resultados.models import Resultado
+from apps.inscripciones.forms import InscripcionForm
 from django.contrib import messages
-from django.db.models import Q
 
 def obtener_inscripciones_filtradas(filtros):
     """

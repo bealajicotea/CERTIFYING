@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from gestion.models import Convocatoria, Usuario, Inscripcion
-from gestion.forms import ConvocatoriaForm
+from apps.convocatorias.models import Convocatoria
+from apps.inscripciones.models import Inscripcion
+from apps.usuarios.models import Usuario
+from apps.convocatorias.forms import ConvocatoriaForm
 from django.contrib import messages
 
 def lista_convocatorias(request):

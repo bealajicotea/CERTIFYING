@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from gestion.models import  Resultado
+from apps.resultados.models import Resultado
 from django.contrib import messages
 
 

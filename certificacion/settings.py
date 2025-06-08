@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gestion',  # Tu aplicación de gestión
+    'apps.usuarios',
+    'apps.resultados',
+    'apps.inscripciones',
+    'apps.convocatorias',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +128,7 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'gestion.Usuario'
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from gestion.models import Resultado
-from gestion.forms import ResultadoForm
+from apps.resultados.models import Resultado
+from apps.resultados.forms import ResultadoForm
 from django.contrib import messages
 
 def lista_resultados(request):

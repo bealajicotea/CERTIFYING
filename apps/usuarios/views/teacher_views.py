@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.hashers import make_password
-from gestion.models import Usuario
-from gestion.forms import UsuarioForm
+from apps.usuarios.models import Usuario
+from apps.usuarios.forms import UsuarioForm
 from django.contrib import messages
 
 def lista_usuarios(request): 

@@ -10,7 +10,7 @@ class Resultado(models.Model):
         ('C2', 'C2')
     ]
     nota = models.CharField(max_length=2, choices=niveles)
-    inscripcion = models.OneToOneField('Inscripcion', on_delete=models.CASCADE)
+    inscripcion = models.ForeignKey('inscripciones.Inscripcion', on_delete=models.CASCADE)
     # Otros campos que necesites
 
     def __str__(self):

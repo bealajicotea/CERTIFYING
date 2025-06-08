@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
-from gestion import views
+from certificacion.views import views, student_views, teacher_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,14 +26,18 @@ urlpatterns = [
     
     path('', views.login_view, name='login'),
 
-    path('pagina_principal/', views.index_view, name='pagina_principal'),
-    path('pagina_principal_e/', views.index_view_e, name='pagina_principal_e'),
-    path('perfil/', views.perfil, name='perfil'),
-
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    path('', include('gestion.urls')),
-    path('foto/', views.foto, name='foto'),
+
+    path('', include('apps.usuarios.urls')),
+    path('', include('apps.resultados.urls')),
+    path('', include('apps.inscripciones.urls')),
+    path('', include('apps.convocatorias.urls')),
+
+    path('pagina_principal/', teacher_views.index_view, name='pagina_principal'),
+    path('pagina_principal_e/', student_views.index_view_e, name='pagina_principal_e'),
+
     path('prueba/', views.prueba, name='prueba'),
+    
 ]
 
 if settings.DEBUG:

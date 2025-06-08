@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from gestion.models import Convocatoria, Resultado, Inscripcion
+from apps.convocatorias.models import Convocatoria
+from apps.inscripciones.models import Inscripcion
 from django.contrib import messages
-from django.utils import timezone
 
 def lista_convocatorias_e(request):
     if not request.user.is_authenticated:
