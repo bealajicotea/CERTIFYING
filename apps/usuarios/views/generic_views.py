@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 
 def editar_perfil(request):
     if not request.user.is_authenticated:
@@ -40,7 +41,9 @@ def perfil(request):
     if not request.user.is_authenticated:
         messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
         return redirect('login')
-    
+    if not hasattr(request.user, 'es_profesor') or not request.user.es_profesor():
+        messages.warning(request, "No tienes permisos para acceder a esta página.")
+        return redirect('pagina_principal')
     return render(request, 'perfil.html')
 
 def foto(request):

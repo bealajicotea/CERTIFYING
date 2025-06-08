@@ -5,7 +5,11 @@
     <div class="profile-card glass-effect shadow-lg">
         <div class="profile-header">
             <div class="profile-avatar">
-                <i class="bi bi-person-circle"></i>
+                {% if request.user.foto_perfil %}
+                    <img src="{{ request.user.foto_perfil.url }}" alt="Foto de perfil" class="rounded-circle" style="width:90px; height:90px; object-fit:cover; border:3px solid #fff;">
+                {% else %}
+                    <i class="bi bi-person-circle"></i>
+                {% endif %}
             </div>
             <h2 class="profile-name">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
             <p class="profile-role">Usuario del sistema de certificación de inglés</p>
@@ -39,6 +43,11 @@
                     <span class="text-muted">No actualizado</span>
                 {% endif %}
             </div>
+        </div>
+        <div class="profile-actions" style="text-align: right; padding: 0 2.5rem 1.5rem 2.5rem;">
+            <a href="{% url 'editar_perfil_e' %}" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i> Editar Perfil
+            </a>
         </div>
     </div>
 </div>

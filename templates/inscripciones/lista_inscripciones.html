@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/inscripciones/lista_inscripciones.css' %}">
+{% endblock %}
 {% block content %}
+
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Inscripciones</h2>
 
@@ -59,20 +62,6 @@
       </div>
     </div>
   </div>
-
-  <style>
-  .filtros {
-    border: 1.5px solid #90caf9; /* azul suave */
-    border-radius: 8px;
-    padding: 12px 18px;
-    margin-bottom: 18px;
-    background: #f8fbff;
-    min-height: 48px;
-  }
-  .filtros input[type="hidden"] {
-    height: 38px;
-  }
-  </style>
   <!-- Filtros ocultos -->
   <div class="filtros">
     <form method="get" class="mb-4 row g-2">
@@ -150,7 +139,7 @@
             <th style="width: 10%;">Fecha de Inscripción</th>
             <th style="width: 20%; min-width: 220px;" class="text-nowrap">Acciones</th>
             <th style="width: 5%;" class="text-center align-middle">
-              <!-- Checkbox para seleccionar/deseleccionar todas las inscripciones -->
+              <!-- Checkbox para seleccionar/deseleccionar todos las inscripciones -->
               <input type="checkbox" id="selectAllInscripciones" title="Seleccionar/Deseleccionar todos" class="align-middle">
             </th>
           </tr>
@@ -231,78 +220,5 @@
 
 {% endblock %}
 {% block extra_scripts %}
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // --- Nuevo manejo de filtros con checkboxes ---
-    const filtroMap = {
-      'facultad': 0,
-      'grupo': 1,
-      'anio_escolar': 2,
-      'tipo_convocatoria': 3,
-      'nivel': 4
-    };
-
-    function actualizarFiltros() {
-      const seleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
-      Object.entries(filtroMap).forEach(([filtro, idx]) => {
-        const div = document.querySelectorAll('.filtros .col-md-2')[idx];
-        if (div) {
-          if (seleccionados.includes(filtro)) {
-            div.classList.remove('d-none');
-          } else {
-            div.classList.add('d-none');
-          }
-        }
-      });
-    }
-
-    document.querySelectorAll('.filtro-checkbox').forEach(cb => {
-      cb.addEventListener('change', actualizarFiltros);
-    });
-    actualizarFiltros();
-
-    // Seleccionar/deseleccionar todos los checkboxes de inscripciones
-    const selectAll = document.getElementById('selectAllInscripciones');
-    if (selectAll) {
-      selectAll.addEventListener('change', function() {
-        document.querySelectorAll('.inscripcion-checkbox').forEach(cb => cb.checked = selectAll.checked);
-      });
-    }
-
-    document.querySelectorAll('.agregar-nota-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const wrapper = btn.closest('.agregar-nota-wrapper');
-        btn.style.display = 'none';
-        wrapper.querySelector('.inputs-agregar-nota').style.display = 'inline-block';
-        wrapper.querySelector('select[name="nota"]').focus();
-      });
-    });
-
-    document.querySelectorAll('.aceptar-nota-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const wrapper = btn.closest('.agregar-nota-wrapper');
-        const inscripcionId = wrapper.querySelector('input[name="inscripcion_id"]').value;
-        const nota = wrapper.querySelector('select[name="nota"]').value;
-
-        document.getElementById('elemento_id').value = inscripcionId;
-        document.getElementById('codigo').value = nota;
-
-        const formOculto = document.getElementById('formOculto');
-        formOculto.action = "{% url 'evaluar_inscripcion' %}";
-        formOculto.method = "post";
-
-        let csrfInput = formOculto.querySelector('input[name="csrfmiddlewaretoken"]');
-        if (!csrfInput) {
-          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
-          if (csrfToken) {
-            csrfInput = csrfToken.cloneNode();
-            formOculto.prepend(csrfInput);
-          }
-        }
-
-        formOculto.submit();
-      });
-    });
-  });
-</script>
+<script src="{% static 'js/inscripciones/lista_inscripciones.js' %}"></script>
 {% endblock %}

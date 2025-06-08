@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="icon" href="data:," />
     {% block extra_head %}
     {% endblock %}
 </head>
@@ -55,7 +56,13 @@
         <li class="nav-item dropdown d-flex align-items-center me-lg-3">
           <a class="nav-link dropdown-toggle d-flex align-items-center text-reset text-decoration-none"
              href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+            {% if request.user.foto_perfil %}
+                <img src="{{ request.user.foto_perfil.url }}" alt="Foto de perfil"
+                     class="rounded-circle shadow-sm me-2"
+                     style="width:24px; height:24px; object-fit:cover; border:2px solid #e3e3e3;">
+            {% else %}
+                <i class="bi bi-person-circle fs-5 text-primary me-2" style="font-size: 1.5rem !important;"></i>
+            {% endif %}
             <span class="text-nowrap">{{ request.user.username }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">

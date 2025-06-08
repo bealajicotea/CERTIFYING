@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="icon" href="data:," />
     {% block extra_head %}
     {% endblock %}
 </head>
@@ -16,7 +17,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm px-3">
         <div class="container-fluid">
             <!-- Nombre del sitio -->
-            <a class="navbar-brand fw-bold text-primary" href="{% url 'pagina_principal' %}">CERTIFYING</a>
+            <a class="navbar-brand fw-bold text-primary" href="{% url 'pagina_principal_e' %}">CERTIFYING</a>
 
             <!-- Botón hamburguesa (móvil) -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +39,7 @@
                 <!-- Usuario + Servicios + Cerrar sesión -->
                 <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-lg-center">
                     <!-- Menú desplegable Servicios -->
+                    {% if not request.user.is_staff %}
                     <li class="nav-item dropdown me-lg-3">
                         <a class="nav-link dropdown-toggle" href="#" id="serviciosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Servicios
@@ -47,17 +49,26 @@
                             <li><a class="dropdown-item" href="{% url 'lista_resultados_e' %}">Resultados</a></li>
                         </ul>
                     </li>
+                    {% endif %}
 
                     <!-- Ícono y nombre de usuario -->
                     {% if request.user.is_authenticated %}
                         <li class="nav-item dropdown d-flex align-items-center me-lg-3">
                             <a class="nav-link dropdown-toggle d-flex align-items-center text-reset text-decoration-none"
                                href="#" id="usuarioDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+                                <div class="profile-avatar">
+    {% if request.user.foto_perfil %}
+        <img src="{{ request.user.foto_perfil.url }}" alt="Foto de perfil"
+         class="rounded-circle me-2"
+         style="width:32px; height:32px; object-fit:cover; border:3px solid #fff;">
+    {% else %}
+        <i class="bi bi-person-circle fs-4 text-primary me-2"></i>
+    {% endif %}
+</div>
                                 <span class="text-nowrap">{{ request.user.username }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="usuarioDropdown">
-                                <li><a class="dropdown-item" href="{% url 'perfil_e' %}">Perfil</a></li>
+                                <li><a class="dropdown-item" href="{% url 'perfil_estudiante' %}">Perfil</a></li>
                             
                                  <form action="{% url 'logout' %}" method="post" style="display: inline;">
                                         {% csrf_token %}
