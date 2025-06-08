@@ -3,12 +3,11 @@ from apps.inscripciones.models import Inscripcion
 from apps.usuarios.models import Usuario
 from apps.convocatorias.models import Convocatoria
 from django.contrib import messages
+from django.db.models import Q
 
-def obtener_inscripciones_filtradas(filtros):
+def filtrar_inscripciones(filtros):
     """
-    Recibe un diccionario de filtros y retorna:
-    - queryset filtrado de inscripciones
-    - diccionario de contexto para el render
+    Filtra inscripciones por campos exactos.
     """
     inscripciones = Inscripcion.objects.select_related('estudiante', 'convocatoria').all()
 
@@ -29,6 +28,28 @@ def obtener_inscripciones_filtradas(filtros):
     if nivel:
         inscripciones = inscripciones.filter(convocatoria__nivel=nivel)
 
+    return inscripciones
+
+def buscar_en_inscripciones(inscripciones, buscar):
+    """
+    Busca en los inscripciones filtrados por varios campos.
+    """
+    if buscar:
+        return inscripciones.filter(
+            Q(estudiante__username__icontains=buscar) |
+            Q(convocatoria__tipo__icontains=buscar) |
+            Q(fecha_inscripcion__icontains=buscar)
+        )
+    return inscripciones
+
+def obtener_inscripciones_filtradas(filtros):
+    """
+    Aplica primero el filtrado y luego la búsqueda.
+    """
+    inscripciones = filtrar_inscripciones(filtros)
+    buscar = filtros.get('buscar', '')
+    inscripciones = buscar_en_inscripciones(inscripciones, buscar)
+
     facultades = Usuario.objects.filter(tipo_usuario='estudiante').values_list('facultad', flat=True).distinct()
     grupos = Usuario.objects.filter(tipo_usuario='estudiante').values_list('grupo', flat=True).distinct()
     anios = Usuario.anios if hasattr(Usuario, 'anios') else []
@@ -42,11 +63,12 @@ def obtener_inscripciones_filtradas(filtros):
         'anios': anios,
         'tipos_convocatoria': tipos_convocatoria,
         'niveles': niveles,
-        'selected_facultad': facultad,
-        'selected_grupo': grupo,
-        'selected_anio': anio_escolar,
-        'selected_tipo_convocatoria': tipo_convocatoria,
-        'selected_nivel': nivel,
+        'selected_facultad': filtros.get('facultad', ''),
+        'selected_grupo': filtros.get('grupo', ''),
+        'selected_anio': filtros.get('anio_escolar', ''),
+        'selected_tipo_convocatoria': filtros.get('tipo_convocatoria', ''),
+        'selected_nivel': filtros.get('nivel', ''),
+        'buscar': buscar,
     }
     return contexto
 
@@ -64,11 +86,12 @@ def lista_inscripciones(request):
         'anio_escolar': request.GET.get('anio_escolar', ''),
         'tipo_convocatoria': request.GET.get('tipo_convocatoria', ''),
         'nivel': request.GET.get('nivel', ''),
+        'buscar': request.GET.get('buscar', ''),
     }
 
     contexto = obtener_inscripciones_filtradas(filtros)
 
-    return render(request, 'inscripciones/lista_inscripciones.html', {'inscripciones': contexto['inscripciones']})
+    return render(request, 'inscripciones/lista_inscripciones.html', contexto)
 
 def crear_inscripcion(request):
     if not request.user.is_authenticated:
