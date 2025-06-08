@@ -82,6 +82,35 @@
                             <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Iniciar sesión</a>
                         </li>
                     {% endif %}
+
+                    <!-- Botón de notificaciones (campanita) -->
+                    <li class="nav-item dropdown me-lg-3">
+                        <a class="nav-link position-relative" href="#" id="notificacionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bell-fill fs-4"></i>
+                            {% if notificaciones_nuevas %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ notificaciones_nuevas|length }}
+                                </span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificacionesDropdown" style="min-width: 300px;">
+                            <li class="dropdown-header">Notificaciones</li>
+                            {% if notificaciones %}
+                                {% for noti in notificaciones %}
+                                    <li>
+                                        <a class="dropdown-item small" href="{{ noti.url }}">
+                                            <i class="bi bi-info-circle text-primary"></i>
+                                            {{ noti.mensaje }}
+                                            <br>
+                                            <small class="text-muted">{{ noti.fecha|date:"d/m/Y H:i" }}</small>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li><span class="dropdown-item text-muted">Sin notificaciones nuevas</span></li>
+                            {% endif %}
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
