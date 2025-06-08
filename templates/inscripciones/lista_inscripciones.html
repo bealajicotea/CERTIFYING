@@ -28,14 +28,43 @@
   }
   </style>
   <div class="desbloquear_filtros mb-3">
-    <label for="selectFiltros" class="form-label mb-1">Mostrar filtros:</label>
-    <select id="selectFiltros" class="form-select form-select-sm" multiple style="max-width: 260px;">
-      <option value="facultad">Facultad</option>
-      <option value="grupo">Grupo</option>
-      <option value="anio_escolar">Año Escolar</option>
-      <option value="tipo_convocatoria">Tipo Convocatoria</option>
-      <option value="nivel">Curso</option>
-    </select>
+    <div class="dropdown">
+      <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
+        Seleccionar filtros
+      </button>
+      <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
+        <li>
+          <div class="form-check">
+            <input class="form-check-input filtro-checkbox" type="checkbox" value="facultad" id="filtroFacultad">
+            <label class="form-check-label" for="filtroFacultad">Facultad</label>
+          </div>
+        </li>
+        <li>
+          <div class="form-check">
+            <input class="form-check-input filtro-checkbox" type="checkbox" value="grupo" id="filtroGrupo">
+            <label class="form-check-label" for="filtroGrupo">Grupo</label>
+          </div>
+        </li>
+        <li>
+          <div class="form-check">
+            <input class="form-check-input filtro-checkbox" type="checkbox" value="anio_escolar" id="filtroAnio">
+            <label class="form-check-label" for="filtroAnio">Año Escolar</label>
+          </div>
+        </li>
+        <li>
+          <div class="form-check">
+            <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_convocatoria" id="filtroTipo">
+            <label class="form-check-label" for="filtroTipo">Tipo Convocatoria</label>
+          </div>
+        </li>
+        <li>
+          <div class="form-check">
+            <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel" id="filtroNivel">
+            <label class="form-check-label" for="filtroNivel">Curso</label>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
   <!-- Filtros ocultos -->
   <div class="filtros">
@@ -197,21 +226,7 @@
 {% block extra_scripts %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // --- Mantener selección múltiple sin Ctrl ---
-    const selectFiltros = document.getElementById('selectFiltros');
-    if (selectFiltros) {
-      selectFiltros.addEventListener('mousedown', function(e) {
-        if (e.target.tagName === 'OPTION') {
-          e.preventDefault();
-          e.target.selected = !e.target.selected;
-          // Disparar el evento change manualmente
-          const event = new Event('change', { bubbles: true });
-          selectFiltros.dispatchEvent(event);
-        }
-      });
-    }
-
-    // --- Resto de tu código existente ---
+    // --- Nuevo manejo de filtros con checkboxes ---
     const filtroMap = {
       'facultad': 0,
       'grupo': 1,
@@ -221,7 +236,7 @@
     };
 
     function actualizarFiltros() {
-      const seleccionados = Array.from(selectFiltros.selectedOptions).map(opt => opt.value);
+      const seleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
       Object.entries(filtroMap).forEach(([filtro, idx]) => {
         const div = document.querySelectorAll('.filtros .col-md-2')[idx];
         if (div) {
@@ -234,7 +249,9 @@
       });
     }
 
-    selectFiltros.addEventListener('change', actualizarFiltros);
+    document.querySelectorAll('.filtro-checkbox').forEach(cb => {
+      cb.addEventListener('change', actualizarFiltros);
+    });
     actualizarFiltros();
 
     // Seleccionar/deseleccionar todos los checkboxes de inscripciones
