@@ -5,59 +5,92 @@
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Inscripciones</h2>
 
-  <!-- Formulario de filtros para buscar inscripciones por facultad, grupo, año escolar, tipo de convocatoria y nivel -->
-  <form method="get" class="mb-4 row g-2">
-    <!-- Filtro por facultad -->
-    <div class="col-md-2">
-      <select name="facultad" class="form-select" onchange="this.form.submit()">
-        <option value="">Facultad</option>
-        {% for f in facultades %}
-          <option value="{{ f }}" {% if selected_facultad == f %}selected{% endif %}>{{ f }}</option>
-        {% endfor %}
-      </select>
+  <!-- Formulario para buscar inscripciones por estudiante -->
+  <form method="get" class="mb-3 row">
+    <div class="col-auto">
+      <input type="text" name="buscar" class="form-control form-control-sm" style="width: 180px;" placeholder="Buscar..." value="{{ buscar }}">
     </div>
-    <!-- Filtro por grupo -->
-    <div class="col-md-2">
-      <select name="grupo" class="form-select" onchange="this.form.submit()">
-        <option value="">Grupo</option>
-        {% for g in grupos %}
-          <option value="{{ g }}" {% if selected_grupo == g %}selected{% endif %}>{{ g }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <!-- Filtro por año escolar -->
-    <div class="col-md-2">
-      <select name="anio_escolar" class="form-select" onchange="this.form.submit()">
-        <option value="">Año Escolar</option>
-        {% for val, label in anios %}
-          <option value="{{ val }}" {% if selected_anio == val %}selected{% endif %}>{{ label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <!-- Filtro por tipo de convocatoria -->
-    <div class="col-md-2">
-      <select name="tipo_convocatoria" class="form-select" onchange="this.form.submit()">
-        <option value="">Tipo Convocatoria</option>
-        {% for val, label in tipos_convocatoria %}
-          <option value="{{ val }}" {% if selected_tipo_convocatoria == val %}selected{% endif %}>{{ label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <!-- Filtro por curso -->
-    <div class="col-md-2">
-      <select name="nivel" class="form-select" onchange="this.form.submit()">
-        <option value="">Curso</option>
-        {% for val, label in niveles %}
-          <option value="{{ val }}" {% if selected_nivel == val %}selected{% endif %}>{{ label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <!-- Botón para aplicar los filtros -->
-    <div class="col-md-2">
-      <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
     </div>
   </form>
-
+  <style>
+  .filtros {
+    border: 1.5px solid #90caf9; /* azul suave */
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 18px;
+    background: #f8fbff;
+    min-height: 48px;
+  }
+  .filtros input[type="hidden"] {
+    height: 38px;
+  }
+  </style>
+  <div class="desbloquear_filtros mb-3">
+    <label for="selectFiltros" class="form-label mb-1">Mostrar filtros:</label>
+    <select id="selectFiltros" class="form-select form-select-sm" multiple style="max-width: 260px;">
+      <option value="facultad">Facultad</option>
+      <option value="grupo">Grupo</option>
+      <option value="anio_escolar">Año Escolar</option>
+      <option value="tipo_convocatoria">Tipo Convocatoria</option>
+      <option value="nivel">Curso</option>
+    </select>
+  </div>
+  <!-- Filtros ocultos -->
+  <div class="filtros">
+    <form method="get" class="mb-4 row g-2">
+      <!-- Filtro por facultad (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="facultad" class="form-select" onchange="this.form.submit()">
+          <option value="">Facultad</option>
+          {% for f in facultades %}
+            <option value="{{ f }}" {% if selected_facultad == f %}selected{% endif %}>{{ f }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Filtro por grupo (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="grupo" class="form-select" onchange="this.form.submit()">
+          <option value="">Grupo</option>
+          {% for g in grupos %}
+            <option value="{{ g }}" {% if selected_grupo == g %}selected{% endif %}>{{ g }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Filtro por año escolar (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="anio_escolar" class="form-select" onchange="this.form.submit()">
+          <option value="">Año Escolar</option>
+          {% for val, label in anios %}
+            <option value="{{ val }}" {% if selected_anio == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Filtro por tipo de convocatoria (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="tipo_convocatoria" class="form-select" onchange="this.form.submit()">
+          <option value="">Tipo Convocatoria</option>
+          {% for val, label in tipos_convocatoria %}
+            <option value="{{ val }}" {% if selected_tipo_convocatoria == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Filtro por curso (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="nivel" class="form-select" onchange="this.form.submit()">
+          <option value="">Curso</option>
+          {% for val, label in niveles %}
+            <option value="{{ val }}" {% if selected_nivel == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Botón para aplicar los filtros (oculto) -->
+      <div class="col-md-2 d-none">
+        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
+      </div>
+    </form>
+  </div>
   <!-- Formulario para eliminar inscripciones seleccionadas -->
   <form id="formEliminarInscripciones" method="post" action="{% url 'eliminar_inscripciones_seleccionadas' %}">
     {% csrf_token %}
@@ -158,6 +191,8 @@
   <input type="hidden" name="tipo_convocatoria" value="{{ selected_tipo_convocatoria }}">
   <input type="hidden" name="nivel" value="{{ selected_nivel }}">
 </form>
+
+
 {% endblock %}
 {% block extra_scripts %}
 <script>
@@ -209,6 +244,34 @@
         formOculto.submit();
       });
     });
+
+    const selectFiltros = document.getElementById('selectFiltros');
+    const filtroMap = {
+      'facultad': 0,
+      'grupo': 1,
+      'anio_escolar': 2,
+      'tipo_convocatoria': 3,
+      'nivel': 4
+    };
+
+    function actualizarFiltros() {
+      const seleccionados = Array.from(selectFiltros.selectedOptions).map(opt => opt.value);
+      Object.entries(filtroMap).forEach(([filtro, idx]) => {
+        const div = document.querySelectorAll('.filtros .col-md-2')[idx];
+        if (div) {
+          if (seleccionados.includes(filtro)) {
+            div.classList.remove('d-none');
+          } else {
+            div.classList.add('d-none');
+          }
+        }
+      });
+    }
+
+    selectFiltros.addEventListener('change', actualizarFiltros);
+
+    // Opcional: mantener selección tras recarga si usas JS para setear valores
+    actualizarFiltros();
   });
 </script>
 {% endblock %}
