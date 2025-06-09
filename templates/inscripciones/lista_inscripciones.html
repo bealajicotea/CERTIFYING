@@ -69,8 +69,8 @@
       <div class="col-md-2 d-none">
         <select name="facultad" class="form-select" onchange="this.form.submit()">
           <option value="">Facultad</option>
-          {% for f in facultades %}
-            <option value="{{ f }}" {% if selected_facultad == f %}selected{% endif %}>{{ f }}</option>
+          {% for val, label in facultades %}
+            <option value="{{ val }}" {% if selected_facultad == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
@@ -78,8 +78,8 @@
       <div class="col-md-2 d-none">
         <select name="grupo" class="form-select" onchange="this.form.submit()">
           <option value="">Grupo</option>
-          {% for g in grupos %}
-            <option value="{{ g }}" {% if selected_grupo == g %}selected{% endif %}>{{ g }}</option>
+          {% for val, label in grupos %}
+            <option value="{{ val }}" {% if selected_grupo == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
@@ -114,6 +114,8 @@
       <div class="col-md-2 d-none">
         <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
       </div>
+      <!-- Input oculto para filtros activos -->
+      <input type="hidden" name="filtros_activos" id="filtros_activos" value="{{ filtros_activos|default:'' }}">
     </form>
   </div>
   <!-- Formulario para eliminar inscripciones seleccionadas -->
@@ -150,7 +152,7 @@
           <tr>
             <td class="text-truncate" style="max-width: 140px;">{{ inscripcion.estudiante.username }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ inscripcion.estudiante.facultad }}</td>
-            <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.grupo }}</td>
+            <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.get_grupo_display }}</td>
             <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.get_anio_escolar_display }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ inscripcion.convocatoria.get_tipo_display }}</td>
             <td class="text-truncate" style="max-width: 90px;">{{ inscripcion.fecha_inscripcion }}</td>

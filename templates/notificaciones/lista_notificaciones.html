@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/notificaciones/lista_notificaciones.css' %}">
+{% endblock %}
+{% block content %}
+<!-- notificaciones/lista.html -->
+<h2>Notificaciones</h2>
+{% for noti in no_leidas %}
+  <div style="color: black;">
+    <a href="{% url 'leer_notificaciones' noti.pk %}">{{ noti.verb }}</a> - {{ noti.created_at|timesince }} ago
+  </div>
+{% empty %}
+  <p>No tienes notificaciones nuevas.</p>
+{% endfor %}
+
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/notificaciones/lista_notificaciones.js' %}"></script>
+{% endblock %}
