@@ -1,22 +1,146 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/detalles_convocatoria.css' %}">
+<style>
+  body {
+    background: radial-gradient(circle at top left, #e0f2ff, #ffffff);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .decor-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.25;
+    z-index: 0;
+  }
+  .circle-1 {
+    width: 300px;
+    height: 300px;
+    background: #007bff;
+    top: -100px;
+    left: -100px;
+  }
+  .circle-2 {
+    width: 200px;
+    height: 200px;
+    background: #6bc4ff;
+    bottom: 50px;
+    right: -50px;
+  }
+  .detail-wrapper {
+    position: relative;
+    z-index: 1;
+    background-color: #ffffffcc;
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    padding: 2rem 2.5rem;
+    max-width: 600px;
+    margin: 3rem auto;
+  }
+  h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+  .field-label {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+  .field-value {
+    background: #f8f9fa;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+    color: #495057;
+    user-select: text;
+    white-space: pre-wrap;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 999px;
+    font-weight: bold;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    margin-top: 1.8rem;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  .icon {
+    color: #007bff;
+    margin-right: 0.5rem;
+    font-size: 1.15rem;
+    vertical-align: middle;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-<h2>Detalle de Convocatoria</h2>
-<table class="table">
-    <tr><th>Tipo</th><td>{{ convocatoria.get_tipo_display }}</td></tr>
-    <tr><th>Descripción</th><td>{{ convocatoria.descripcion }}</td></tr>
-    <tr><th>Lugar</th><td>{{ convocatoria.lugar }}</td></tr>
-    <tr><th>Fecha</th><td>{{ convocatoria.fecha }}</td></tr>
-    <tr><th>Hora</th><td>{{ convocatoria.hora }}</td></tr>
-    <tr><th>Profesor</th><td>{{ convocatoria.profesor.first_name }} {{ convocatoria.profesor.last_name }}</td></tr>
-    <tr><th>Nivel</th><td>{{ convocatoria.get_nivel_display }}</td></tr>
-    <tr><th>Estado</th><td>{{ convocatoria.estado|yesno:"Activa,Inactiva" }}</td></tr>
-</table>
-<div class="text-center">
-    <a href="{% url 'lista_convocatorias' %}" class="btn btn-primary">Volver</a>
+
+<!-- Círculos decorativos -->
+<div class="decor-circle circle-1"></div>
+<div class="decor-circle circle-2"></div>
+
+<div class="detail-wrapper">
+  <h2>Detalle de la Convocatoria</h2>
+
+  <div class="mb-3">
+    <label class="field-label"><i class="bi bi-bookmark-fill icon"></i>Tipo</label>
+    <div class="field-value">{{ convocatoria.get_tipo_display }}</div>
+  </div>
+
+  <div class="mb-3">
+    <label class="field-label"><i class="bi bi-card-text icon"></i>Descripción</label>
+    <div class="field-value">{{ convocatoria.descripcion }}</div>
+  </div>
+
+  <div class="mb-3">
+    <label class="field-label"><i class="bi bi-geo-alt-fill icon"></i>Lugar</label>
+    <div class="field-value">{{ convocatoria.lugar }}</div>
+  </div>
+
+  <div class="mb-3 row">
+    <div class="col-6">
+      <label class="field-label"><i class="bi bi-calendar-event-fill icon"></i>Fecha</label>
+      <div class="field-value">{{ convocatoria.fecha }}</div>
+    </div>
+    <div class="col-6">
+      <label class="field-label"><i class="bi bi-clock-fill icon"></i>Hora</label>
+      <div class="field-value">{{ convocatoria.hora }}</div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="field-label"><i class="bi bi-person-fill icon"></i>Profesor</label>
+    <div class="field-value">{{ convocatoria.profesor.first_name }} {{ convocatoria.profesor.last_name }}</div>
+  </div>
+
+  <div class="mb-3 row">
+    <div class="col-6">
+      <label class="field-label"><i class="bi bi-bar-chart-fill icon"></i>Nivel</label>
+      <div class="field-value">{{ convocatoria.get_nivel_display }}</div>
+    </div>
+    <div class="col-6">
+      <label class="field-label"><i class="bi bi-toggle-on icon"></i>Estado</label>
+      <div class="field-value">{{ convocatoria.estado|yesno:"Activa,Inactiva" }}</div>
+    </div>
+  </div>
+
+  <a href="{% url 'lista_convocatorias' %}" class="btn btn-primary">
+    <i class="bi bi-arrow-left-circle me-2"></i>Volver a la Lista
+  </a>
 </div>
+
 {% endblock %}

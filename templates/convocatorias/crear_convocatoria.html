@@ -1,60 +1,142 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h2>Crear Convocatoria</h2>
-<form method="post" id="convocatoria-form" class="convocatoria-form">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="id-tipo">Tipo</label>
-        <select id="id-tipo" class="form-control tipo-field" name="tipo" required>
-            <option value="">---------</option>
-            <option value="entrevista">Entrevista</option>
-            <option value="certificacion">Certificación</option>
-            <option value="curso">Curso</option>
-            <option value="colocacion">Colocación</option>
-            <option value="revalorizacion">Revalorización</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-descripcion">Descripción</label>
-        <textarea id="id-descripcion" class="form-control descripcion-field" name="descripcion" maxlength="300" required></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="id-lugar">Lugar</label>
-        <select id="id-lugar" class="form-control lugar-field" name="lugar" required>
-            <option value="">---------</option>
-            <option value="Docente 1">Docente 1</option>
-            <option value="Docente 2">Docente 2</option>
-            <option value="Docente 3">Docente 3</option>
-            <option value="Docente 4">Docente 4</option>
-            <option value="Docente 5">Docente 5</option>
-            <option value="Docente 6">Docente 6</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-fecha">Fecha</label>
-        <input type="date" id="id-fecha" class="form-control fecha-field" name="fecha" required>
-    </div>
-    <div class="mb-3">
-        <label for="id-hora">Hora</label>
-        <input type="time" id="id-hora" class="form-control hora-field" name="hora" required>
-    </div>
-    <div class="mb-3">
-        <label for="id-nivel">Nivel</label>
-        <select id="id-nivel" class="form-control nivel-field" name="nivel">
-            <option value="">---------</option>
-            <option value="A1">A1</option>
-            <option value="A2">A2</option>
-            <option value="B1">B1</option>
-            <option value="B2">B2</option>
-            <option value="C1">C1</option>
-            <option value="C2">C2</option>
-        </select>
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" id="id-estado" class="form-check-input" name="estado" checked>
-        <label for="id-estado" class="form-check-label">Activo</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
-</form>
+
+<style>
+    body {
+        background: radial-gradient(circle at top left, #e0f2ff, #ffffff);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    .decor-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.3;
+        z-index: 0;
+    }
+
+    .circle-1 {
+        width: 300px;
+        height: 300px;
+        background: #007bff;
+        top: -100px;
+        left: -100px;
+    }
+
+    .circle-2 {
+        width: 200px;
+        height: 200px;
+        background: #6bc4ff;
+        bottom: 50px;
+        right: -50px;
+    }
+
+    .form-wrapper {
+        position: relative;
+        z-index: 1;
+        background-color: #ffffffcc;
+        backdrop-filter: blur(10px);
+        border: 1px solid #dee2e6;
+        border-radius: 1rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        max-width: 600px;
+        margin: 3rem auto;
+    }
+
+    h2 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 999px;
+        font-weight: bold;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<!-- Círculos decorativos -->
+<div class="decor-circle circle-1"></div>
+<div class="decor-circle circle-2"></div>
+
+<!-- Formulario -->
+<div class="form-wrapper">
+    <h2>Crear Convocatoria</h2>
+    <form method="post" id="convocatoria-form" class="convocatoria-form">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="id-tipo">Tipo</label>
+            <select id="id-tipo" class="form-control" name="tipo" required>
+                <option value="">---------</option>
+                <option value="entrevista">Entrevista</option>
+                <option value="certificacion">Certificación</option>
+                <option value="curso">Curso</option>
+                <option value="colocacion">Colocación</option>
+                <option value="revalorizacion">Revalorización</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id-descripcion">Descripción</label>
+            <textarea id="id-descripcion" class="form-control" name="descripcion" maxlength="300" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="id-lugar">Lugar</label>
+            <select id="id-lugar" class="form-control" name="lugar" required>
+                <option value="">---------</option>
+                <option value="Docente 1">Docente 1</option>
+                <option value="Docente 2">Docente 2</option>
+                <option value="Docente 3">Docente 3</option>
+                <option value="Docente 4">Docente 4</option>
+                <option value="Docente 5">Docente 5</option>
+                <option value="Docente 6">Docente 6</option>
+            </select>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+            <label for="id-fecha">Fecha</label>
+            <input type="date" id="id-fecha" class="form-control" name="fecha" required style="padding: 10px; border-radius: 10px;">
+        </div>
+        <div class="col-md-6 mt-3 mt-md-0">
+            <label for="id-hora">Hora</label>
+            <input type="time" id="id-hora" class="form-control" name="hora" required style="padding: 10px; border-radius: 10px;">
+        </div>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="id-nivel">Nivel</label>
+            <select id="id-nivel" class="form-control" name="nivel">
+                <option value="">---------</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="B1">B1</option>
+                <option value="B2">B2</option>
+                <option value="C1">C1</option>
+                <option value="C2">C2</option>
+            </select>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" id="id-estado" class="form-check-input" name="estado" checked>
+            <label for="id-estado" class="form-check-label">Activo</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Crear</button>
+    </form>
+</div>
+
 {% endblock %}
