@@ -4,18 +4,18 @@ console.log('Script de filtros cargado'); // Debe aparecer siempre
 document.addEventListener('DOMContentLoaded', function () {
   // --- Nuevo manejo de filtros con checkboxes ---
   const filtroMap = {
-    'facultad': 0,
-    'grupo': 1,
-    'anio_escolar': 2,
-    'carrera': 3,
-    'tipo_usuario': 4
+    'tipo_convocatoria': 0,
+    'nivel': 1,
+    'lugar': 2,
+    'fecha': 3,
+    'profesor': 4
   };
 
   function actualizarFiltros() {
     const seleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
     Object.entries(filtroMap).forEach(([filtro, idx]) => {
       const div = document.querySelectorAll('.filtros .col-md-2')[idx];
-      const select = div ? div.querySelector('select') : null;
+      const select = div ? div.querySelector('select,input[type="date"]') : null;
       if (div) {
         if (seleccionados.includes(filtro)) {
           div.classList.remove('d-none');
@@ -59,79 +59,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Seleccionar/deseleccionar todos los checkboxes de inscripciones
-  const selectAll = document.getElementById('selectAllInscripciones');
+  // Seleccionar/deseleccionar todos los checkboxes de convocatorias
+  const selectAll = document.getElementById('selectAllConvocatorias');
   if (selectAll) {
     selectAll.addEventListener('change', function () {
-      document.querySelectorAll('.inscripcion-checkbox').forEach(cb => cb.checked = selectAll.checked);
+      document.querySelectorAll('.convocatoria-checkbox').forEach(cb => cb.checked = selectAll.checked);
     });
   }
-
-  document.querySelectorAll('.agregar-nota-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const wrapper = btn.closest('.agregar-nota-wrapper');
-      btn.style.display = 'none';
-      wrapper.querySelector('.inputs-agregar-nota').style.display = 'inline-block';
-      wrapper.querySelector('select[name="nota"]').focus();
-    });
-  });
-
-  document.querySelectorAll('.aceptar-nota-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const wrapper = btn.closest('.agregar-nota-wrapper');
-      const inscripcionId = wrapper.querySelector('input[name="inscripcion_id"]').value;
-      const nota = wrapper.querySelector('select[name="nota"]').value;
-
-      document.getElementById('elemento_id').value = inscripcionId;
-      document.getElementById('codigo').value = nota;
-
-      const formOculto = document.getElementById('formOculto');
-      formOculto.action = formOculto.getAttribute('data-action-url'); // Personalízalo si lo haces dinámico
-      formOculto.method = "post";
-
-      let csrfInput = formOculto.querySelector('input[name="csrfmiddlewaretoken"]');
-      if (!csrfInput) {
-        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
-        if (csrfToken) {
-          csrfInput = csrfToken.cloneNode();
-          formOculto.prepend(csrfInput);
-        }
-      }
-
-      formOculto.submit();
-    });
-  });
-
-  document.querySelectorAll('.filtro-checkbox').forEach(cb => {
-    cb.addEventListener('mousedown', function (event) {
-      console.log('Checkbox filtro mousedown:', cb.value); // Depuración
-      event.stopPropagation();
-    });
-    cb.addEventListener('click', function (event) {
-      console.log('Checkbox filtro click:', cb.value); // Depuración
-      event.stopPropagation();
-    });
-  });
-
-  document.querySelectorAll('.form-check-label').forEach(label => {
-    label.addEventListener('mousedown', function (event) {
-      console.log('Label filtro mousedown:', label.htmlFor); // Depuración
-      event.stopPropagation();
-    });
-    label.addEventListener('click', function (event) {
-      console.log('Label filtro click:', label.htmlFor); // Depuración
-      event.stopPropagation();
-    });
-  });
-
-  const filtros = document.querySelectorAll('.filtro-checkbox');
-  console.log('Cantidad de filtros encontrados:', filtros.length);
-  filtros.forEach(cb => {
-    cb.addEventListener('click', function (event) {
-      console.log('Checkbox filtro clickeado:', cb.value);
-      event.stopPropagation();
-    });
-  });
 });
 
 // Script de refuerzo por ID
@@ -139,11 +73,11 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log('Script de filtros cargado (por ID)');
 
   const ids = [
-    'filtroFacultad',
-    'filtroGrupo',
-    'filtroAnio',
-    'filtroCarrera',
-    'filtroTipoUsuario'
+    'filtroTipo',
+    'filtroNivel',
+    'filtroLugar',
+    'filtroFecha',
+    'filtroProfesor'
   ];
 
   ids.forEach(function (id) {
@@ -174,11 +108,11 @@ document.addEventListener('DOMContentLoaded', function () {
       if (cb) cb.checked = true;
       // Mostrar el select correspondiente
       var filtroMap = {
-        'facultad': 0,
-        'grupo': 1,
-        'anio_escolar': 2,
-        'carrera': 3,
-        'tipo_usuario': 4
+        'tipo_convocatoria': 0,
+        'nivel': 1,
+        'lugar': 2,
+        'fecha': 3,
+        'profesor': 4
       };
       var idx = filtroMap[filtro];
       if (typeof idx !== 'undefined') {
@@ -195,14 +129,4 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('filtros_activos').value = seleccionados.join(',');
     });
   });
-});
-
-// Seleccionar/deseleccionar todos los checkboxes de usuarios
-document.addEventListener('DOMContentLoaded', function () {
-  const selectAll = document.getElementById('selectAllUsuarios');
-  if (selectAll) {
-    selectAll.addEventListener('change', function () {
-      document.querySelectorAll('.usuario-checkbox').forEach(cb => cb.checked = selectAll.checked);
-    });
-  }
 });
