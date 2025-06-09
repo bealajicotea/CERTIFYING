@@ -15,10 +15,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const seleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
     Object.entries(filtroMap).forEach(([filtro, idx]) => {
       const div = document.querySelectorAll('.filtros .col-md-2')[idx];
+      const select = div ? div.querySelector('select') : null;
       if (div) {
         if (seleccionados.includes(filtro)) {
           div.classList.remove('d-none');
         } else {
+          // Solo limpiar y enviar si el filtro estaba visible y ahora se oculta
+          if (!div.classList.contains('d-none') && select && select.value !== "") {
+            select.value = "";
+            // Dispara el evento change para que se envíe el formulario
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+          }
           div.classList.add('d-none');
         }
       }
@@ -26,8 +33,15 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   document.querySelectorAll('.filtro-checkbox').forEach(cb => {
-    cb.addEventListener('change', actualizarFiltros);
+    cb.addEventListener('change', function () {
+      actualizarFiltros();
+      // Actualiza el input oculto de filtros activos
+      var seleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
+      document.getElementById('filtros_activos').value = seleccionados.join(',');
+    });
   });
+
+  // Inicializa los filtros al cargar
   actualizarFiltros();
 
   // Evitar que el dropdown se cierre al hacer clic en los checkboxes de filtros
