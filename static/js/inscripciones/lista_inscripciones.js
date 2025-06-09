@@ -148,3 +148,37 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Leer filtros activos desde el input oculto
+  var filtrosActivos = document.getElementById('filtros_activos');
+  if (filtrosActivos) {
+    var activos = filtrosActivos.value.split(',').map(f => f.trim()).filter(f => f);
+    activos.forEach(function (filtro) {
+      // Marcar el checkbox correspondiente
+      var cb = document.querySelector('.filtro-checkbox[value="' + filtro + '"]');
+      if (cb) cb.checked = true;
+      // Mostrar el select correspondiente
+      var filtroMap = {
+        'facultad': 0,
+        'grupo': 1,
+        'anio_escolar': 2,
+        'tipo_convocatoria': 3,
+        'nivel': 4
+      };
+      var idx = filtroMap[filtro];
+      if (typeof idx !== 'undefined') {
+        var div = document.querySelectorAll('.filtros .col-md-2')[idx];
+        if (div) div.classList.remove('d-none');
+      }
+    });
+  }
+
+  // Al cambiar un filtro, actualizar el input oculto
+  document.querySelectorAll('.filtro-checkbox').forEach(cb => {
+    cb.addEventListener('change', function () {
+      var seleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
+      document.getElementById('filtros_activos').value = seleccionados.join(',');
+    });
+  });
+});

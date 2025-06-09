@@ -89,9 +89,9 @@ def lista_inscripciones(request):
         'nivel': request.GET.get('nivel', ''),
         'buscar': request.GET.get('buscar', ''),
     }
-
+    filtros_activos = request.GET.get('filtros_activos', '')
     contexto = obtener_inscripciones_filtradas(filtros)
-
+    contexto['filtros_activos'] = filtros_activos
     return render(request, 'inscripciones/lista_inscripciones.html', contexto)
 
 def crear_inscripcion(request):
