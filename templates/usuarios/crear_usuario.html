@@ -1,134 +1,308 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/crear_usuario.css' %}">
+<style>
+    body {
+        background: radial-gradient(circle at top left, #e0f2ff, #ffffff);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    .decor-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.3;
+        z-index: 0;
+    }
+
+    .circle-1 {
+        width: 300px;
+        height: 300px;
+        background: #007bff;
+        top: -100px;
+        left: -100px;
+    }
+
+    .circle-2 {
+        width: 200px;
+        height: 200px;
+        background: #6bc4ff;
+        bottom: 50px;
+        right: -50px;
+    }
+
+    .form-wrapper {
+        position: relative;
+        z-index: 1;
+        background-color: #ffffffcc;
+        backdrop-filter: blur(10px);
+        border: 1px solid #dee2e6;
+        border-radius: 1rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        max-width: 700px;
+        margin: 3rem auto;
+    }
+
+    h2 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 999px;
+        font-weight: bold;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Tabs styling */
+    .tabs {
+        display: flex;
+        border-bottom: 2px solid #dee2e6;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+    }
+    .tab {
+        flex: 1;
+        text-align: center;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+        color: #007bff;
+        border-bottom: 3px solid transparent;
+        transition: border-color 0.3s ease;
+        user-select: none;
+    }
+    .tab.active {
+        border-bottom-color: #007bff;
+        color: #0056b3;
+    }
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<h2>Crear Usuario</h2>
-<form method="post" enctype="multipart/form-data" id="usuario-form" class="usuario-form">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="id-username">Usuario</label>
-        <input type="text" id="id-username" class="form-control username-field" name="username" required>
+<!-- Círculos decorativos -->
+<div class="decor-circle circle-1"></div>
+<div class="decor-circle circle-2"></div>
+
+<div class="form-wrapper">
+    <h2>Crear Usuario</h2>
+    
+    <div class="tabs" role="tablist" aria-label="Formulario de creación de usuario">
+        <div class="tab active" role="tab" aria-selected="true" tabindex="0" data-tab="datos-personales">Datos Personales</div>
+        <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="info-academica">Información Académica</div>
+        <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="curso-nivel">Curso y Nivel</div>
+        <div class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="foto-perfil">Foto de Perfil</div>
     </div>
-    <div class="mb-3">
-        <label for="id-password">Contraseña</label>
-        <input type="password" id="id-password" class="form-control password-field" name="password" required>
+
+    <form method="post" enctype="multipart/form-data" id="usuario-form" class="usuario-form" novalidate>
+        {% csrf_token %}
+        
+        <div id="datos-personales" class="tab-content active" role="tabpanel">
+            <div class="mb-3">
+                <label for="id-username">Usuario</label>
+                <input type="text" id="id-username" class="form-control" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="id-password">Contraseña</label>
+                <input type="password" id="id-password" class="form-control" name="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="id-email">Email</label>
+                <input type="email" id="id-email" class="form-control" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="id-first_name">Nombre</label>
+                <input type="text" id="id-first_name" class="form-control" name="first_name" required>
+            </div>
+            <div class="mb-3">
+                <label for="id-last_name">Apellido</label>
+                <input type="text" id="id-last_name" class="form-control" name="last_name" required>
+            </div>
+        </div>
+
+        <div id="info-academica" class="tab-content" role="tabpanel" hidden>
+            <div class="mb-3">
+                <label for="id-tipo_usuario">Tipo de Usuario</label>
+                <select id="id-tipo_usuario" class="form-control" name="tipo_usuario" required>
+                    <option value="">---------</option>
+                    <option value="estudiante">Estudiante</option>
+                    <option value="profesor">Profesor del Centro</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id-facultad">Facultad</label>
+                <select id="id-facultad" class="form-control" name="facultad">
+                    <option value="">---------</option>
+                    <option value="1">FTL</option>
+                    <option value="2">FCS</option>
+                    <option value="3">FIO</option>
+                    <option value="4">FTI</option>
+                    <option value="5">CITEC</option>
+                    <option value="6">FTE</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id-anio_escolar">Año Escolar</label>
+                <select id="id-anio_escolar" class="form-control" name="anio_escolar">
+                    <option value="">---------</option>
+                    <option value="1">Primero</option>
+                    <option value="2">Segundo</option>
+                    <option value="3">Tercero</option>
+                    <option value="4">Cuarto</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id-grupo">Grupo</label>
+                <select id="id-grupo" class="form-control" name="grupo">
+                    <option value="">---------</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id-carrera">Carrera</label>
+                <select id="id-carrera" class="form-control" name="carrera">
+                    <option value="">---------</option>
+                    <option value="1">Ingeniería en Ciencias Informáticas</option>
+                    <option value="2">Ciberseguridad</option>
+                    <option value="3">Bioinformática</option>
+                    <option value="4">Redes y Seguridad Informática</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="curso-nivel" class="tab-content" role="tabpanel" hidden>
+            <div class="mb-3">
+                <label for="id-curso">Curso</label>
+                <select id="id-curso" class="form-control" name="curso">
+                    <option value="">---------</option>
+                    <option value="Below A1">Below A1</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id-nivel">Nivel</label>
+                <select id="id-nivel" class="form-control" name="nivel">
+                    <option value="">---------</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="foto-perfil" class="tab-content" role="tabpanel" hidden>
+            <div class="mb-3">
+                <label for="id-foto_perfil">Foto de Perfil</label>
+                <input type="file" id="id-foto_perfil" class="form-control" name="foto_perfil">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Crear</button>
+        <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-secondary w-100 mt-2">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+        </a>
+    </form>
+</div>
+
+{% if messages %}
+  <div class="d-flex justify-content-center mt-3">
+    <div style="min-width:350px;max-width:500px;width:100%;">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow" role="alert" style="font-weight:bold; font-size:1.1rem; border-left:6px solid #dc3545; background: #fff0f3;">
+          <i class="bi bi-exclamation-triangle-fill me-2" style="color:#dc3545;"></i>
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+      {% endfor %}
     </div>
-    <div class="mb-3">
-        <label for="id-email">Email</label>
-        <input type="email" id="id-email" class="form-control email-field" name="email" required>
-    </div>
-    <div class="mb-3">
-        <label for="id-first_name">Nombre</label>
-        <input type="text" id="id-first_name" class="form-control first-name-field" name="first_name" required>
-    </div>
-    <div class="mb-3">
-        <label for="id-last_name">Apellido</label>
-        <input type="text" id="id-last_name" class="form-control last-name-field" name="last_name" required>
-    </div>
-    <div class="mb-3">
-        <label for="id-tipo_usuario">Tipo de Usuario</label>
-        <select id="id-tipo_usuario" class="form-control tipo-usuario-field" name="tipo_usuario" required>
-            <option value="">---------</option>
-            <option value="estudiante">Estudiante</option>
-            <option value="profesor">Profesor del Centro</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-facultad">Facultad</label>
-        <select id="id-facultad" class="form-control" name="facultad">
-            <option value="">---------</option>
-            <option value="1">FTL</option>
-            <option value="2">FCS</option>
-            <option value="3">FIO</option>
-            <option value="4">FTI</option>
-            <option value="5">CITEC</option>
-            <option value="6">FTE</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-anio_escolar">Año Escolar</label>
-        <select id="id-anio_escolar" class="form-control" name="anio_escolar">
-            <option value="">---------</option>
-            <option value="1">Primero</option>
-            <option value="2">Segundo</option>
-            <option value="3">Tercero</option>
-            <option value="4">Cuarto</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-grupo">Grupo</label>
-        <select id="id-grupo" class="form-control" name="grupo">
-            <option value="">---------</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-carrera">Carrera</label>
-        <select id="id-carrera" class="form-control carrera-field" name="carrera">
-            <option value="">---------</option>
-            <option value="1">Ingenieria en Ciencias Informáticas</option>
-            <option value="2">Ciberseguridad</option>
-            <option value="3">Bioinformática</option>
-            <option value="4">Redes y Seguridad Informática</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-curso">Curso</label>
-        <select id="id-curso" class="form-control curso-field" name="curso">
-            <option value="">---------</option>
-            <option value="Below A1">Below A1</option>
-            <option value="A1">A1</option>
-            <option value="A2">A2</option>
-            <option value="B1">B1</option>
-            <option value="B2">B2</option>
-            <option value="C1">C1</option>
-            <option value="C2">C2</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-nivel">Nivel</label>
-        <select id="id-nivel" class="form-control nivel-field" name="nivel">
-            <option value="">---------</option>
-            <option value="A1">A1</option>
-            <option value="A2">A2</option>
-            <option value="B1">B1</option>
-            <option value="B2">B2</option>
-            <option value="C1">C1</option>
-            <option value="C2">C2</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-foto_perfil">Foto de Perfil</label>
-        <input type="file" id="id-foto_perfil" class="form-control foto-perfil-field" name="foto_perfil">
-    </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
-</form>
+  </div>
+{% endif %}
 {% endblock %}
+
 {% block extra_scripts %}
-<!--<script src="{% static 'js/validations.js' %}"></script>-->
 <script>
-  // Mapear valores de facultad a nombre
-  const facultadNombres = {
-    '1': 'FTL',
-    '2': 'FCS',
-    '3': 'FIO',
-    '4': 'FTI',
-    '5': 'CITEC',
-    '6': 'FTE'
-  };
-  function pad(num, size) {
-    let s = String(num);
-    while (s.length < size) s = "0" + s;
-    return s;
-  }
- 
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Quitar active de todas las tabs y esconder tab contents
+            tabs.forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+                t.setAttribute('tabindex', '-1');
+            });
+            tabContents.forEach(c => {
+                c.classList.remove('active');
+                c.hidden = true;
+            });
+
+            // Activar la tab clickeada y mostrar contenido
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+            tab.setAttribute('tabindex', '0');
+
+            const tabName = tab.dataset.tab;
+            document.getElementById(tabName).classList.add('active');
+            document.getElementById(tabName).hidden = false;
+        });
+
+        tab.addEventListener('keydown', e => {
+            let index = Array.from(tabs).indexOf(e.target);
+            if (e.key === 'ArrowRight') {
+                let nextIndex = (index + 1) % tabs.length;
+                tabs[nextIndex].focus();
+            } else if (e.key === 'ArrowLeft') {
+                let prevIndex = (index - 1 + tabs.length) % tabs.length;
+                tabs[prevIndex].focus();
+            }
+        });
+    });
+</script>
+
+<script>
+    const facultadNombres = {
+        '1': 'FTL',
+        '2': 'FCS',
+        '3': 'FIO',
+        '4': 'FTI',
+        '5': 'CITEC',
+        '6': 'FTE'
+    };
+
+    function pad(num, size) {
+        let s = String(num);
+        while (s.length < size) s = "0" + s;
+        return s;
+    }
 </script>
 {% endblock %}
