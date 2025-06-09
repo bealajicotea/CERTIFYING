@@ -290,6 +290,14 @@ def evaluar_certificacion(request):
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('login')
 
+    filtros = {
+        'facultad': request.POST.get('facultad', ''),
+        'grupo': request.POST.get('grupo', ''),
+        'anio_escolar': request.POST.get('anio_escolar', ''),
+        'tipo_convocatoria': request.POST.get('tipo_convocatoria', ''),
+        'nivel': request.POST.get('nivel', ''),
+    }
+
     if request.method == "POST":
         inscripcion_id = request.POST.get('inscripcion_id')
         nota_oral = request.POST.get('nota_oral')

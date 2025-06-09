@@ -149,6 +149,7 @@
         <tbody>
           {% for usuario in usuarios %}
           <tr>
+
             <td>{{ usuario.username }}</td>
             <td>{{ usuario.first_name }}</td>
             <td>{{ usuario.last_name }}</td>
@@ -164,6 +165,7 @@
                 </a>
                 <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-outline-warning btn-sm">Editar</a>
                 <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
+
               </div>
             </td>
             <td class="text-center align-middle">
