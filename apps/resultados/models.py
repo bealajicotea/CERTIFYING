@@ -3,11 +3,17 @@ from django.db import models
 class Resultado(models.Model):
 
     NIVELES = [
+        ('BELLOW A1', 'BELLOW A1'),
         ('A1', 'A1'),
+        ('A1+', 'A1+'),
         ('A2', 'A2'),
+        ('A2+', 'A2+'),
         ('B1', 'B1'),
+        ('B1+', 'B1+'),
         ('B2', 'B2'),
+        ('B2+', 'B2+'),
         ('C1', 'C1'),
+        ('C1+', 'C1+'),
         ('C2', 'C2'),
     ]
     nota = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
