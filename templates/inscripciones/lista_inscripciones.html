@@ -152,7 +152,7 @@
           <tr>
             <td class="text-truncate" style="max-width: 140px;">{{ inscripcion.estudiante.username }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ inscripcion.estudiante.facultad }}</td>
-            <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.grupo }}</td>
+            <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.get_grupo_display }}</td>
             <td class="text-truncate" style="max-width: 60px;">{{ inscripcion.estudiante.get_anio_escolar_display }}</td>
             <td class="text-truncate" style="max-width: 100px;">{{ inscripcion.convocatoria.get_tipo_display }}</td>
             <td class="text-truncate" style="max-width: 90px;">{{ inscripcion.fecha_inscripcion }}</td>
