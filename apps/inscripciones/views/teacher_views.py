@@ -207,9 +207,9 @@ def evaluar(inscripcion_id, nota):
     """
     inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
     # Evita duplicados: si ya existe resultado, puedes actualizarlo o retornar
-    if hasattr(inscripcion, 'resultado'):
+    resultado = getattr(inscripcion, 'resultado', None)
+    if resultado is not None and resultado.nota == "A1":
         # Si quieres actualizar la nota existente:
-        resultado = inscripcion.resultado
         resultado.nota = nota
         resultado.save()
     else:
@@ -248,8 +248,8 @@ def evaluarInscripcion(request):
 
         inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
         # Evita duplicados: si ya existe resultado, actualiza; si no, crea
-        if hasattr(inscripcion, 'resultado'):
-            resultado = inscripcion.resultado
+        resultado = getattr(inscripcion, 'resultado', None)
+        if resultado is not None:
             resultado.nota = nota
             resultado.save()
             messages.success(request, "Nota actualizada correctamente.")
