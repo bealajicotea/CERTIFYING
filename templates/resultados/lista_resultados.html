@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/inscripciones/lista_inscripciones.css' %}">
+<link rel="stylesheet" href="{% static 'css/resultados/lista_resultados.css' %}">
 {% endblock %}
 {% block content %}
-
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Resultados</h2>
 
-  <!-- Formulario para buscar resultados por estudiante -->
   <div class="row mb-3 align-items-center">
     <div class="col-auto">
       <form method="get" class="row g-2">
@@ -29,136 +27,101 @@
           <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
             <li>
               <div class="form-check">
-                <input class="form-check-input filtro-checkbox" type="checkbox" value="facultad" id="filtroFacultad">
-                <label class="form-check-label" for="filtroFacultad">Facultad</label>
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_examen" id="filtroTipoExamen" {% if selected_tipo_examen %}checked{% endif %}>
+                <label class="form-check-label" for="filtroTipoExamen">Tipo de Examen</label>
               </div>
             </li>
             <li>
               <div class="form-check">
-                <input class="form-check-input filtro-checkbox" type="checkbox" value="grupo" id="filtroGrupo">
-                <label class="form-check-label" for="filtroGrupo">Grupo</label>
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel_nota" id="filtroNivelNota" {% if selected_nivel_nota %}checked{% endif %}>
+                <label class="form-check-label" for="filtroNivelNota">Nivel (Nota)</label>
               </div>
             </li>
-            <li>
-              <div class="form-check">
-                <input class="form-check-input filtro-checkbox" type="checkbox" value="anio_escolar" id="filtroAnio">
-                <label class="form-check-label" for="filtroAnio">Año Escolar</label>
-              </div>
-            </li>
-            <li>
-              <div class="form-check">
-                <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_convocatoria" id="filtroTipo">
-                <label class="form-check-label" for="filtroTipo">Tipo Convocatoria</label>
-              </div>
-            </li>
-            <li>
-              <div class="form-check">
-                <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel" id="filtroNivel">
-                <label class="form-check-label" for="filtroNivel">Nivel</label>
-              </div>
-            </li>
-          </ul>
+            </ul>
         </div>
       </div>
     </div>
   </div>
-  <!-- Filtros ocultos -->
+
   <div class="filtros">
     <form method="get" class="mb-4 row g-2">
-      <!-- Filtro por facultad (oculto) -->
       <div class="col-md-2 d-none">
-        <select name="facultad" class="form-select" onchange="this.form.submit()">
-          <option value="">Facultad</option>
-          {% for val, label in facultades %}
-            <option value="{{ val }}" {% if selected_facultad == val %}selected{% endif %}>{{ label }}</option>
+        <select name="tipo_examen" class="form-select" onchange="this.form.submit()">
+          <option value="">Tipo de Examen</option>
+          {% for val, label in tipos_examen %}
+            <option value="{{ val }}" {% if selected_tipo_examen == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
-      <!-- Filtro por grupo (oculto) -->
       <div class="col-md-2 d-none">
-        <select name="grupo" class="form-select" onchange="this.form.submit()">
-          <option value="">Grupo</option>
-          {% for val, label in grupos %}
-            <option value="{{ val }}" {% if selected_grupo == val %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <!-- Filtro por año escolar (oculto) -->
-      <div class="col-md-2 d-none">
-        <select name="anio_escolar" class="form-select" onchange="this.form.submit()">
-          <option value="">Año Escolar</option>
-          {% for val, label in anios %}
-            <option value="{{ val }}" {% if selected_anio == val %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <!-- Filtro por tipo de convocatoria (oculto) -->
-      <div class="col-md-2 d-none">
-        <select name="tipo_convocatoria" class="form-select" onchange="this.form.submit()">
-          <option value="">Tipo Convocatoria</option>
-          {% for val, label in tipos_convocatoria %}
-            <option value="{{ val }}" {% if selected_tipo_convocatoria == val %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <!-- Filtro por nivel (oculto) -->
-      <div class="col-md-2 d-none">
-        <select name="nivel" class="form-select" onchange="this.form.submit()">
+        <select name="nivel_nota" class="form-select" onchange="this.form.submit()">
           <option value="">Nivel</option>
-          {% for val, label in niveles %}
-            <option value="{{ val }}" {% if selected_nivel == val %}selected{% endif %}>{{ label }}</option>
+          {% for val, label in niveles_nota %}
+            <option value="{{ val }}" {% if selected_nivel_nota == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
-      <!-- Botón para aplicar los filtros (oculto) -->
       <div class="col-md-2 d-none">
         <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
       </div>
-      <!-- Input oculto para filtros activos -->
-      <input type="hidden" name="filtros_activos" id="filtros_activos" value="{{ filtros_activos|default:'' }}">
     </form>
   </div>
-  <!-- Tabla de resultados -->
-  <div class="table-responsive shadow rounded">
-    <table class="table table-hover align-middle">
-      <thead class="table-light">
-        <tr>
-          <th style="width: 18%;">Estudiante</th>
-          <th style="width: 15%;">Facultad</th>
-          <th style="width: 10%;">Grupo</th>
-          <th style="width: 10%;">Año</th>
-          <th style="width: 13%;">Tipo Convocatoria</th>
-          <th style="width: 10%;">Nivel</th>
-          <th style="width: 10%;">Nota</th>
-          <th style="width: 10%;">Nota Lectura</th>
-          <th style="width: 10%;">Nota Escritura</th>
-          <th style="width: 10%;">Nota Comprensión</th>
-          <th style="width: 10%;">Nota Oral</th>
-          <th style="width: 10%;">Fecha Inscripción</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for resultado in resultados %}
-        <tr>
-          <td class="text-truncate" style="max-width: 140px;">{{ resultado.inscripcion.estudiante.username }}</td>
-          <td class="text-truncate" style="max-width: 100px;">{{ resultado.inscripcion.estudiante.facultad }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.inscripcion.estudiante.get_grupo_display }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.inscripcion.estudiante.get_anio_escolar_display }}</td>
-          <td class="text-truncate" style="max-width: 100px;">{{ resultado.inscripcion.convocatoria.get_tipo_display }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.inscripcion.convocatoria.nivel }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.nota }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.notaL }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.notaE }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.notaC }}</td>
-          <td class="text-truncate" style="max-width: 60px;">{{ resultado.notaO }}</td>
-          <td class="text-truncate" style="max-width: 90px;">{{ resultado.inscripcion.fecha_inscripcion }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
 
+  <form id="formEliminarResultados" method="post" action="{% url 'eliminar_resultados_seleccionados' %}">
+    {% csrf_token %}
+    <input type="hidden" name="buscar" value="{{ buscar }}">
+    <input type="hidden" name="tipo_examen" value="{{ selected_tipo_examen }}">
+    <input type="hidden" name="nivel_nota" value="{{ selected_nivel_nota }}">
+
+    <div class="table-responsive shadow rounded">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 28%;">Estudiante</th>
+            <th style="width: 23%;">Tipo de Examen</th>
+            <th style="width: 19%;">Nivel</th>
+            <th style="width: 20%; min-width: 180px;" class="text-nowrap">Acciones</th>
+            <th style="width: 5%;" class="text-center align-middle">
+              <input type="checkbox" id="selectAllResultados" title="Seleccionar/Deseleccionar todos" class="align-middle">
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for resultado in resultados %}
+          <tr>
+            <td class="text-truncate" style="max-width: 200px;">
+              {{ resultado.inscripcion.estudiante.get_full_name }}
+            </td>
+            <td class="text-truncate" style="max-width: 140px;">
+              {{ resultado.inscripcion.convocatoria.get_tipo_display }}
+            </td>
+            <td class="text-truncate" style="max-width: 120px;">{{ resultado.nota }}</td>
+            <td class="text-nowrap" style="min-width: 180px;">
+              <a href="{% url 'detalle_resultado' resultado.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a href="{% url 'editar_resultado' resultado.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>
+              <a href="{% url 'eliminar_resultado' resultado.id %}" class="btn btn-outline-danger btn-sm me-1" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox" name="resultados_seleccionados" value="{{ resultado.id }}" class="form-check-input resultado-checkbox">
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <a href="{% url 'crear_resultado' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Crear Resultado
+      </a>
+      <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar los resultados seleccionados?')">
+        <i class="bi bi-trash me-1"></i>Eliminar seleccionados
+      </button>
+    </div>
+  </form>
+</div>
 {% endblock %}
 {% block extra_scripts %}
 <script src="{% static 'js/resultados/lista_resultados.js' %}"></script>
