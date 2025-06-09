@@ -2,12 +2,95 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.hashers import make_password
 from apps.usuarios.models import Usuario
 from django.contrib import messages
+from django.db.models import Q
 
-def lista_usuarios(request): 
-    
+# --- Funciones auxiliares de filtrado y búsqueda para Usuario ---
 
+def filtrar_usuarios(filtros):
+    """
+    Filtra usuarios por campos exactos.
+    Si todos los filtros están vacíos, retorna todos los usuarios.
+    """
     usuarios = Usuario.objects.all()
-    return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
+
+    facultad = filtros.get('facultad', '')
+    grupo = filtros.get('grupo', '')
+    anio_escolar = filtros.get('anio_escolar', '')
+    carrera = filtros.get('carrera', '')
+    tipo_usuario = filtros.get('tipo_usuario', '')
+
+    # Los filtros deben ser exactos, no icontains, porque son choices
+    if facultad:
+        usuarios = usuarios.filter(facultad=facultad)
+    if grupo:
+        usuarios = usuarios.filter(grupo=grupo)
+    if anio_escolar:
+        usuarios = usuarios.filter(anio_escolar=anio_escolar)
+    if carrera:
+        usuarios = usuarios.filter(carrera=carrera)
+    if tipo_usuario:
+        usuarios = usuarios.filter(tipo_usuario=tipo_usuario)
+
+    return usuarios
+
+def buscar_en_usuarios(usuarios, buscar):
+    """
+    Busca en los usuarios filtrados por varios campos.
+    """
+    if buscar:
+        # El filtro debe ser sobre los campos correctos y no sobre los choices
+        return usuarios.filter(
+            Q(username__icontains=buscar) |
+            Q(first_name__icontains=buscar) |
+            Q(last_name__icontains=buscar) |
+            Q(email__icontains=buscar)
+        )
+    return usuarios
+
+def obtener_usuarios_filtrados(filtros):
+    """
+    Aplica primero el filtrado y luego la búsqueda.
+    """
+    usuarios = filtrar_usuarios(filtros)
+    buscar = filtros.get('buscar', '')
+    usuarios = buscar_en_usuarios(usuarios, buscar)
+
+    facultades = Usuario.fac
+    grupos = Usuario.group
+    anios = Usuario.anios
+    carreras = Usuario.car
+    tipos_usuario = Usuario.TIPO_USUARIO
+
+    contexto = {
+        'usuarios': usuarios,
+        'facultades': facultades,
+        'grupos': grupos,
+        'anios': anios,
+        'carreras': carreras,
+        'tipos_usuario': tipos_usuario,
+        'selected_facultad': filtros.get('facultad', ''),
+        'selected_grupo': filtros.get('grupo', ''),
+        'selected_anio': filtros.get('anio_escolar', ''),
+        'selected_carrera': filtros.get('carrera', ''),
+        'selected_tipo_usuario': filtros.get('tipo_usuario', ''),
+        'buscar': buscar,
+        'filtros_activos': filtros.get('filtros_activos', ''),
+    }
+    return contexto
+
+def lista_usuarios(request):
+    # Asegúrate de que los parámetros GET se pasen correctamente
+    filtros = {
+        'facultad': request.GET.get('facultad', ''),
+        'grupo': request.GET.get('grupo', ''),
+        'anio_escolar': request.GET.get('anio_escolar', ''),
+        'carrera': request.GET.get('carrera', ''),
+        'tipo_usuario': request.GET.get('tipo_usuario', ''),
+        'buscar': request.GET.get('buscar', ''),
+        'filtros_activos': request.GET.get('filtros_activos', ''),
+    }
+    contexto = obtener_usuarios_filtrados(filtros)
+    return render(request, 'usuarios/lista_usuarios.html', contexto)
 
 
 def crear_usuario(request):
