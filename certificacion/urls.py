@@ -38,6 +38,8 @@ urlpatterns = [
     path('pagina_principal_e/', student_views.index_view_e, name='pagina_principal_e'),
 
     path('prueba/', views.prueba, name='prueba'),
+
+    path('descargar-certificado/', student_views.generar_certificado, name='descargar_certificado'),
 ]
 
 if settings.DEBUG:
