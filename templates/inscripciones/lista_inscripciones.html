@@ -168,19 +168,23 @@
               <!-- Agregar nota si no existe resultado -->
               {% if not inscripcion.resultado %}
                 <div class="agregar-nota-wrapper d-inline">
-                  <button type="button" class="btn btn-outline-success btn-sm me-1 agregar-nota-btn" data-inscripcion="{{ inscripcion.id }}">Agregar Nota</button>
-                  <span class="inputs-agregar-nota" style="display:none;">
-                    <input type="hidden" name="inscripcion_id" value="{{ inscripcion.id }}">
-                    <select name="nota" class="form-select form-select-sm d-inline" style="width:70px; display:inline-block;" required>
-                      <option value="A1">A1</option>
-                      <option value="A2">A2</option>
-                      <option value="B1">B1</option>
-                      <option value="B2">B2</option>
-                      <option value="C1">C1</option>
-                      <option value="C2">C2</option>
-                    </select>
-                    <button type="button" class="btn btn-success btn-sm aceptar-nota-btn">Aceptar</button>
-                  </span>
+                  {% if inscripcion.convocatoria.tipo == "certificacion" %}
+                    <button id="add-notas-certificacion" type="button" class="btn btn-outline-primary btn-sm me-1 agregar-notas-btn" data-inscripcion="{{ inscripcion.id }}">Agregar Notas</button>
+                  {% else %}
+                    <button type="button" class="btn btn-outline-success btn-sm me-1 agregar-nota-btn" data-inscripcion="{{ inscripcion.id }}">Agregar Nota</button>
+                    <span class="inputs-agregar-nota" style="display:none;">
+                      <input type="hidden" name="inscripcion_id" value="{{ inscripcion.id }}">
+                      <select name="nota" class="form-select form-select-sm d-inline" style="width:70px; display:inline-block;" required>
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="C1">C1</option>
+                        <option value="C2">C2</option>
+                      </select>
+                      <button type="button" class="btn btn-success btn-sm aceptar-nota-btn">Aceptar</button>
+                    </span>
+                  {% endif %}
                 </div>
               {% else %}
                 <span class="badge bg-success">Nota: {{ inscripcion.resultado.nota }}</span>
@@ -219,8 +223,46 @@
   <input type="hidden" name="nivel" value="{{ selected_nivel }}">
 </form>
 
+<!-- Modal para agregar notas certificación -->
+<div class="modal fade" id="modalNotasCertificacion" tabindex="-1" aria-labelledby="modalNotasCertificacionLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="formNotasCertificacion" method="post" >
+      {% csrf_token %}
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalNotasCertificacionLabel">Agregar Notas de Certificación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="inscripcion_id" id="modal_inscripcion_id">
+          <div class="mb-3">
+            <label for="nota_audicion" class="form-label">Audición: Nota</label>
+            <input type="text" class="form-control" id="nota_audicion" name="nota_audicion" required>
+          </div>
+          <div class="mb-3">
+            <label for="nota_comprension" class="form-label">Comprensión: Nota</label>
+            <input type="text" class="form-control" id="nota_comprension" name="nota_comprension" required>
+          </div>
+          <div class="mb-3">
+            <label for="nota_escritura" class="form-label">Escritura: Nota</label>
+            <input type="text" class="form-control" id="nota_escritura" name="nota_escritura" required>
+          </div>
+          <div class="mb-3">
+            <label for="nota_oral" class="form-label">Oral: Nota</label>
+            <input type="text" class="form-control" id="nota_oral" name="nota_oral" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Aceptar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
 {% endblock %}
 {% block extra_scripts %}
 <script src="{% static 'js/inscripciones/lista_inscripciones.js' %}"></script>
+<script src="{% static 'js/inscripciones/lista_inscripciones_nota.js' %}"></script>
 {% endblock %}
