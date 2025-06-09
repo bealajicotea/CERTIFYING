@@ -226,7 +226,7 @@
 <!-- Modal para agregar notas certificación -->
 <div class="modal fade" id="modalNotasCertificacion" tabindex="-1" aria-labelledby="modalNotasCertificacionLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form id="formNotasCertificacion" method="post" >
+    <form id="formNotasCertificacion" method="post" action="{% url 'evaluar_certificacion' %}">
       {% csrf_token %}
       <div class="modal-content">
         <div class="modal-header">
