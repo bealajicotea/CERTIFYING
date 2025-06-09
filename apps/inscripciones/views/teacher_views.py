@@ -137,7 +137,7 @@ def eliminar_inscripciones_seleccionadas(request):
     if not request.user.es_profesor():
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('pagina_principal')
-    # Procesar agregar nota
+    
     if request.method == "POST":
         ids = request.POST.getlist('inscripciones_seleccionadas')
         if ids:
