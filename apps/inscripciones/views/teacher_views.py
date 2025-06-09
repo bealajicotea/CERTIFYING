@@ -255,6 +255,14 @@ def evaluar_certificacion(request):
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('login')
 
+    filtros = {
+        'facultad': request.POST.get('facultad', ''),
+        'grupo': request.POST.get('grupo', ''),
+        'anio_escolar': request.POST.get('anio_escolar', ''),
+        'tipo_convocatoria': request.POST.get('tipo_convocatoria', ''),
+        'nivel': request.POST.get('nivel', ''),
+    }
+
     if request.method == "POST":
         inscripcion_id = request.POST.get('inscripcion_id')
         nota_oral = request.POST.get('nota_oral')
@@ -276,4 +284,6 @@ def evaluar_certificacion(request):
         else:
             messages.error(request, "Esta inscripción no es de tipo certificación.")
 
-    return redirect('lista_inscripciones')
+    contexto = obtener_inscripciones_filtradas(filtros)
+    contexto['filtros_activos'] = request.POST.get('filtros_activos', '')
+    return render(request, 'inscripciones/lista_inscripciones.html', contexto)
