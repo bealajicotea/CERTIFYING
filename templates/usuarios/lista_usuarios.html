@@ -1,157 +1,165 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block extra_head %}
-{# Se añade un css específico si se desea dar estilos particulares a los filtros #}
-<link rel="stylesheet" href="{% static 'css/usuarios/lista_usuarios.css' %}">
+<link rel="stylesheet" href="{% static 'css/inscripciones/lista_inscripciones.css' %}">
 {% endblock %}
-
 {% block content %}
+
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Usuarios</h2>
 
+  <!-- Formulario para buscar usuarios -->
   <div class="row mb-3 align-items-center">
     <div class="col-auto">
       <form method="get" class="row g-2">
         <div class="col-auto">
-          <input type="text" name="buscar" class="form-control form-control-sm" style="width: 180px;" placeholder="Buscar por nombre..." value="{{ buscar }}">
+          <input type="text" name="buscar" class="form-control form-control-sm" style="width: 180px;" placeholder="Buscar..." value="{{ buscar }}">
         </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
         </div>
       </form>
     </div>
-
     <div class="col text-end">
-      <div class="dropdown">
-        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
-          Seleccionar filtros
-        </button>
-        <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_usuario" id="filtroTipoUsuario" {% if selected_tipo_usuario %}checked{% endif %}>
-              <label class="form-check-label" for="filtroTipoUsuario">Tipo de Usuario</label>
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="facultad" id="filtroFacultad" {% if selected_facultad %}checked{% endif %}>
-              <label class="form-check-label" for="filtroFacultad">Facultad</label>
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="anio_escolar" id="filtroAnio" {% if selected_anio %}checked{% endif %}>
-              <label class="form-check-label" for="filtroAnio">Año Escolar</label>
-            </div>
-          </li>
-           <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="grupo" id="filtroGrupo" {% if selected_grupo %}checked{% endif %}>
-              <label class="form-check-label" for="filtroGrupo">Grupo</label>
-            </div>
-          </li>
-        </ul>
+      <div class="desbloquear_filtros">
+        <div class="dropdown">
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
+            Seleccionar filtros
+          </button>
+          <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="facultad" id="filtroFacultad">
+                <label class="form-check-label" for="filtroFacultad">Facultad</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="grupo" id="filtroGrupo">
+                <label class="form-check-label" for="filtroGrupo">Grupo</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="anio_escolar" id="filtroAnio">
+                <label class="form-check-label" for="filtroAnio">Año Escolar</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="carrera" id="filtroCarrera">
+                <label class="form-check-label" for="filtroCarrera">Carrera</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_usuario" id="filtroTipoUsuario">
+                <label class="form-check-label" for="filtroTipoUsuario">Tipo Usuario</label>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="filtros mb-4">
-    <form method="get" class="row g-2">
-      <div class="col-md-3 d-none" data-filtro="tipo_usuario">
-        <select name="tipo_usuario" class="form-select form-select-sm" onchange="this.form.submit()">
-          <option value="">Tipo de Usuario</option>
-          {% for val, label in tipos_usuario %}
-            <option value="{{ val }}" {% if selected_tipo_usuario == val %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="col-md-3 d-none" data-filtro="facultad">
-        <select name="facultad" class="form-select form-select-sm" onchange="this.form.submit()">
+  <!-- Filtros ocultos -->
+  <div class="filtros">
+    <form method="get" class="mb-4 row g-2">
+      <!-- Filtro por facultad (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="facultad" class="form-select" onchange="this.form.submit()">
           <option value="">Facultad</option>
           {% for val, label in facultades %}
             <option value="{{ val }}" {% if selected_facultad == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
-      <div class="col-md-3 d-none" data-filtro="anio_escolar">
-        <select name="anio_escolar" class="form-select form-select-sm" onchange="this.form.submit()">
-          <option value="">Año Escolar</option>
-          {% for val, label in anios %}
-            <option value="{{ val }}" {% if selected_anio == val %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="col-md-3 d-none" data-filtro="grupo">
-        <select name="grupo" class="form-select form-select-sm" onchange="this.form.submit()">
+      <!-- Filtro por grupo (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="grupo" class="form-select" onchange="this.form.submit()">
           <option value="">Grupo</option>
           {% for val, label in grupos %}
             <option value="{{ val }}" {% if selected_grupo == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
+      <!-- Filtro por año escolar (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="anio_escolar" class="form-select" onchange="this.form.submit()">
+          <option value="">Año Escolar</option>
+          {% for val, label in anios %}
+            <option value="{{ val }}" {% if selected_anio == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Filtro por carrera (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="carrera" class="form-select" onchange="this.form.submit()">
+          <option value="">Carrera</option>
+          {% for val, label in carreras %}
+            <option value="{{ val }}" {% if selected_carrera == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Filtro por tipo de usuario (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="tipo_usuario" class="form-select" onchange="this.form.submit()">
+          <option value="">Tipo Usuario</option>
+          {% for val, label in tipos_usuario %}
+            <option value="{{ val }}" {% if selected_tipo_usuario == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Botón para aplicar los filtros (oculto) -->
+      <div class="col-md-2 d-none">
+        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
+      </div>
+      <!-- Input oculto para filtros activos -->
+      <input type="hidden" name="filtros_activos" id="filtros_activos" value="{{ filtros_activos|default:'' }}">
     </form>
   </div>
-
-  <form id="formEliminarUsuarios" method="post" action="{% url 'eliminar_usuarios_seleccionados' %}">
-    {% csrf_token %}
-
-    <input type="hidden" name="buscar" value="{{ buscar }}">
-    <input type="hidden" name="tipo_usuario" value="{{ selected_tipo_usuario }}">
-    <input type="hidden" name="facultad" value="{{ selected_facultad }}">
-    <input type="hidden" name="anio_escolar" value="{{ selected_anio }}">
-    <input type="hidden" name="grupo" value="{{ selected_grupo }}">
-
-
-    <div class="table-responsive shadow rounded">
-      <table class="table table-hover align-middle">
-        <thead class="table-light">
-          <tr>
-            <th style="width: 33%;">Nombre</th>
-            <th style="width: 28%;">Correo</th>
-            <th style="width: 14%;">Tipo</th>
-            <th style="width: 20%; min-width: 220px;" class="text-nowrap">Acciones</th>
-            <th style="width: 5%;" class="text-center align-middle">
-              <input type="checkbox" id="selectAll" title="Seleccionar/Deseleccionar todos" class="align-middle">
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for usuario in usuarios %}
-          <tr>
-            <td class="text-truncate" style="max-width: 220px;">{{ usuario.username }}</td>
-            <td class="text-truncate" style="max-width: 180px;">{{ usuario.email }}</td>
-            <td class="text-truncate" style="max-width: 100px;">{{ usuario.get_tipo_usuario_display }}</td>
-            <td class="text-nowrap" style="min-width: 220px;">
-              <a href="{% url 'detalle_usuario' usuario.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
-                <i class="bi bi-eye"></i>
-              </a>
-              <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>
-              <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-outline-danger btn-sm me-1" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
-            </td>
-            <td class="text-center align-middle">
-              <input type="checkbox" name="usuarios_seleccionados" value="{{ usuario.id }}" class="form-check-input usuario-checkbox">
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="d-flex justify-content-between mt-4">
-      <a href="{% url 'crear_usuario' %}" class="btn btn-primary">
-        <i class="bi bi-plus-circle me-1"></i>Crear Usuario
-      </a>
-      <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar los usuarios seleccionados?')">
-        <i class="bi bi-trash me-1"></i>Eliminar seleccionados
-      </button>
-    </div>
-  </form>
+  <!-- Tabla de usuarios -->
+  <div class="table-responsive shadow rounded">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Usuario</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Facultad</th>
+          <th>Grupo</th>
+          <th>Año Escolar</th>
+          <th>Carrera</th>
+          <th>Tipo Usuario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+          <td>{{ usuario.username }}</td>
+          <td>{{ usuario.first_name }}</td>
+          <td>{{ usuario.last_name }}</td>
+          <td>{{ usuario.get_facultad_display }}</td>
+          <td>{{ usuario.get_grupo_display }}</td>
+          <td>{{ usuario.get_anio_escolar_display }}</td>
+          <td>{{ usuario.get_carrera_display }}</td>
+          <td>{{ usuario.get_tipo_usuario_display }}</td>
+          <td>
+            <a href="{% url 'detalle_usuario' usuario.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>
+            <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-outline-danger btn-sm me-1" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
-{% endblock %}
 
+{% endblock %}
 {% block extra_scripts %}
-    {# Necesitarás un JS para manejar la lógica de mostrar/ocultar filtros #}
-    <script src="{% static 'js/usuarios/lista_usuarios.js' %}"></script>
+<script src="{% static 'js/usuarios/lista_usuarios.js' %}"></script>
 {% endblock %}
