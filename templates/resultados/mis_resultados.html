@@ -3,7 +3,77 @@
 
 {% block title %}Mis Resultados{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/resultados/lista_resultados.css' %}">
+<style>
+  body {
+    background: radial-gradient(circle at top left, #e0f2ff, #ffffff);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .decor-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.25;
+    z-index: 0;
+  }
+  .circle-1 {
+    width: 300px;
+    height: 300px;
+    background: #007bff;
+    top: -100px;
+    left: -100px;
+  }
+  .circle-2 {
+    width: 200px;
+    height: 200px;
+    background: #6bc4ff;
+    bottom: 50px;
+    right: -50px;
+  }
+  .table-responsive {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    background: #fff;
+  }
+  .table thead.table-primary {
+    background-color: #e3f0ff;
+    font-weight: 700;
+    color: #212529;
+    border-bottom: 2px solid #dee2e6;
+  }
+  .table-hover tbody tr:hover {
+    background-color: #e9f2ff;
+    cursor: pointer;
+  }
+  .badge.bg-success {
+    font-size: 1rem;
+    padding: 0.5em 1em;
+    border-radius: 0.75em;
+    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    color: #155724;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .alert-info {
+    border-radius: 0.75rem;
+    font-size: 1.1rem;
+    background: #e3f0ff;
+    color: #0d6efd;
+    border-left: 6px solid #0d6efd;
+    font-weight: 500;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
+<!-- Círculos decorativos -->
+<div class="decor-circle circle-1"></div>
+<div class="decor-circle circle-2"></div>
+
 <div class="container my-5">
     <h2 class="mb-4 text-primary text-center">Mis Resultados</h2>
     {% if resultados %}
@@ -23,7 +93,7 @@
                             <td>{{ resultado.inscripcion.convocatoria }}</td>
                             <td>{{ resultado.inscripcion.convocatoria.fecha|date:"d/m/Y" }}</td>
                             <td>
-                                <span class="badge bg-success fs-6">{{ resultado.nota }}</span>
+                                <span class="badge bg-success">{{ resultado.nota }}</span>
                             </td>
                             <td>{{ resultado.observaciones|default:"-" }}</td>
                         </tr>
@@ -32,7 +102,7 @@
             </table>
         </div>
     {% else %}
-        <div class="alert alert-info text-center">
+        <div class="alert alert-info text-center mt-4">
             No tienes resultados disponibles aún.
         </div>
     {% endif %}

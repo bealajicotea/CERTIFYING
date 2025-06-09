@@ -190,7 +190,12 @@
       <a href="{% url 'crear_convocatoria' %}" class="btn btn-primary">
         <i class="bi bi-plus-circle me-1"></i>Crear Convocatoria
       </a>
-      <button type="submit" class="btn btn-danger" onclick="return confirm('¿Eliminar las convocatorias seleccionadas?')">
+      <button type="submit"
+              class="btn btn-danger"
+              style="border-radius:0.5rem; font-size:1rem; font-weight:600; padding:0.5rem 1.25rem; background-color:#dc3545; border-color:#dc3545; transition:background-color 0.3s, color 0.3s, border-color 0.3s;"
+              onmouseover="this.style.backgroundColor='#b52a37'; this.style.color='#fff'; this.style.borderColor='#b52a37';"
+              onmouseout="this.style.backgroundColor='#dc3545'; this.style.color=''; this.style.borderColor='#dc3545';"
+              onclick="return confirm('¿Eliminar las inscripciones seleccionadas?')">
         <i class="bi bi-trash me-1"></i>Eliminar seleccionadas
       </button>
     </div>
@@ -252,3 +257,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 {% endblock %}
+

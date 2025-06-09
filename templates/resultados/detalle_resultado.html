@@ -2,16 +2,116 @@
 {% load static %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/detalles_resultados.css' %}">
+<style>
+  body {
+    background: radial-gradient(circle at top left, #e0f2ff, #ffffff);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .decor-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.25;
+    z-index: 0;
+  }
+  .circle-1 {
+    width: 300px;
+    height: 300px;
+    background: #007bff;
+    top: -100px;
+    left: -100px;
+  }
+  .circle-2 {
+    width: 200px;
+    height: 200px;
+    background: #6bc4ff;
+    bottom: 50px;
+    right: -50px;
+  }
+  .detail-wrapper {
+    position: relative;
+    z-index: 1;
+    background-color: #ffffffcc;
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    padding: 2rem 2.5rem;
+    max-width: 600px;
+    margin: 3rem auto;
+  }
+  h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+  .field-label {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+  .field-value {
+    background: #f8f9fa;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+    color: #495057;
+    user-select: text;
+    white-space: pre-wrap;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 999px;
+    font-weight: bold;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    margin-top: 1.8rem;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  .icon {
+    color: #007bff;
+    margin-right: 0.5rem;
+    font-size: 1.15rem;
+    vertical-align: middle;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
-<h2>Detalle de Resultado</h2>
-<table class="table">
-    <tr><th>Estudiante</th><td>{{ resultado.inscripcion.estudiante.username }}</td></tr>
-    <tr><th>Convocatoria</th><td>{{ resultado.inscripcion.convocatoria }}</td></tr>
-    <tr><th>Nota</th><td>{{ resultado.get_nota_display }}</td></tr>
-</table>
-<div class="text-center">
-    <a href="{% url 'lista_resultados' %}" class="btn btn-primary">Volver</a>
+
+<!-- Círculos decorativos -->
+<div class="decor-circle circle-1"></div>
+<div class="decor-circle circle-2"></div>
+
+<div class="detail-wrapper">
+  <h2>Detalle del Resultado</h2>
+
+  <div class="mb-3">
+    <label class="field-label"><i class="bi bi-person-fill icon"></i>Estudiante</label>
+    <div class="field-value">{{ resultado.inscripcion.estudiante.username }}</div>
+  </div>
+
+  <div class="mb-3">
+    <label class="field-label"><i class="bi bi-calendar-event-fill icon"></i>Convocatoria</label>
+    <div class="field-value">{{ resultado.inscripcion.convocatoria }}</div>
+  </div>
+
+  <div class="mb-3">
+    <label class="field-label"><i class="bi bi-bar-chart-fill icon"></i>Nota</label>
+    <div class="field-value">{{ resultado.get_nota_display }}</div>
+  </div>
+
+  <a href="{% url 'lista_resultados' %}" class="btn btn-primary">
+    <i class="bi bi-arrow-left-circle me-2"></i>Volver a la Lista
+  </a>
 </div>
 {% endblock %}

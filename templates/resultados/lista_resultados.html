@@ -19,50 +19,45 @@
       </form>
     </div>
     <div class="col text-end">
-      <div class="desbloquear_filtros">
-        <div class="dropdown">
-          <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
-            Seleccionar filtros
-          </button>
-          <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
-            <li>
-              <div class="form-check">
-                <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_examen" id="filtroTipoExamen" {% if selected_tipo_examen %}checked{% endif %}>
-                <label class="form-check-label" for="filtroTipoExamen">Tipo de Examen</label>
-              </div>
-            </li>
-            <li>
-              <div class="form-check">
-                <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel_nota" id="filtroNivelNota" {% if selected_nivel_nota %}checked{% endif %}>
-                <label class="form-check-label" for="filtroNivelNota">Nivel (Nota)</label>
-              </div>
-            </li>
-            </ul>
-        </div>
+      <div class="dropdown">
+        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
+          Seleccionar filtros
+        </button>
+        <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
+          <li>
+            <div class="form-check">
+              <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_examen" id="filtroTipoExamen" {% if selected_tipo_examen %}checked{% endif %}>
+              <label class="form-check-label" for="filtroTipoExamen">Tipo de Examen</label>
+            </div>
+          </li>
+          <li>
+            <div class="form-check">
+              <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel_nota" id="filtroNivelNota" {% if selected_nivel_nota %}checked{% endif %}>
+              <label class="form-check-label" for="filtroNivelNota">Nivel (Nota)</label>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <div class="filtros">
-    <form method="get" class="mb-4 row g-2">
-      <div class="col-md-2 d-none">
-        <select name="tipo_examen" class="form-select" onchange="this.form.submit()">
+  <div class="filtros mb-4">
+    <form method="get" class="row g-2">
+      <div class="col-md-auto d-none" data-filtro="tipo_examen">
+        <select name="tipo_examen" class="form-select form-select-sm" onchange="this.form.submit()">
           <option value="">Tipo de Examen</option>
           {% for val, label in tipos_examen %}
             <option value="{{ val }}" {% if selected_tipo_examen == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
-      <div class="col-md-2 d-none">
-        <select name="nivel_nota" class="form-select" onchange="this.form.submit()">
+      <div class="col-md-auto d-none" data-filtro="nivel_nota">
+        <select name="nivel_nota" class="form-select form-select-sm" onchange="this.form.submit()">
           <option value="">Nivel</option>
           {% for val, label in niveles_nota %}
             <option value="{{ val }}" {% if selected_nivel_nota == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
-      </div>
-      <div class="col-md-2 d-none">
-        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
       </div>
     </form>
   </div>
@@ -101,7 +96,28 @@
                 <i class="bi bi-eye"></i>
               </a>
               <a href="{% url 'editar_resultado' resultado.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>
-              <a href="{% url 'eliminar_resultado' resultado.id %}" class="btn btn-outline-danger btn-sm me-1" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+              <!-- Botón para eliminar -->
+              <button type="button" class="btn btn-outline-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modalEliminarResultado{{ resultado.id }}">
+                Eliminar
+              </button>
+              <!-- Modal de confirmación -->
+              <div class="modal fade" id="modalEliminarResultado{{ resultado.id }}" tabindex="-1" aria-labelledby="modalEliminarResultadoLabel{{ resultado.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                      <h5 class="modal-title" id="modalEliminarResultadoLabel{{ resultado.id }}">Confirmar eliminación</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                      ¿Estás seguro de que deseas eliminar este resultado?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <a href="{% url 'eliminar_resultado' resultado.id %}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </td>
             <td class="text-center align-middle">
               <input type="checkbox" name="resultados_seleccionados" value="{{ resultado.id }}" class="form-check-input resultado-checkbox">
@@ -123,6 +139,48 @@
   </form>
 </div>
 {% endblock %}
+
 {% block extra_scripts %}
-<script src="{% static 'js/resultados/lista_resultados.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Filtros dinámicos
+  const filtroCheckboxes = document.querySelectorAll('.filtro-checkbox');
+  function actualizarVisibilidadFiltros() {
+    const filtrosSeleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
+    document.querySelectorAll('.filtros [data-filtro]').forEach(divFiltro => {
+      const nombreFiltro = divFiltro.getAttribute('data-filtro');
+      if (filtrosSeleccionados.includes(nombreFiltro)) {
+        divFiltro.classList.remove('d-none');
+      } else {
+        divFiltro.classList.add('d-none');
+      }
+    });
+  }
+  filtroCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', actualizarVisibilidadFiltros);
+  });
+  actualizarVisibilidadFiltros();
+
+  // Evitar cierre del dropdown de filtros
+  const elementosDelDropdown = document.querySelectorAll('.dropdown-menu .filtro-checkbox, .dropdown-menu .form-check-label');
+  elementosDelDropdown.forEach(elemento => {
+    elemento.addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+    elemento.addEventListener('mousedown', function (event) {
+        event.stopPropagation();
+    });
+  });
+
+  // Seleccionar/deseleccionar todos los resultados
+  const selectAll = document.getElementById('selectAllResultados');
+  if (selectAll) {
+    selectAll.addEventListener('change', function () {
+      document.querySelectorAll('.resultado-checkbox').forEach(checkbox => {
+        checkbox.checked = this.checked;
+      });
+    });
+  }
+});
+</script>
 {% endblock %}

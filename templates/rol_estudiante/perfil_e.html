@@ -44,10 +44,10 @@
                 {% endif %}
             </div>
         </div>
-        <a href="{% url 'descargar_certificado' %}">
-            <button>Descargar Certificado PDF</button>
-        </a>
-        <div class="profile-actions" style="text-align: right; padding: 0 2.5rem 1.5rem 2.5rem;">
+        <div class="profile-actions">
+            <a href="{% url 'descargar_certificado' %}" class="btn-descargar-certificado">
+                <i class="bi bi-file-earmark-arrow-down-fill"></i> Descargar Certificado PDF
+            </a>
             <a href="{% url 'editar_perfil_e' %}" class="btn btn-primary">
                 <i class="bi bi-pencil-square"></i> Editar Perfil
             </a>
@@ -153,6 +153,38 @@
         border-radius: 1em;
         font-size: 0.9rem;
         margin-top: 0.3rem;
+    }
+
+    .btn-descargar-certificado {
+        display: inline-block;
+        padding: 0.6rem 1.5rem;
+        background: linear-gradient(90deg, #2196f3 0%, #64b5f6 100%);
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.05rem;
+        border: none;
+        border-radius: 2em;
+        box-shadow: 0 2px 8px rgba(33, 150, 243, 0.08);
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+    }
+    .btn-descargar-certificado:hover, .btn-descargar-certificado:focus {
+        background: linear-gradient(90deg, #1565c0 0%, #2196f3 100%);
+        color: #e3f2fd;
+        box-shadow: 0 4px 16px rgba(33, 150, 243, 0.18);
+        text-decoration: none;
+    }
+    .btn-descargar-certificado i {
+        margin-right: 0.5em;
+        font-size: 1.2em;
+        vertical-align: middle;
+    }
+
+    .profile-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        padding: 0 2.5rem 1.5rem 2.5rem;
     }
 
     @media (max-width: 576px) {

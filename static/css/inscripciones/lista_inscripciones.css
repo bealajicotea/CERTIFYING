@@ -173,6 +173,23 @@ form.row.g-2 input.form-control-sm:focus {
   font-weight: 600;
 }
 
+/* Nueva clase para botón eliminar seleccionadas */
+.btn-eliminar-seleccionadas {
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.btn-eliminar-seleccionadas:hover,
+.btn-eliminar-seleccionadas:focus {
+  background-color: #b52a37;
+  color: #fff;
+  border-color: #b52a37;
+}
+
 /* Responsive adjustments */
 @media (max-width: 576px) {
   .table-responsive {

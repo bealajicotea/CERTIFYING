@@ -1,43 +1,114 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h2>Crear Resultado</h2>
-<form method="post" id="resultado-form" class="resultado-form">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="id-inscripcion">Inscripción</label>
-        <select id="id-inscripcion" class="form-control inscripcion-field" name="inscripcion" required>
-            <option value="">---------</option>
-            {% for inscripcion in inscripciones %}
-                <option value="{{ inscripcion.id }}">{{ inscripcion }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-profesor">Profesor</label>
-        <select id="id-profesor" class="form-control profesor-field" name="profesor" required>
-            <option value="">---------</option>
-            {% for profesor in profesores %}
-                <option value="{{ profesor.id }}">{{ profesor.username }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-nivel">Nivel</label>
-        <select id="id-nivel" class="form-control nivel-field" name="nivel" required>
-            <option value="">---------</option>
-            {% for nivel in niveles %}
-                <option value="{{ nivel.0 }}">{{ nivel.1 }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
-</form>
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">
-      {{ message }}
-    </div>
-  {% endfor %}
-{% endif %}
+
+<style>
+    body {
+        background: radial-gradient(circle at top left, #e0f2ff, #ffffff);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    .decor-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.3;
+        z-index: 0;
+    }
+
+    .circle-1 {
+        width: 300px;
+        height: 300px;
+        background: #007bff;
+        top: -100px;
+        left: -100px;
+    }
+
+    .circle-2 {
+        width: 200px;
+        height: 200px;
+        background: #6bc4ff;
+        bottom: 50px;
+        right: -50px;
+    }
+
+    .form-wrapper {
+        position: relative;
+        z-index: 1;
+        background-color: #ffffffcc;
+        backdrop-filter: blur(10px);
+        border: 1px solid #dee2e6;
+        border-radius: 1rem;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        max-width: 600px;
+        margin: 3rem auto;
+    }
+
+    h2 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        border-radius: 999px;
+        font-weight: bold;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<!-- Círculos decorativos -->
+<div class="decor-circle circle-1"></div>
+<div class="decor-circle circle-2"></div>
+
+<!-- Formulario -->
+<div class="form-wrapper">
+    <h2>Crear Resultado</h2>
+    <form method="post" id="resultado-form" class="resultado-form">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id-inscripcion">Inscripción</label>
+            <select id="id-inscripcion" class="form-control inscripcion-field" name="inscripcion" required>
+                <option value="">---------</option>
+                {% for inscripcion in inscripciones %}
+                    <option value="{{ inscripcion.id }}">{{ inscripcion }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="id-profesor">Profesor</label>
+            <select id="id-profesor" class="form-control profesor-field" name="profesor" required>
+                <option value="">---------</option>
+                {% for profesor in profesores %}
+                    <option value="{{ profesor.id }}">{{ profesor.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="id-nivel">Nivel</label>
+            <select id="id-nivel" class="form-control nivel-field" name="nivel" required>
+                <option value="">---------</option>
+                {% for nivel in niveles %}
+                    <option value="{{ nivel.0 }}">{{ nivel.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Crear</button>
+    </form>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mt-3">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}
