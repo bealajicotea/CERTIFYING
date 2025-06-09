@@ -25,20 +25,26 @@ def crear_resultado(request):
 
     inscripciones = Inscripcion.objects.all()
     profesores = Usuario.objects.filter(tipo_usuario='profesor')
+    niveles = Resultado.NIVELES
     if request.method == 'POST':
         data = request.POST
-        resultado = Resultado(
-            inscripcion_id=data.get('inscripcion'),
-            profesor_id=data.get('profesor'),
-            resultado=data.get('resultado'),
-            observaciones=data.get('observaciones', '')
-        )
-        resultado.save()
-        messages.success(request, "Resultado creado exitosamente.")
-        return redirect('lista_resultados')
+        inscripcion_id = data.get('inscripcion')
+        nivel = data.get('nivel')
+        # Verifica si ya existe un resultado para esa inscripción
+        if Resultado.objects.filter(inscripcion_id=inscripcion_id).exists():
+            messages.error(request, "¡Ya existe un resultado para esta inscripción (estudiante y convocatoria)!")
+        else:
+            resultado = Resultado(
+                inscripcion_id=inscripcion_id,
+                nota=nivel
+            )
+            resultado.save()
+            messages.success(request, "Resultado creado exitosamente.")
+            return redirect('lista_resultados')
     return render(request, 'resultados/crear_resultado.html', {
         'inscripciones': inscripciones,
-        'profesores': profesores
+        'profesores': profesores,
+        'niveles': niveles
     })
 
 def eliminar_resultado(request, resultado_id):
@@ -77,20 +83,18 @@ def editar_resultado(request, resultado_id):
 
     resultado = get_object_or_404(Resultado, id=resultado_id)
     inscripciones = Inscripcion.objects.all()
-    profesores = Usuario.objects.filter(tipo_usuario='profesor')
+    niveles = Resultado.NIVELES
     if request.method == 'POST':
         data = request.POST
         resultado.inscripcion_id = data.get('inscripcion')
-        resultado.profesor_id = data.get('profesor')
-        resultado.resultado = data.get('resultado')
-        resultado.observaciones = data.get('observaciones', '')
+        resultado.nota = data.get('nivel')
         resultado.save()
         messages.success(request, "Resultado editado exitosamente.")
         return redirect('lista_resultados')
     return render(request, 'resultados/editar_resultado.html', {
         'resultado': resultado,
         'inscripciones': inscripciones,
-        'profesores': profesores
+        'niveles': niveles
     })
 
 def detalle_resultado(request, resultado_id):

@@ -1,8 +1,9 @@
 from django.db import models
 
 class Resultado(models.Model):
-    niveles = [
-        ('', 'A1'),
+
+    NIVELES = [
+        ('A1', 'A1'),
         ('A2', 'A2'),
         ('B1', 'B1'),
         ('B2', 'B2'),
@@ -14,6 +15,7 @@ class Resultado(models.Model):
     notaE = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
     notaC = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
     notaO = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
+
 
     inscripcion = models.ForeignKey('inscripciones.Inscripcion', on_delete=models.CASCADE)
     # Otros campos que necesites

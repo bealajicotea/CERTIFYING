@@ -14,24 +14,13 @@
         </select>
     </div>
     <div class="mb-3">
-        <label for="id-profesor">Profesor</label>
-        <select id="id-profesor" class="form-control profesor-field" name="profesor" required>
+        <label for="id-nivel">Nivel</label>
+        <select id="id-nivel" class="form-control nivel-field" name="nivel" required>
             <option value="">---------</option>
-            {% for profesor in profesores %}
-                <option value="{{ profesor.id }}" {% if resultado.profesor.id == profesor.id %}selected{% endif %}>{{ profesor.username }}</option>
+                {% for nivel in niveles %}
+                <option value="{{ nivel.0 }}" {% if resultado.nota == nivel.0 %}selected{% endif %}>{{ nivel.1 }}</option>
             {% endfor %}
         </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-resultado">Resultado</label>
-        <select id="id-resultado" class="form-control resultado-field" name="resultado" required>
-            <option value="aprobado" {% if resultado.resultado == "aprobado" %}selected{% endif %}>Aprobado</option>
-            <option value="desaprobado" {% if resultado.resultado == "desaprobado" %}selected{% endif %}>Desaprobado</option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-observaciones">Observaciones</label>
-        <textarea id="id-observaciones" class="form-control observaciones-field" name="observaciones" maxlength="300">{{ resultado.observaciones }}</textarea>
     </div>
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>

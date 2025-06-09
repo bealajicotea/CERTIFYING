@@ -5,6 +5,7 @@ from apps.convocatorias.models import Convocatoria
 from apps.resultados.models import Resultado
 from django.contrib import messages
 from django.db.models import Q
+from django.db import IntegrityError  # Asegúrate de tener esta importación
 
 def filtrar_inscripciones(filtros):
     """
@@ -112,9 +113,14 @@ def crear_inscripcion(request):
             convocatoria_id=data.get('convocatoria'),
             estado=data.get('estado')
         )
-        inscripcion.save()
-        messages.success(request, "Inscripción creada exitosamente.")
-        return redirect('lista_inscripciones')
+        try:
+            inscripcion.save()
+            messages.success(request, "Inscripción creada exitosamente.")
+            return redirect('lista_inscripciones')
+        except IntegrityError:
+            messages.error(request, "¡Alerta! Ya existe una inscripción para este estudiante y convocatoria.")
+        except Exception as e:
+            messages.error(request, f"Ocurrió un error al crear la inscripción: {e}")
     return render(request, 'inscripciones/crear_inscripcion.html', {
         'estudiantes': estudiantes,
         'convocatorias': convocatorias
