@@ -12,7 +12,7 @@
     <tr><th>Lugar</th><td>{{ convocatoria.lugar }}</td></tr>
     <tr><th>Fecha</th><td>{{ convocatoria.fecha }}</td></tr>
     <tr><th>Hora</th><td>{{ convocatoria.hora }}</td></tr>
-    <tr><th>Profesor</th><td>{{ convocatoria.profesor.username }}</td></tr>
+    <tr><th>Profesor</th><td>{{ convocatoria.profesor.first_name }} {{ convocatoria.profesor.last_name }}</td></tr>
     <tr><th>Nivel</th><td>{{ convocatoria.get_nivel_display }}</td></tr>
     <tr><th>Estado</th><td>{{ convocatoria.estado|yesno:"Activa,Inactiva" }}</td></tr>
 </table>

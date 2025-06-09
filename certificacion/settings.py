@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.resultados',
     'apps.inscripciones',
     'apps.convocatorias',
+    'apps.notificaciones',
 ]
 
 MIDDLEWARE = [
