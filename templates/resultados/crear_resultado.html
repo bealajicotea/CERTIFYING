@@ -23,16 +23,21 @@
         </select>
     </div>
     <div class="mb-3">
-        <label for="id-resultado">Resultado</label>
-        <select id="id-resultado" class="form-control resultado-field" name="resultado" required>
-            <option value="aprobado">Aprobado</option>
-            <option value="desaprobado">Desaprobado</option>
+        <label for="id-nivel">Nivel</label>
+        <select id="id-nivel" class="form-control nivel-field" name="nivel" required>
+            <option value="">---------</option>
+            {% for nivel in niveles %}
+                <option value="{{ nivel.0 }}">{{ nivel.1 }}</option>
+            {% endfor %}
         </select>
-    </div>
-    <div class="mb-3">
-        <label for="id-observaciones">Observaciones</label>
-        <textarea id="id-observaciones" class="form-control observaciones-field" name="observaciones" maxlength="300"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Crear</button>
 </form>
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
 {% endblock %}
