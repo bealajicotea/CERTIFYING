@@ -1,169 +1,173 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/convocatorias/lista_convocatorias.css' %}">
+<link rel="stylesheet" href="{% static 'css/inscripciones/lista_inscripciones.css' %}">
 {% endblock %}
 {% block content %}
+
 <div class="container my-5">
   <h2 class="mb-4 text-primary text-center">Lista de Convocatorias</h2>
 
+  <!-- Formulario para buscar convocatorias -->
   <div class="row mb-3 align-items-center">
     <div class="col-auto">
       <form method="get" class="row g-2">
         <div class="col-auto">
-          <input type="text" name="buscar" class="form-control form-control-sm" style="width: 180px;" placeholder="Buscar por lugar, fecha..." value="{{ buscar }}">
+          <input type="text" name="buscar" class="form-control form-control-sm" style="width: 180px;" placeholder="Buscar..." value="{{ buscar }}">
         </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-outline-primary btn-sm">Buscar</button>
         </div>
       </form>
     </div>
-
     <div class="col text-end">
-      <div class="dropdown">
-        <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
-          Seleccionar filtros
-        </button>
-        <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo" id="filtroTipo" {% if selected_tipo %}checked{% endif %}>
-              <label class="form-check-label" for="filtroTipo">Tipo de Convocatoria</label>
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="lugar" id="filtroLugar" {% if selected_lugar %}checked{% endif %}>
-              <label class="form-check-label" for="filtroLugar">Lugar</label>
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="fecha" id="filtroFecha" {% if selected_fecha %}checked{% endif %}>
-              <label class="form-check-label" for="filtroFecha">Fecha</label>
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="hora" id="filtroHora" {% if selected_hora %}checked{% endif %}>
-              <label class="form-check-label" for="filtroHora">Hora</label>
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="estado" id="filtroEstado" {% if selected_estado %}checked{% endif %}>
-              <label class="form-check-label" for="filtroEstado">Estado</label>
-            </div>
-          </li>
-          <li>
-            <div class="form-check">
-              <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel" id="filtroNivel" {% if selected_nivel %}checked{% endif %}>
-              <label class="form-check-label" for="filtroNivel">Nivel</label>
-            </div>
-          </li>
-        </ul>
+      <div class="desbloquear_filtros">
+        <div class="dropdown">
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" id="dropdownFiltrosBtn" data-bs-toggle="dropdown" aria-expanded="false">
+            Seleccionar filtros
+          </button>
+          <ul class="dropdown-menu p-2" aria-labelledby="dropdownFiltrosBtn" style="min-width: 220px;">
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="tipo_convocatoria" id="filtroTipo">
+                <label class="form-check-label" for="filtroTipo">Tipo Convocatoria</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="nivel" id="filtroNivel">
+                <label class="form-check-label" for="filtroNivel">Nivel</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="lugar" id="filtroLugar">
+                <label class="form-check-label" for="filtroLugar">Lugar</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="fecha" id="filtroFecha">
+                <label class="form-check-label" for="filtroFecha">Fecha</label>
+              </div>
+            </li>
+            <li>
+              <div class="form-check">
+                <input class="form-check-input filtro-checkbox" type="checkbox" value="profesor" id="filtroProfesor">
+                <label class="form-check-label" for="filtroProfesor">Profesor</label>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="filtros mb-4" >
-    <form method="get" class="row g-2">
-      <div class="col-md-auto d-none" data-filtro="tipo">
-        <select name="tipo" class="form-select form-select-sm" onchange="this.form.submit()">
-          <option value="">Tipo de Convocatoria</option>
+  <!-- Filtros ocultos -->
+  <div class="filtros">
+    <form method="get" class="mb-4 row g-2">
+      <!-- Filtro por tipo de convocatoria (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="tipo_convocatoria" class="form-select" onchange="this.form.submit()">
+          <option value="">Tipo Convocatoria</option>
           {% for val, label in tipos_convocatoria %}
-            <option value="{{ val }}" {% if selected_tipo == val %}selected{% endif %}>{{ label }}</option>
+            <option value="{{ val }}" {% if selected_tipo_convocatoria == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
-      <div class="col-md-auto d-none" data-filtro="lugar">
-        <select name="lugar" class="form-select form-select-sm" onchange="this.form.submit()">
-          <option value="">Lugar</option>
-          {% for val, label in lugares %}
-            <option value="{{ val }}" {% if selected_lugar == val %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="col-md-auto d-none" data-filtro="fecha">
-        <input type="date" name="fecha" class="form-control form-control-sm" value="{{ selected_fecha|date:'Y-m-d' }}" onchange="this.form.submit()">
-      </div>
-      <div class="col-md-auto d-none" data-filtro="hora">
-        <input type="time" name="hora" class="form-control form-control-sm" value="{{ selected_hora|time:'H:i' }}" onchange="this.form.submit()">
-      </div>
-      <div class="col-md-auto d-none" data-filtro="estado">
-        <select name="estado" class="form-select form-select-sm" onchange="this.form.submit()">
-          <option value="">Estado</option>
-          <option value="true" {% if selected_estado == 'true' %}selected{% endif %}>Activo</option>
-          <option value="false" {% if selected_estado == 'false' %}selected{% endif %}>Inactivo</option>
-        </select>
-      </div>
-      <div class="col-md-auto d-none" data-filtro="nivel">
-        <select name="nivel" class="form-select form-select-sm" onchange="this.form.submit()">
+      <!-- Filtro por nivel (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="nivel" class="form-select" onchange="this.form.submit()">
           <option value="">Nivel</option>
           {% for val, label in niveles %}
             <option value="{{ val }}" {% if selected_nivel == val %}selected{% endif %}>{{ label }}</option>
           {% endfor %}
         </select>
       </div>
+      <!-- Filtro por lugar (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="lugar" class="form-select" onchange="this.form.submit()">
+          <option value="">Lugar</option>
+          {% for val, label in lugares %}
+            <option value="{{ val }}" {% if selected_lugar == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Filtro por fecha (oculto) -->
+      <div class="col-md-2 d-none">
+        <input type="date" name="fecha" class="form-control" value="{{ selected_fecha|default:'' }}" onchange="this.form.submit()">
+      </div>
+      <!-- Filtro por profesor (oculto) -->
+      <div class="col-md-2 d-none">
+        <select name="profesor" class="form-select" onchange="this.form.submit()">
+          <option value="">Profesor</option>
+          {% for val, label in profesores %}
+            <option value="{{ val }}" {% if selected_profesor == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Botón para aplicar los filtros (oculto) -->
+      <div class="col-md-2 d-none">
+        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
+      </div>
+      <!-- Input oculto para filtros activos -->
+      <input type="hidden" name="filtros_activos" id="filtros_activos" value="{{ filtros_activos|default:'' }}">
     </form>
   </div>
-
-
+  <!-- Formulario para eliminar convocatorias seleccionadas -->
   <form id="formEliminarConvocatorias" method="post" action="{% url 'eliminar_convocatorias_seleccionadas' %}">
     {% csrf_token %}
-
-    <input type="hidden" name="buscar" value="{{ buscar }}">
-    <input type="hidden" name="tipo" value="{{ selected_tipo }}">
-    <input type="hidden" name="lugar" value="{{ selected_lugar }}">
-    <input type="hidden" name="fecha" value="{{ selected_fecha|date:'Y-m-d' }}">
-    <input type="hidden" name="hora" value="{{ selected_hora|time:'H:i' }}">
-    <input type="hidden" name="estado" value="{{ selected_estado }}">
-    <input type="hidden" name="nivel" value="{{ selected_nivel }}">
+    <!-- Inputs ocultos para mantener los filtros al eliminar -->
+    <input type="hidden" name="tipo_convocatoria" id="hidden_tipo_convocatoria" value="{{ selected_tipo_convocatoria }}">
+    <input type="hidden" name="nivel" id="hidden_nivel" value="{{ selected_nivel }}">
+    <input type="hidden" name="lugar" id="hidden_lugar" value="{{ selected_lugar }}">
+    <input type="hidden" name="fecha" id="hidden_fecha" value="{{ selected_fecha }}">
+    <input type="hidden" name="profesor" id="hidden_profesor" value="{{ selected_profesor }}">
 
     <div class="table-responsive shadow rounded">
       <table class="table table-hover align-middle">
         <thead class="table-light">
           <tr>
-            <th style="width: 10%;">Tipo</th>
-            <th style="width: 12%;">Lugar</th>
+            <!-- Encabezados de la tabla de convocatorias -->
+            <th style="width: 15%;">Tipo</th>
+            <th style="width: 10%;">Nivel</th>
+            <th style="width: 15%;">Lugar</th>
             <th style="width: 10%;">Fecha</th>
-            <th style="width: 8%;">Hora</th>
-            <th style="width: 8%;">Nivel</th>
-            <th style="width: 8%;">Estado</th>
+            <th style="width: 10%;">Hora</th>
+            <th style="width: 20%;">Profesor</th>
             <th style="width: 20%; min-width: 180px;" class="text-nowrap">Acciones</th>
             <th style="width: 5%;" class="text-center align-middle">
-              <input type="checkbox" id="selectAllConvocatorias" title="Seleccionar/Deseleccionar todos" class="align-middle">
+              <!-- Checkbox para seleccionar/deseleccionar todas las convocatorias -->
+              <input type="checkbox" id="selectAllConvocatorias" title="Seleccionar/Deseleccionar todas" class="align-middle">
             </th>
           </tr>
         </thead>
         <tbody>
+          <!-- Itera sobre cada convocatoria y muestra sus datos -->
           {% for convocatoria in convocatorias %}
           <tr>
-            <td class="text-truncate" style="max-width: 120px;">{{ convocatoria.get_tipo_display }}</td>
-            <td class="text-truncate" style="max-width: 120px;">{{ convocatoria.lugar }}</td>
-            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.fecha }}</td>
-            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.hora }}</td>
-            <td class="text-truncate" style="max-width: 80px;">{{ convocatoria.nivel|default_if_none:"N/A" }}</td>
-            <td class="text-truncate" style="max-width: 80px;">
-              {% if convocatoria.estado %}Activo{% else %}Inactivo{% endif %}
-            </td>
+            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.get_tipo_display }}</td>
+            <td class="text-truncate" style="max-width: 60px;">{{ convocatoria.nivel }}</td>
+            <td class="text-truncate" style="max-width: 100px;">{{ convocatoria.lugar }}</td>
+            <td class="text-truncate" style="max-width: 90px;">{{ convocatoria.fecha }}</td>
+            <td class="text-truncate" style="max-width: 70px;">{{ convocatoria.hora }}</td>
+            <td class="text-truncate" style="max-width: 120px;">{{ convocatoria.profesor }}</td>
             <td class="text-nowrap" style="min-width: 180px;">
+              <!-- Botón para ver detalles de la convocatoria -->
               <a href="{% url 'detalle_convocatoria' convocatoria.id %}" class="btn btn-outline-info btn-sm me-1" title="Visualizar">
                 <i class="bi bi-eye"></i>
               </a>
+              <!-- Botón para editar la convocatoria -->
               <a href="{% url 'editar_convocatoria' convocatoria.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>
-
-              <!-- Botón para eliminar -->
-              <button type="button" class="btn btn-outline-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modalEliminar{{ convocatoria.id }}">
+              <!-- Botón para eliminar convocatoria -->
+              <button type="button" class="btn btn-outline-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modalEliminarConvocatoria{{ convocatoria.id }}">
                 Eliminar
               </button>
-
-              <!-- Modal de confirmación -->
-              <div class="modal fade" id="modalEliminar{{ convocatoria.id }}" tabindex="-1" aria-labelledby="modalEliminarLabel{{ convocatoria.id }}" aria-hidden="true">
+              <!-- Modal de confirmación para convocatoria -->
+              <div class="modal fade" id="modalEliminarConvocatoria{{ convocatoria.id }}" tabindex="-1" aria-labelledby="modalEliminarConvocatoriaLabel{{ convocatoria.id }}" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header bg-danger text-white">
-                      <h5 class="modal-title" id="modalEliminarLabel{{ convocatoria.id }}">Confirmar eliminación</h5>
+                      <h5 class="modal-title" id="modalEliminarConvocatoriaLabel{{ convocatoria.id }}">Confirmar eliminación</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
@@ -177,6 +181,7 @@
                 </div>
               </div>
             </td>
+            <!-- Checkbox para seleccionar la convocatoria -->
             <td class="text-center align-middle">
               <input type="checkbox" name="convocatorias_seleccionadas" value="{{ convocatoria.id }}" class="form-check-input convocatoria-checkbox">
             </td>
@@ -186,6 +191,7 @@
       </table>
     </div>
 
+    <!-- Botones para crear nueva convocatoria o eliminar seleccionadas -->
     <div class="d-flex justify-content-between mt-4">
       <a href="{% url 'crear_convocatoria' %}" class="btn btn-primary">
         <i class="bi bi-plus-circle me-1"></i>Crear Convocatoria
@@ -201,60 +207,8 @@
     </div>
   </form>
 </div>
-{% endblock %}
 
+{% endblock %}
 {% block extra_scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  console.log('Script de lista_convocatorias cargado.');
-
-  /**
-   * MANEJO DE LA VISIBILIDAD DE LOS FILTROS
-   */
-  const filtroCheckboxes = document.querySelectorAll('.filtro-checkbox');
-  function actualizarVisibilidadFiltros() {
-    const filtrosSeleccionados = Array.from(document.querySelectorAll('.filtro-checkbox:checked')).map(cb => cb.value);
-    document.querySelectorAll('.filtros [data-filtro]').forEach(divFiltro => {
-      const nombreFiltro = divFiltro.getAttribute('data-filtro');
-      if (filtrosSeleccionados.includes(nombreFiltro)) {
-        divFiltro.classList.remove('d-none');
-      } else {
-        divFiltro.classList.add('d-none');
-      }
-    });
-  }
-  filtroCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', actualizarVisibilidadFiltros);
-  });
-  // Ejecutar al cargar para establecer el estado inicial de los filtros.
-  actualizarVisibilidadFiltros();
-
-  /**
-   * EVITAR CIERRE DEL DROPDOWN DE FILTROS
-   */
-  const elementosDelDropdown = document.querySelectorAll('.dropdown-menu .filtro-checkbox, .dropdown-menu .form-check-label');
-  elementosDelDropdown.forEach(elemento => {
-    elemento.addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
-    // Agregamos también para mousedown para mayor robustez
-    elemento.addEventListener('mousedown', function (event) {
-        event.stopPropagation();
-    });
-  });
-
-  /**
-   * SELECCIONAR / DESELECCIONAR TODAS LAS CONVOCATORIAS
-   */
-  const selectAll = document.getElementById('selectAllConvocatorias');
-  if (selectAll) {
-    selectAll.addEventListener('change', function () {
-      document.querySelectorAll('.convocatoria-checkbox').forEach(checkbox => {
-        checkbox.checked = this.checked;
-      });
-    });
-  }
-});
-</script>
+<script src="{% static 'js/convocatorias/lista_convocatorias.js' %}"></script>
 {% endblock %}
-

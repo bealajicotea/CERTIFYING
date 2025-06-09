@@ -21,10 +21,6 @@ def crear_usuario(request):
     if request.method == 'POST':
         data = request.POST
         files = request.FILES
-        username = data.get('username')
-        if Usuario.objects.filter(username=username).exists():
-            messages.error(request, "El usuario ya existe. Por favor, elige otro nombre de usuario.")
-            return render(request, 'usuarios/crear_usuario.html', {'usuario': data})  # Pasa el contexto necesario
         usuario = Usuario(
             username=data.get('username'),
             email=data.get('email'),
