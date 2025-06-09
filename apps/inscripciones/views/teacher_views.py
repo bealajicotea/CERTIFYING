@@ -6,6 +6,8 @@ from apps.resultados.models import Resultado
 from django.contrib import messages
 from django.db.models import Q
 from django.db import IntegrityError  # Asegúrate de tener esta importación
+from django.urls import reverse
+from urllib.parse import urlencode
 
 def filtrar_inscripciones(filtros):
     """
@@ -193,6 +195,10 @@ def detalle_inscripcion(request, inscripcion_id):
     inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
     return render(request, 'inscripciones/detalle_inscripcion.html', {'inscripcion': inscripcion})
 
+
+
+
+
 def evaluar(inscripcion_id, nota):
     """
     Crea un resultado para la inscripción dada con la nota proporcionada.
@@ -253,6 +259,27 @@ def evaluarInscripcion(request):
     contexto = obtener_inscripciones_filtradas(filtros)
     return render(request, 'inscripciones/lista_inscripciones.html', contexto)
 
+def calcular_nota_certificacion(nota_oral, nota_comprension, nota_escritura, nota_lectura):
+    """
+    Calcula el promedio de las notas de certificación y devuelve el nivel correspondiente.
+    Si alguna nota es vacía, se considera como 'BELLOW A1' (valor 1).
+    """
+    niveles_map = [
+        'BELLOW A1', 'A1', 'A1+', 'A2', 'A2+', 'B1', 'B1+', 'B2', 'B2+', 'C1', 'C1+', 'C2'
+    ]
+    nivel_a_num = {nivel: idx + 1 for idx, nivel in enumerate(niveles_map)}
+    num_a_nivel = {idx + 1: nivel for idx, nivel in enumerate(niveles_map)}
+
+    notas = [nota_oral, nota_comprension, nota_escritura, nota_lectura]
+    valores = []
+    for n in notas:
+        if not n or n not in nivel_a_num:
+            valores.append(1)  # BELLOW A1
+        else:
+            valores.append(nivel_a_num[n])
+    promedio = round(sum(valores) / 4)
+    return num_a_nivel.get(promedio, 'BELLOW A1')
+
 def evaluar_certificacion(request):
     """
     Procesa el formulario del modal para inscripciones de tipo certificación.
@@ -260,14 +287,6 @@ def evaluar_certificacion(request):
     if not request.user.is_authenticated or not request.user.es_profesor():
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('login')
-
-    filtros = {
-        'facultad': request.POST.get('facultad', ''),
-        'grupo': request.POST.get('grupo', ''),
-        'anio_escolar': request.POST.get('anio_escolar', ''),
-        'tipo_convocatoria': request.POST.get('tipo_convocatoria', ''),
-        'nivel': request.POST.get('nivel', ''),
-    }
 
     if request.method == "POST":
         inscripcion_id = request.POST.get('inscripcion_id')
@@ -285,11 +304,29 @@ def evaluar_certificacion(request):
             resultado.notaC = nota_comprension
             resultado.notaE = nota_escritura
             resultado.notaL = nota_lectura
+            resultado.nota = calcular_nota_certificacion(nota_oral, nota_comprension, nota_escritura, nota_lectura)
             resultado.save()
+            # Actualizar el nivel del usuario al mismo valor que resultado.nota
+            usuario = resultado.inscripcion.estudiante
+            usuario.nivel = resultado.nota
+            usuario.save()
+            print("usuario nivel actualizado:", usuario.nivel)
             messages.success(request, "Notas de certificación guardadas correctamente.")
         else:
             messages.error(request, "Esta inscripción no es de tipo certificación.")
 
-    contexto = obtener_inscripciones_filtradas(filtros)
-    contexto['filtros_activos'] = request.POST.get('filtros_activos', '')
-    return render(request, 'inscripciones/lista_inscripciones.html', contexto)
+        # Redireccionar manteniendo los filtros y filtros_activos
+        filtros = {
+            'facultad': request.POST.get('facultad', ''),
+            'grupo': request.POST.get('grupo', ''),
+            'anio_escolar': request.POST.get('anio_escolar', ''),
+            'tipo_convocatoria': request.POST.get('tipo_convocatoria', ''),
+            'nivel': request.POST.get('nivel', ''),
+            'buscar': request.POST.get('buscar', ''),
+            'filtros_activos': request.POST.get('filtros_activos', ''),
+        }
+        query_string = urlencode({k: v for k, v in filtros.items() if v})
+        return redirect(f"{reverse('lista_inscripciones')}?{query_string}")
+
+    # Si no es POST, redirigir a la lista de inscripciones
+    return redirect('lista_inscripciones')

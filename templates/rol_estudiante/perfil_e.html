@@ -37,8 +37,8 @@
             </div>
             <div class="info-row">
                 <label><i class="bi bi-translate"></i>Nivel de Inglés</label>
-                {% if usuario.ultimo_resultado %}
-                    <span class="nivel-badge">{{ usuario.ultimo_resultado.nivel }}</span>
+                {% if request.user.nivel %}
+                    <span class="nivel-badge">{{ request.user.nivel }}</span>
                 {% else %}
                     <span class="text-muted">No actualizado</span>
                 {% endif %}
