@@ -10,11 +10,11 @@ class Resultado(models.Model):
         ('C1', 'C1'),
         ('C2', 'C2')
     ]
-    nota = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
-    notaL = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
-    notaE = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
-    notaC = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
-    notaO = models.CharField(max_length=10, choices=niveles, blank=True,null=True)
+    nota = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
+    notaL = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
+    notaE = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
+    notaC = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
+    notaO = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
 
 
     inscripcion = models.ForeignKey('inscripciones.Inscripcion', on_delete=models.CASCADE)
