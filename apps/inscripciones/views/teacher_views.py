@@ -50,8 +50,9 @@ def obtener_inscripciones_filtradas(filtros):
     buscar = filtros.get('buscar', '')
     inscripciones = buscar_en_inscripciones(inscripciones, buscar)
 
-    facultades = Usuario.objects.filter(tipo_usuario='estudiante').values_list('facultad', flat=True).distinct()
-    grupos = Usuario.objects.filter(tipo_usuario='estudiante').values_list('grupo', flat=True).distinct()
+    # Obtener todas las opciones posibles desde los choices del modelo
+    facultades = Usuario.FACULTADES if hasattr(Usuario, 'FACULTADES') else []
+    grupos = Usuario.GRUPOS if hasattr(Usuario, 'GRUPOS') else []
     anios = Usuario.anios if hasattr(Usuario, 'anios') else []
     tipos_convocatoria = Convocatoria.TIPO_CONVOCATORIA
     niveles = Convocatoria.niveles
