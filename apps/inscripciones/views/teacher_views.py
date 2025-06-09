@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from apps.inscripciones.models import Inscripcion
 from apps.usuarios.models import Usuario
 from apps.convocatorias.models import Convocatoria
+from apps.resultados.models import Resultado
 from django.contrib import messages
 from django.db.models import Q
 from django.db import IntegrityError  # Asegúrate de tener esta importación
@@ -143,7 +144,7 @@ def eliminar_inscripciones_seleccionadas(request):
     if not request.user.es_profesor():
         messages.warning(request, "No tienes permisos para acceder a esta sección.")
         return redirect('pagina_principal')
-    # Procesar agregar nota
+    
     if request.method == "POST":
         ids = request.POST.getlist('inscripciones_seleccionadas')
         if ids:
@@ -250,4 +251,45 @@ def evaluarInscripcion(request):
 
     # Siempre devolver la lista con el filtrado actual
     contexto = obtener_inscripciones_filtradas(filtros)
+    return render(request, 'inscripciones/lista_inscripciones.html', contexto)
+
+def evaluar_certificacion(request):
+    """
+    Procesa el formulario del modal para inscripciones de tipo certificación.
+    """
+    if not request.user.is_authenticated or not request.user.es_profesor():
+        messages.warning(request, "No tienes permisos para acceder a esta sección.")
+        return redirect('login')
+
+    filtros = {
+        'facultad': request.POST.get('facultad', ''),
+        'grupo': request.POST.get('grupo', ''),
+        'anio_escolar': request.POST.get('anio_escolar', ''),
+        'tipo_convocatoria': request.POST.get('tipo_convocatoria', ''),
+        'nivel': request.POST.get('nivel', ''),
+    }
+
+    if request.method == "POST":
+        inscripcion_id = request.POST.get('inscripcion_id')
+        nota_oral = request.POST.get('nota_oral')
+        nota_comprension = request.POST.get('nota_comprension')
+        nota_escritura = request.POST.get('nota_escritura')
+        nota_lectura = request.POST.get('nota_audicion')  # O 'nota_lectura' según tu input
+
+        inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
+
+        # Solo si la convocatoria es certificación
+        if inscripcion.convocatoria.tipo == "certificacion":
+            resultado, created = Resultado.objects.get_or_create(inscripcion=inscripcion)
+            resultado.notaO = nota_oral
+            resultado.notaC = nota_comprension
+            resultado.notaE = nota_escritura
+            resultado.notaL = nota_lectura
+            resultado.save()
+            messages.success(request, "Notas de certificación guardadas correctamente.")
+        else:
+            messages.error(request, "Esta inscripción no es de tipo certificación.")
+
+    contexto = obtener_inscripciones_filtradas(filtros)
+    contexto['filtros_activos'] = request.POST.get('filtros_activos', '')
     return render(request, 'inscripciones/lista_inscripciones.html', contexto)
