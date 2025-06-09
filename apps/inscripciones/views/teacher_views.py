@@ -7,7 +7,9 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db import IntegrityError  # Asegúrate de tener esta importación
 from django.urls import reverse
+
 from urllib.parse import urlencode
+
 
 def filtrar_inscripciones(filtros):
     """
@@ -315,7 +317,7 @@ def evaluar_certificacion(request):
         else:
             messages.error(request, "Esta inscripción no es de tipo certificación.")
 
-        # Redireccionar manteniendo los filtros y filtros_activos
+
         filtros = {
             'facultad': request.POST.get('facultad', ''),
             'grupo': request.POST.get('grupo', ''),
@@ -325,6 +327,9 @@ def evaluar_certificacion(request):
             'buscar': request.POST.get('buscar', ''),
             'filtros_activos': request.POST.get('filtros_activos', ''),
         }
+
+        # Construir la query string
+        from urllib.parse import urlencode
         query_string = urlencode({k: v for k, v in filtros.items() if v})
         return redirect(f"{reverse('lista_inscripciones')}?{query_string}")
 

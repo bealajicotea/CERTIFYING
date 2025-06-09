@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.addEventListener('click', function() {
       var inscripcionId = btn.getAttribute('data-inscripcion');
       document.getElementById('modal_inscripcion_id').value = inscripcionId;
+      // Copia el valor actual de filtros_activos al modal
+      var filtrosActivos = document.getElementById('filtros_activos');
+      var modalFiltrosActivos = document.getElementById('modal_filtros_activos');
+      if (filtrosActivos && modalFiltrosActivos) {
+        modalFiltrosActivos.value = filtrosActivos.value;
+      }
       var modal = new bootstrap.Modal(document.getElementById('modalNotasCertificacion'));
       modal.show();
     });

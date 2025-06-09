@@ -163,8 +163,30 @@
               </a>
               <!-- Botón para editar la inscripción -->
               <a href="{% url 'editar_inscripcion' inscripcion.id %}" class="btn btn-outline-warning btn-sm me-1">Editar</a>
-              <!-- Botón para eliminar la inscripción -->
-              <a href="{% url 'eliminar_inscripcion' inscripcion.id %}" class="btn btn-outline-danger btn-sm me-1" onclick="return confirm('¿Estás seguro?')">Eliminar</a>
+              <!-- Botón para eliminar inscripción -->
+              <button type="button" class="btn btn-outline-danger btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modalEliminarInscripcion{{ inscripcion.id }}">
+                Eliminar
+              </button>
+
+              <!-- Modal de confirmación para inscripción -->
+              <div class="modal fade" id="modalEliminarInscripcion{{ inscripcion.id }}" tabindex="-1" aria-labelledby="modalEliminarInscripcionLabel{{ inscripcion.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                      <h5 class="modal-title" id="modalEliminarInscripcionLabel{{ inscripcion.id }}">Confirmar eliminación</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                      ¿Estás seguro de que deseas eliminar esta inscripción?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <a href="{% url 'eliminar_inscripcion' inscripcion.id %}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
               <!-- Agregar nota si no existe resultado -->
               {% if not inscripcion.resultado %}
                 <div class="agregar-nota-wrapper d-inline">
@@ -318,6 +340,7 @@
       <input type="hidden" name="anio_escolar" value="{{ selected_anio }}">
       <input type="hidden" name="tipo_convocatoria" value="{{ selected_tipo_convocatoria }}">
       <input type="hidden" name="nivel" value="{{ selected_nivel }}">
+      <input type="hidden" name="filtros_activos" id="modal_filtros_activos" value="{{ filtros_activos|default:'' }}">
     </form>
   </div>
 </div>

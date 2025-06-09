@@ -1,35 +1,125 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block extra_head %}
+<style>
+  body {
+    background: radial-gradient(circle at top left, #e0f2ff, #ffffff);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  .decor-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.3;
+    z-index: 0;
+  }
+  .circle-1 {
+    width: 300px;
+    height: 300px;
+    background: #007bff;
+    top: -100px;
+    left: -100px;
+  }
+  .circle-2 {
+    width: 200px;
+    height: 200px;
+    background: #6bc4ff;
+    bottom: 50px;
+    right: -50px;
+  }
+  .form-wrapper {
+    position: relative;
+    z-index: 1;
+    background-color: #ffffffcc;
+    backdrop-filter: blur(10px);
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    padding: 2rem 2.5rem;
+    max-width: 600px;
+    margin: 3rem auto;
+  }
+  h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+  label {
+    font-weight: 600;
+    color: #0d6efd;
+  }
+  .form-control, select, textarea {
+    border-radius: 10px !important;
+    padding: 10px 15px;
+    border: 1px solid #ced4da !important;
+    font-size: 1rem;
+    box-shadow: none !important;
+    transition: border-color 0.3s ease;
+  }
+  .form-control:focus, select:focus, textarea:focus {
+    border-color: #007bff !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
+  }
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 999px;
+    font-weight: bold;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    margin-top: 1.8rem;
+    transition: background-color 0.3s ease;
+  }
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<h2>Editar Inscripción</h2>
-<form method="post" id="inscripcion-form" class="inscripcion-form">
+<!-- Círculos decorativos -->
+<div class="decor-circle circle-1"></div>
+<div class="decor-circle circle-2"></div>
+
+<div class="form-wrapper">
+  <h2>Editar Inscripción</h2>
+  <form method="post" id="inscripcion-form" class="inscripcion-form" novalidate>
     {% csrf_token %}
     <div class="mb-3">
-        <label for="id-estudiante">Estudiante</label>
-        <select id="id-estudiante" class="form-control estudiante-field" name="estudiante" required>
-            <option value="">---------</option>
-            {% for estudiante in estudiantes %}
-                <option value="{{ estudiante.id }}" {% if inscripcion.estudiante.id == estudiante.id %}selected{% endif %}>{{ estudiante.username }}</option>
-            {% endfor %}
-        </select>
+      <label for="id-estudiante">Estudiante</label>
+      <select id="id-estudiante" class="form-control estudiante-field" name="estudiante" required>
+        <option value="">---------</option>
+        {% for estudiante in estudiantes %}
+          <option value="{{ estudiante.id }}" {% if inscripcion.estudiante.id == estudiante.id %}selected{% endif %}>{{ estudiante.username }}</option>
+        {% endfor %}
+      </select>
     </div>
+
     <div class="mb-3">
-        <label for="id-convocatoria">Convocatoria</label>
-        <select id="id-convocatoria" class="form-control convocatoria-field" name="convocatoria" required>
-            <option value="">---------</option>
-            {% for convocatoria in convocatorias %}
-                <option value="{{ convocatoria.id }}" {% if inscripcion.convocatoria.id == convocatoria.id %}selected{% endif %}>{{ convocatoria }}</option>
-            {% endfor %}
-        </select>
+      <label for="id-convocatoria">Convocatoria</label>
+      <select id="id-convocatoria" class="form-control convocatoria-field" name="convocatoria" required>
+        <option value="">---------</option>
+        {% for convocatoria in convocatorias %}
+          <option value="{{ convocatoria.id }}" {% if inscripcion.convocatoria.id == convocatoria.id %}selected{% endif %}>{{ convocatoria }}</option>
+        {% endfor %}
+      </select>
     </div>
+
     <div class="mb-3">
-        <label for="id-estado">Estado</label>
-        <select id="id-estado" class="form-control estado-field" name="estado" required>
-            <option value="pendiente" {% if inscripcion.estado == "pendiente" %}selected{% endif %}>Pendiente</option>
-            <option value="aprobado" {% if inscripcion.estado == "aprobado" %}selected{% endif %}>Aprobado</option>
-            <option value="rechazado" {% if inscripcion.estado == "rechazado" %}selected{% endif %}>Rechazado</option>
-        </select>
+      <label for="id-estado">Estado</label>
+      <select id="id-estado" class="form-control estado-field" name="estado" required>
+        <option value="pendiente" {% if inscripcion.estado == "pendiente" %}selected{% endif %}>Pendiente</option>
+        <option value="aprobado" {% if inscripcion.estado == "aprobado" %}selected{% endif %}>Aprobado</option>
+        <option value="rechazado" {% if inscripcion.estado == "rechazado" %}selected{% endif %}>Rechazado</option>
+      </select>
     </div>
+
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-</form>
+  </form>
+</div>
 {% endblock %}

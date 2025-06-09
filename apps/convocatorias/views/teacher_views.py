@@ -86,7 +86,7 @@ def eliminar_convocatoria(request, convocatoria_id):
 
     convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
     convocatoria.delete()
-    messages.success(request, "Convocatoria eliminada exitosamente.")
+    messages.success(request, "¡Convocatoria eliminada correctamente!")
     return redirect('lista_convocatorias')
 
 def eliminar_convocatorias_seleccionadas(request):
