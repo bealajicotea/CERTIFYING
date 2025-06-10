@@ -136,7 +136,7 @@ def crear_usuario(request):
         if files.get('foto_perfil'):
             usuario.foto_perfil = files.get('foto_perfil')
         usuario.save()
-        messages.success(request, "Usuario creado correctamente.")
+        messages.success(request, "¡Usuario creado exitosamente! Ahora puede iniciar sesión con sus credenciales.")
         return redirect('lista_usuarios')
     return render(request, 'usuarios/crear_usuario.html')
 
@@ -170,6 +170,7 @@ def editar_usuario(request, usuario_id):
         if files.get('foto_perfil'):
             usuario.foto_perfil = files.get('foto_perfil')
         usuario.save()
+        messages.success(request, "Los datos del usuario se actualizaron correctamente.")
         return redirect('lista_usuarios')
     return render(request, 'usuarios/editar_usuario.html', {'usuario': usuario})
 
@@ -184,6 +185,7 @@ def eliminar_usuario(request, usuario_id):
 
     usuario = get_object_or_404(Usuario, id=usuario_id)
     usuario.delete()
+    messages.success(request, "El usuario fue eliminado de manera permanente.")
     return redirect('lista_usuarios')
 
 
@@ -201,7 +203,7 @@ def eliminar_usuarios_seleccionados(request):
             Usuario.objects.filter(id__in=ids).delete()
             messages.success(request, "Usuarios eliminados correctamente.")
         else:
-            messages.warning(request, "No se seleccionó ningún usuario.")
+            messages.warning(request, "Por favor, seleccione al menos un usuario para eliminar.")
     return redirect('lista_usuarios')
 
 def detalle_usuario(request, usuario_id):

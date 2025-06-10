@@ -22,11 +22,11 @@ def lista_convocatorias_e(request):
                     convocatoria=convocatoria
                 )
                 if created:
-                    mensaje = {'tipo': 'success', 'texto': 'Inscripción realizada correctamente.'}
+                    mensaje = {'tipo': 'success', 'texto': '¡Te has inscrito correctamente en la convocatoria!'}
                 else:
-                    mensaje = {'tipo': 'danger', 'texto': 'Ya estabas inscrito en esta convocatoria.'}
+                    mensaje = {'tipo': 'danger', 'texto': 'Ya estás inscrito en esta convocatoria.'}
             except Exception as e:
-                mensaje = {'tipo': 'danger', 'texto': f'Error al inscribirse: {str(e)}'}
+                mensaje = {'tipo': 'danger', 'texto': f'Ocurrió un error al inscribirse: {str(e)}'}
         # No redirigir, solo mostrar mensaje en la misma página
 
     convocatorias = Convocatoria.objects.all()

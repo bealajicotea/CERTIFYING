@@ -144,7 +144,7 @@ def crear_convocatoria(request):
                 for est in estudiantes
             ]
             Inscripcion.objects.bulk_create(inscripciones)
-        messages.success(request, "Convocatoria creada exitosamente.")
+        messages.success(request, "¡Convocatoria creada exitosamente! Los estudiantes pueden inscribirse ahora.")
         return redirect('lista_convocatorias')
     # Para el formulario, pasar los choices
     contexto = {
@@ -174,7 +174,7 @@ def editar_convocatoria(request, convocatoria_id):
         convocatoria.nivel = data.get('nivel') or None
         convocatoria.estado = True if data.get('estado') == 'on' else False
         convocatoria.save()
-        messages.success(request, "Convocatoria editada exitosamente.")
+        messages.success(request, "La convocatoria fue actualizada correctamente.")
         return redirect('lista_convocatorias')
     contexto = {
         'convocatoria': convocatoria,
@@ -195,7 +195,7 @@ def eliminar_convocatoria(request, convocatoria_id):
 
     convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
     convocatoria.delete()
-    messages.success(request, "¡Convocatoria eliminada correctamente!")
+    messages.success(request, "La convocatoria fue eliminada correctamente.")
     return redirect('lista_convocatorias')
 
 def eliminar_convocatorias_seleccionadas(request):
@@ -211,6 +211,8 @@ def eliminar_convocatorias_seleccionadas(request):
         if ids:
             Convocatoria.objects.filter(id__in=ids).delete()
             messages.success(request, "Convocatorias eliminadas exitosamente.")
+        else:
+            messages.warning(request, "Seleccione al menos una convocatoria para eliminar.")
         # Mantener filtros al volver a la lista
         filtros = {
             'tipo_convocatoria': request.POST.get('tipo_convocatoria', ''),

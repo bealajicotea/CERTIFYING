@@ -131,14 +131,14 @@ def crear_resultado(request):
         nivel = data.get('nivel')
         # Verifica si ya existe un resultado para esa inscripción
         if Resultado.objects.filter(inscripcion_id=inscripcion_id).exists():
-            messages.error(request, "¡Ya existe un resultado para esta inscripción (estudiante y convocatoria)!")
+            messages.error(request, "Ya existe un resultado para esta inscripción.")
         else:
             resultado = Resultado(
                 inscripcion_id=inscripcion_id,
                 nota=nivel
             )
             resultado.save()
-            messages.success(request, "Resultado creado exitosamente.")
+            messages.success(request, "¡Resultado registrado exitosamente!")
             return redirect('lista_resultados')
     return render(request, 'resultados/crear_resultado.html', {
         'inscripciones': inscripciones,
@@ -156,6 +156,7 @@ def eliminar_resultado(request, resultado_id):
 
     resultado = get_object_or_404(Resultado, id=resultado_id)
     resultado.delete()
+    messages.success(request, "El resultado fue eliminado correctamente.")
     return redirect('lista_resultados')
 
 def eliminar_resultados_seleccionados(request):
@@ -170,6 +171,9 @@ def eliminar_resultados_seleccionados(request):
         ids = request.POST.getlist('resultados_seleccionados')
         if ids:
             Resultado.objects.filter(id__in=ids).delete()
+            messages.success(request, "Resultados eliminados correctamente.")
+        else:
+            messages.warning(request, "Seleccione al menos un resultado para eliminar.")
     return redirect('lista_resultados')
 
 def editar_resultado(request, resultado_id):
@@ -188,7 +192,7 @@ def editar_resultado(request, resultado_id):
         resultado.inscripcion_id = data.get('inscripcion')
         resultado.nota = data.get('nivel')
         resultado.save()
-        messages.success(request, "Resultado editado exitosamente.")
+        messages.success(request, "El resultado fue actualizado correctamente.")
         return redirect('lista_resultados')
     return render(request, 'resultados/editar_resultado.html', {
         'resultado': resultado,

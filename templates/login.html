@@ -10,7 +10,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Google Fonts: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/bases/messages.css' %}">
     <style>
+
         /* Reset y base */
         * {
             box-sizing: border-box;
@@ -142,10 +144,16 @@
         <div class="login-panel">
             <div class="login-container">
                 <h2>Iniciar Sesión</h2>
-                {% if error %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error }}
-                    </div>
+                <!-- Mostrar mensajes de Django -->
+                {% if messages %}
+                  <div id="messages-container">
+                    {% for message in messages %}
+                      <div class="message-toast message-{{ message.tags }}">
+                        <span>{{ message }}</span>
+                        <button class="close" onclick="this.parentElement.style.display='none'">&times;</button>
+                      </div>
+                    {% endfor %}
+                  </div>
                 {% endif %}
                 <form method="post" novalidate>
                     {% csrf_token %}
@@ -171,5 +179,13 @@
             <img src="{% static 'images/photo.jpg' %}" alt="Certificación Inglés" class="certification-image" />
         </div>
     </div>
+    <!-- Opcional: auto-ocultar mensajes después de unos segundos -->
+    <script>
+      setTimeout(function() {
+        document.querySelectorAll('.message-toast').forEach(function(el) {
+          el.style.display = 'none';
+        });
+      }, 5000);
+    </script>
 </body>
 </html>

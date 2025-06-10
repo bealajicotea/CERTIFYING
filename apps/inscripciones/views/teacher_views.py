@@ -135,10 +135,10 @@ def crear_inscripcion(request):
         )
         try:
             inscripcion.save()
-            messages.success(request, "Inscripción creada exitosamente.")
+            messages.success(request, "¡Inscripción realizada correctamente! El estudiante ha sido inscrito en la convocatoria.")
             return redirect('lista_inscripciones')
         except IntegrityError:
-            messages.error(request, "¡Alerta! Ya existe una inscripción para este estudiante y convocatoria.")
+            messages.error(request, "Este estudiante ya está inscrito en la convocatoria seleccionada.")
         except Exception as e:
             messages.error(request, f"Ocurrió un error al crear la inscripción: {e}")
     return render(request, 'inscripciones/crear_inscripcion.html', {
@@ -155,6 +155,7 @@ def eliminar_inscripcion(request, inscripcion_id):
         return redirect('pagina_principal')
     inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
     inscripcion.delete()
+    messages.success(request, "La inscripción fue eliminada exitosamente.")
     return redirect('lista_inscripciones')
 
 def eliminar_inscripciones_seleccionadas(request):
@@ -169,6 +170,9 @@ def eliminar_inscripciones_seleccionadas(request):
         ids = request.POST.getlist('inscripciones_seleccionadas')
         if ids:
             Inscripcion.objects.filter(id__in=ids).delete()
+            messages.success(request, "Inscripciones eliminadas correctamente.")
+        else:
+            messages.warning(request, "Debe seleccionar al menos una inscripción para eliminar.")
         filtros = {
             'facultad': request.GET.get('facultad', ''),
             'grupo': request.GET.get('grupo', ''),
@@ -198,7 +202,7 @@ def editar_inscripcion(request, inscripcion_id):
         inscripcion.convocatoria_id = data.get('convocatoria')
         inscripcion.estado = data.get('estado')
         inscripcion.save()
-        messages.success(request, "Inscripción editada exitosamente.")
+        messages.success(request, "La inscripción se actualizó correctamente.")
         return redirect('lista_inscripciones')
     return render(request, 'inscripciones/editar_inscripcion.html', {
         'inscripcion': inscripcion,
@@ -260,20 +264,19 @@ def evaluarInscripcion(request):
         nota = request.POST.get('codigo')
 
         if not inscripcion_id or not nota:
-            messages.error(request, "Datos incompletos para evaluar la inscripción.")
+            messages.error(request, "Debe ingresar una nota válida para evaluar la inscripción.")
             contexto = obtener_inscripciones_filtradas(filtros)
             return render(request, 'inscripciones/lista_inscripciones.html', contexto)
 
         inscripcion = get_object_or_404(Inscripcion, id=inscripcion_id)
-        # Evita duplicados: si ya existe resultado, actualiza; si no, crea
         resultado = getattr(inscripcion, 'resultado', None)
         if resultado is not None:
             resultado.nota = nota
             resultado.save()
-            messages.success(request, "Nota actualizada correctamente.")
+            messages.success(request, "La nota de la inscripción fue actualizada correctamente.")
         else:
             Resultado.objects.create(inscripcion=inscripcion, nota=nota)
-            messages.success(request, "Nota registrada correctamente.")
+            messages.success(request, "La nota fue registrada correctamente para la inscripción seleccionada.")
 
         # Redirigir a la lista de inscripciones con los filtros como parámetros GET
         query_string = urlencode({k: v for k, v in filtros.items() if v})
