@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.db import IntegrityError  # Asegúrate de tener esta importación
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from urllib.parse import urlencode
 
@@ -103,6 +104,16 @@ def lista_inscripciones(request):
     filtros_activos = request.GET.get('filtros_activos', '')
     contexto = obtener_inscripciones_filtradas(filtros)
     contexto['filtros_activos'] = filtros_activos
+
+    # Paginación
+    inscripciones = contexto['inscripciones']
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(inscripciones, 6)  # 10 por página
+    page_obj = paginator.get_page(page_number)
+    contexto['inscripciones'] = page_obj
+    contexto['page_obj'] = page_obj
+    contexto['is_paginated'] = page_obj.has_other_pages()
+
     return render(request, 'inscripciones/lista_inscripciones.html', contexto)
 
 def crear_inscripcion(request):
