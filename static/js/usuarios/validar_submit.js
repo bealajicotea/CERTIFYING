@@ -15,8 +15,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastNameError = document.getElementById('last_name-error');
     const tipoUsuarioInput = document.getElementById('id-tipo_usuario');
     let tipoUsuarioError = document.getElementById('tipo_usuario-error');
+    const grupoInput = document.getElementById('id-grupo');
+    let grupoError = document.getElementById('grupo-error');
+    const anioEscolarInput = document.getElementById('id-anio_escolar');
+    let anioEscolarError = document.getElementById('anio_escolar-error');
+    const carreraInput = document.getElementById('id-carrera');
+    let carreraError = document.getElementById('carrera-error');
+    const cursoInput = document.getElementById('id-curso');
+    let cursoError = document.getElementById('curso-error');
+    const nivelInput = document.getElementById('id-nivel');
+    let nivelError = document.getElementById('nivel-error');
 
-    // Crear errores si no existen
     function ensureErrorDiv(input, errorDiv, id) {
         if (!input) return null;
         if (!errorDiv) {
@@ -32,6 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
     firstNameError = ensureErrorDiv(firstNameInput, firstNameError, 'first_name-error');
     lastNameError = ensureErrorDiv(lastNameInput, lastNameError, 'last_name-error');
     tipoUsuarioError = ensureErrorDiv(tipoUsuarioInput, tipoUsuarioError, 'tipo_usuario-error');
+    grupoError = ensureErrorDiv(grupoInput, grupoError, 'grupo-error');
+    anioEscolarError = ensureErrorDiv(anioEscolarInput, anioEscolarError, 'anio_escolar-error');
+    carreraError = ensureErrorDiv(carreraInput, carreraError, 'carrera-error');
+    cursoError = ensureErrorDiv(cursoInput, cursoError, 'curso-error');
+    nivelError = ensureErrorDiv(nivelInput, nivelError, 'nivel-error');
 
     // Referencias a las tabs y contenidos de pestañas
     const tabs = document.querySelectorAll('.tab');
@@ -172,6 +186,75 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Si es estudiante, los campos académicos son obligatorios
+        if (tipoUsuarioInput && tipoUsuarioInput.value === 'estudiante') {
+            if (grupoInput && grupoError) {
+                if (!grupoInput.value) {
+                    grupoError.textContent = "El grupo es obligatorio.";
+                    grupoError.style.display = "block";
+                    grupoInput.classList.add('is-invalid');
+                    valid = false;
+                    if (!firstInvalid) firstInvalid = grupoInput;
+                } else {
+                    grupoError.textContent = "";
+                    grupoError.style.display = "none";
+                    grupoInput.classList.remove('is-invalid');
+                }
+            }
+            if (anioEscolarInput && anioEscolarError) {
+                if (!anioEscolarInput.value) {
+                    anioEscolarError.textContent = "El año escolar es obligatorio.";
+                    anioEscolarError.style.display = "block";
+                    anioEscolarInput.classList.add('is-invalid');
+                    valid = false;
+                    if (!firstInvalid) firstInvalid = anioEscolarInput;
+                } else {
+                    anioEscolarError.textContent = "";
+                    anioEscolarError.style.display = "none";
+                    anioEscolarInput.classList.remove('is-invalid');
+                }
+            }
+            if (carreraInput && carreraError) {
+                if (!carreraInput.value) {
+                    carreraError.textContent = "La carrera es obligatoria.";
+                    carreraError.style.display = "block";
+                    carreraInput.classList.add('is-invalid');
+                    valid = false;
+                    if (!firstInvalid) firstInvalid = carreraInput;
+                } else {
+                    carreraError.textContent = "";
+                    carreraError.style.display = "none";
+                    carreraInput.classList.remove('is-invalid');
+                }
+            }
+            if (cursoInput && cursoError) {
+                if (!cursoInput.value) {
+                    cursoError.textContent = "El curso es obligatorio.";
+                    cursoError.style.display = "block";
+                    cursoInput.classList.add('is-invalid');
+                    valid = false;
+                    if (!firstInvalid) firstInvalid = cursoInput;
+                } else {
+                    cursoError.textContent = "";
+                    cursoError.style.display = "none";
+                    cursoInput.classList.remove('is-invalid');
+                }
+            }
+            if (nivelInput && nivelError) {
+                if (!nivelInput.value) {
+                    nivelError.textContent = "El nivel es obligatorio.";
+                    nivelError.style.display = "block";
+                    nivelInput.classList.add('is-invalid');
+                    valid = false;
+                    if (!firstInvalid) firstInvalid = nivelInput;
+                } else {
+                    nivelError.textContent = "";
+                    nivelError.style.display = "none";
+                    nivelInput.classList.remove('is-invalid');
+                }
+            }
+        }
+
         // Guardar el id de la pestaña donde está el primer campo inválido
         if (firstInvalid) {
             let parentTabContent = firstInvalid.closest('.tab-content');
@@ -207,9 +290,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     contentToActivate.classList.add('active');
                     contentToActivate.hidden = false;
                 }
-            }
-            if (firstInvalid && typeof firstInvalid.focus === 'function') {
-                firstInvalid.focus();
+
+                // Enfocar el primer campo inválido
+                if (firstInvalid) {
+                    firstInvalid.focus();
+                }
             }
         }
     });
