@@ -5,6 +5,7 @@ from apps.usuarios.models import Usuario
 from apps.convocatorias.models import Convocatoria
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # --- Funciones auxiliares de filtrado y búsqueda para Resultado ---
 
@@ -103,6 +104,14 @@ def lista_resultados(request):
         'filtros_activos': request.GET.get('filtros_activos', ''),
     }
     contexto = obtener_resultados_filtrados(filtros)
+    # Paginación
+    resultados = contexto['resultados']
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(resultados, 6)  # 10 por página
+    page_obj = paginator.get_page(page_number)
+    contexto['resultados'] = page_obj
+    contexto['page_obj'] = page_obj
+    contexto['is_paginated'] = page_obj.has_other_pages()
     return render(request, 'resultados/lista_resultados.html', contexto)
 
 def crear_resultado(request):
