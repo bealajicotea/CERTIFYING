@@ -117,6 +117,7 @@
             <div class="mb-3">
                 <label for="id-username">Usuario</label>
                 <input type="text" id="id-username" class="form-control" name="username" required>
+                <div id="username-error" style="color: #dc3545; font-size: 0.95em; margin-top: 0.25rem; display: none;"></div>
             </div>
             <div class="mb-3">
                 <label for="id-password">Contraseña</label>
@@ -249,6 +250,8 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="{% static 'js/usuarios/validar_onchange.js' %}"></script>
+<script src="{% static 'js/usuarios/validar_submit.js' %}"></script>
 <script>
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -288,7 +291,6 @@
         });
     });
 </script>
-
 <script>
     const facultadNombres = {
         '1': 'FTL',

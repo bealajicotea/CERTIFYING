@@ -43,6 +43,7 @@ def buscar_en_resultados(resultados, buscar):
     if buscar:
         return resultados.filter(
             Q(inscripcion__estudiante__username__icontains=buscar) |
+            Q(inscripcion__estudiante__facultad__icontains=buscar) |
             Q(inscripcion__estudiante__first_name__icontains=buscar) |
             Q(inscripcion__estudiante__last_name__icontains=buscar) |
             Q(inscripcion__convocatoria__tipo__icontains=buscar) |
