@@ -5,6 +5,7 @@ from apps.inscripciones.models import Inscripcion
 from apps.usuarios.models import Usuario
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # --- Funciones auxiliares de filtrado y búsqueda para Convocatoria ---
 
@@ -98,6 +99,16 @@ def lista_convocatorias(request):
     filtros_activos = request.GET.get('filtros_activos', '')
     contexto = obtener_convocatorias_filtradas(filtros)
     contexto['filtros_activos'] = filtros_activos
+
+    # Paginación
+    convocatorias = contexto['convocatorias']
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(convocatorias, 6)  # 10 por página
+    page_obj = paginator.get_page(page_number)
+    contexto['convocatorias'] = page_obj
+    contexto['page_obj'] = page_obj
+    contexto['is_paginated'] = page_obj.has_other_pages()
+
     return render(request, 'convocatorias/lista_convocatorias.html', contexto)
 
 def crear_convocatoria(request):

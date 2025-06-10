@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from apps.convocatorias.models import Convocatoria
 from apps.inscripciones.models import Inscripcion
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 def lista_convocatorias_e(request):
     if not request.user.is_authenticated:
@@ -29,7 +30,16 @@ def lista_convocatorias_e(request):
         # No redirigir, solo mostrar mensaje en la misma página
 
     convocatorias = Convocatoria.objects.all()
-    return render(request, 'rol_estudiante/lista_convocatorias_e.html', {'convocatorias': convocatorias, 'mensaje': mensaje})
+    # Paginación
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(convocatorias, 10)  # 10 por página
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'rol_estudiante/lista_convocatorias_e.html', {
+        'convocatorias': page_obj,
+        'mensaje': mensaje,
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+    })
 
 def detalle_convocatoriae(request, convocatoria_id):
     convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
