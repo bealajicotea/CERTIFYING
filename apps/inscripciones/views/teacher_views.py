@@ -251,6 +251,8 @@ def evaluarInscripcion(request):
         'anio_escolar': request.POST.get('anio_escolar', ''),
         'tipo_convocatoria': request.POST.get('tipo_convocatoria', ''),
         'nivel': request.POST.get('nivel', ''),
+        'buscar': request.POST.get('buscar', ''),
+        'filtros_activos': request.POST.get('filtros_activos', ''),
     }
 
     if request.method == "POST":
@@ -272,6 +274,10 @@ def evaluarInscripcion(request):
         else:
             Resultado.objects.create(inscripcion=inscripcion, nota=nota)
             messages.success(request, "Nota registrada correctamente.")
+
+        # Redirigir a la lista de inscripciones con los filtros como parámetros GET
+        query_string = urlencode({k: v for k, v in filtros.items() if v})
+        return redirect(f"{reverse('lista_inscripciones')}?{query_string}")
 
     # Siempre devolver la lista con el filtrado actual
     contexto = obtener_inscripciones_filtradas(filtros)

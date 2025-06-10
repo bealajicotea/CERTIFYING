@@ -1,0 +1,69 @@
+#messages-container {
+  position: fixed;
+  z-index: 9999;
+  right: 24px;
+  bottom: 24px;
+  max-width: 350px;
+  min-width: 240px;
+  pointer-events: none;
+}
+
+.message-toast {
+  margin-bottom: 12px;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  padding: 1rem 1.5rem 1rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  opacity: 0.97;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  animation: slideInRight 0.5s;
+}
+
+.message-toast .close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #333;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.message-toast.message-success {
+  background: linear-gradient(90deg, #d4fc79 0%, #96e6a1 100%);
+  color: #155724;
+  border-left: 6px solid #28a745;
+}
+
+.message-toast.message-info {
+  background: linear-gradient(90deg, #e3f0ff 0%, #b3d8fd 100%);
+  color: #0d6efd;
+  border-left: 6px solid #0d6efd;
+}
+
+.message-toast.message-warning {
+  background: linear-gradient(90deg, #fffbe7 0%, #ffe082 100%);
+  color: #856404;
+  border-left: 6px solid #ffc107;
+}
+
+.message-toast.message-error,
+.message-toast.message-danger {
+  background: linear-gradient(90deg, #ffd6d6 0%, #ffb3b3 100%);
+  color: #721c24;
+  border-left: 6px solid #dc3545;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 0.97;
+  }
+}

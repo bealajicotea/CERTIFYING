@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from apps.usuarios.models import Usuario
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # --- Funciones auxiliares de filtrado y búsqueda para Usuario ---
 
@@ -94,6 +95,14 @@ def lista_usuarios(request):
         'filtros_activos': request.GET.get('filtros_activos', ''),
     }
     contexto = obtener_usuarios_filtrados(filtros)
+    # Paginación
+    usuarios = contexto['usuarios']
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(usuarios, 6)  # 10 por página
+    page_obj = paginator.get_page(page_number)
+    contexto['usuarios'] = page_obj
+    contexto['page_obj'] = page_obj
+    contexto['is_paginated'] = page_obj.has_other_pages()
     return render(request, 'usuarios/lista_usuarios.html', contexto)
 
 
@@ -127,6 +136,7 @@ def crear_usuario(request):
         if files.get('foto_perfil'):
             usuario.foto_perfil = files.get('foto_perfil')
         usuario.save()
+        messages.success(request, "Usuario creado correctamente.")
         return redirect('lista_usuarios')
     return render(request, 'usuarios/crear_usuario.html')
 
