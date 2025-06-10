@@ -72,7 +72,7 @@
 <!-- Formulario de Inscripción -->
 <div class="form-wrapper">
     <h2>Crear Inscripción</h2>
-    <form method="post" id="inscripcion-form" class="inscripcion-form">
+    <form method="post" enctype="multipart/form-data" id="inscripcion-form">
         {% csrf_token %}
         <div class="mb-3">
             <label for="id-estudiante">Estudiante</label>
