@@ -105,7 +105,7 @@
             </select>
         </div>
 
-        <div class="row mb-3">
+        <div class="row mb-3" id="fecha-row">
             <div class="col-md-6">
             <label for="id-fecha">Fecha</label>
             <input type="date" id="id-fecha" class="form-control" name="fecha" required style="padding: 10px; border-radius: 10px;">
@@ -116,8 +116,7 @@
         </div>
         </div>
 
-
-        <div class="mb-3">
+        <div class="mb-3" id="nivel-div" style="display:none;">
             <label for="id-nivel">Nivel</label>
             <select id="id-nivel" class="form-control" name="nivel">
                 <option value="">---------</option>
@@ -139,4 +138,5 @@
     </form>
 </div>
 
+<script src="{% static 'js/convocatorias/formulario.js' %}"></script>
 {% endblock %}
