@@ -120,7 +120,10 @@ def crear_convocatoria(request):
         return redirect('pagina_principal')
 
     if request.method == 'POST':
-        data = request.POST
+        data = request.POST.copy()
+        # Convertir cadena vacía a None para fecha
+        if data.get('fecha', '') == '':
+            data['fecha'] = None
         convocatoria = Convocatoria(
             tipo=data.get('tipo'),
             descripcion=data.get('descripcion'),

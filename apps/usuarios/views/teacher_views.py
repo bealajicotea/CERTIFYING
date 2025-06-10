@@ -117,27 +117,34 @@ def crear_usuario(request):
     if request.method == 'POST':
         data = request.POST
         files = request.FILES
-        usuario = Usuario(
-            username=data.get('username'),
-            email=data.get('email'),
-            first_name=data.get('first_name'),
-            last_name=data.get('last_name'),
-            tipo_usuario=data.get('tipo_usuario'),
-            facultad=data.get('facultad') or None,
-            anio_escolar=data.get('anio_escolar') or None,
-            grupo=data.get('grupo') or '',
-            carrera=data.get('carrera') or None,
-            curso=data.get('curso') or None,
-            nivel=data.get('nivel') or None,
-        )
-        password = data.get('password')
-        if password:
-            usuario.password = make_password(password)
-        if files.get('foto_perfil'):
-            usuario.foto_perfil = files.get('foto_perfil')
-        usuario.save()
-        messages.success(request, "¡Usuario creado exitosamente! Ahora puede iniciar sesión con sus credenciales.")
-        return redirect('lista_usuarios')
+        try:
+            usuario = Usuario(
+                username=data.get('username'),
+                email=data.get('email'),
+                first_name=data.get('first_name'),
+                last_name=data.get('last_name'),
+                tipo_usuario=data.get('tipo_usuario'),
+                facultad=data.get('facultad') or None,
+                anio_escolar=data.get('anio_escolar') or None,
+                grupo=data.get('grupo') or '',
+                carrera=data.get('carrera') or None,
+                curso=data.get('curso') or None,
+                nivel=data.get('nivel') or None,
+            )
+            password = data.get('password')
+            if password:
+                usuario.password = make_password(password)
+            if files.get('foto_perfil'):
+                usuario.foto_perfil = files.get('foto_perfil')
+            usuario.save()
+            messages.success(request, "¡Usuario creado exitosamente! Ahora puede iniciar sesión con sus credenciales.")
+            return redirect('lista_usuarios')
+        except Exception as e:
+            if 'UNIQUE constraint failed: usuarios_usuario.username' in str(e):
+                messages.error(request, "El nombre de usuario ya existe. Por favor, elija otro.")
+            else:
+                messages.error(request, f"Error al crear el usuario: {e}")
+            return redirect('crear_usuario')
     return render(request, 'usuarios/crear_usuario.html')
 
 def editar_usuario(request, usuario_id):

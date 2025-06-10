@@ -32,7 +32,7 @@ class Convocatoria(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPO_CONVOCATORIA)
     descripcion = models.TextField(max_length=300)
     lugar = models.CharField(max_length=100, choices=lugares)
-    fecha = models.DateField()
+    fecha = models.DateField(blank=True, null=True)  # Permitir nulos temporalmente
     hora = models.TimeField()
     profesor = models.ForeignKey(
         Usuario,
