@@ -43,6 +43,11 @@ def buscar_en_inscripciones(inscripciones, buscar):
     if buscar:
         return inscripciones.filter(
             Q(estudiante__username__icontains=buscar) |
+            Q(estudiante__first_name__icontains=buscar) |
+            Q(estudiante__last_name__icontains=buscar) |
+            Q(estudiante__facultad__icontains=buscar) |
+            Q(estudiante__grupo__icontains=buscar) |
+            Q(estudiante__anio_escolar__icontains=buscar) |
             Q(convocatoria__tipo__icontains=buscar) |
             Q(fecha_inscripcion__icontains=buscar)
         )

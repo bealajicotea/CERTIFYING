@@ -159,12 +159,12 @@
       <label for="id-facultad">Facultad</label>
       <select id="id-facultad" class="form-control" name="facultad">
         <option value="">---------</option>
-        <option value="1" {% if usuario.facultad == "1" %}selected{% endif %}>FTL</option>
-        <option value="2" {% if usuario.facultad == "2" %}selected{% endif %}>FCS</option>
-        <option value="3" {% if usuario.facultad == "3" %}selected{% endif %}>FIO</option>
-        <option value="4" {% if usuario.facultad == "4" %}selected{% endif %}>FTI</option>
-        <option value="5" {% if usuario.facultad == "5" %}selected{% endif %}>CITEC</option>
-        <option value="6" {% if usuario.facultad == "6" %}selected{% endif %}>FTE</option>
+        <option value="FTL" {% if usuario.facultad == "FTL" %}selected{% endif %}>FTL</option>
+            <option value="FCS" {% if usuario.facultad == "FCS" %}selected{% endif %}>FCS</option>
+            <option value="FIO" {% if usuario.facultad == "FIO" %}selected{% endif %}>FIO</option>
+            <option value="FTI" {% if usuario.facultad == "FTI" %}selected{% endif %}>FTI</option>
+            <option value="CITEC" {% if usuario.facultad == "CITEC" %}selected{% endif %}>CITEC</option>
+            <option value="FTE" {% if usuario.facultad == "FTE" %}selected{% endif %}>FTE</option>
       </select>
 
       <label for="id-anio_escolar">Año Escolar</label>

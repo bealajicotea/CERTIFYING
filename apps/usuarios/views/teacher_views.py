@@ -38,12 +38,16 @@ def buscar_en_usuarios(usuarios, buscar):
     Busca en los usuarios filtrados por varios campos.
     """
     if buscar:
-        # El filtro debe ser sobre los campos correctos y no sobre los choices
         return usuarios.filter(
             Q(username__icontains=buscar) |
             Q(first_name__icontains=buscar) |
             Q(last_name__icontains=buscar) |
-            Q(email__icontains=buscar)
+            Q(email__icontains=buscar) |
+            Q(facultad__icontains=buscar) |
+            Q(grupo__icontains=buscar) |
+            Q(anio_escolar__icontains=buscar) |
+            Q(carrera__icontains=buscar) |
+            Q(tipo_usuario__icontains=buscar)
         )
     return usuarios
 

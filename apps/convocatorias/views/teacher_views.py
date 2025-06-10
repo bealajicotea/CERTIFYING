@@ -39,13 +39,12 @@ def buscar_en_convocatorias(convocatorias, buscar):
     """
     if buscar:
         return convocatorias.filter(
-            Q(descripcion__icontains=buscar) |
+            Q(tipo__icontains=buscar) |
+            Q(nivel__icontains=buscar) |
             Q(lugar__icontains=buscar) |
             Q(fecha__icontains=buscar) |
             Q(hora__icontains=buscar) |
-            Q(profesor__username__icontains=buscar) |
-            Q(tipo__icontains=buscar) |
-            Q(nivel__icontains=buscar)
+            Q(profesor__username__icontains=buscar)
         )
     return convocatorias
 
