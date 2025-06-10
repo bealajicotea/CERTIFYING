@@ -19,10 +19,10 @@ class Usuario(AbstractUser):
     ]
 
     car =[  
-        ('1','Ingenieria en Ciencias Informáticas'),
-        ('2','Ciberseguridad'),
-        ('3', 'Bioinformática'),
-        ('4', 'Redes y Seguridad Informática'),
+        ('Ingenieria en Ciencias Informáticas','Ingenieria en Ciencias Informáticas'),
+        ('Ciberseguridad','Ciberseguridad'),
+        ('Bioinformática', 'Bioinformática'),
+        ('Redes y Seguridad Informática', 'Redes y Seguridad Informática'),
     ]
 
     niveles = [
