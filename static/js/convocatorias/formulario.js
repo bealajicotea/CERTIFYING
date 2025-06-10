@@ -1,14 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
     const tipoSelect = document.getElementById('id-tipo');
-    const fechaRow = document.getElementById('fecha-row');
+    const fechaCol = document.getElementById('fecha-col');
     const nivelDiv = document.getElementById('nivel-div');
+    const fechaInput = document.getElementById('id-fecha');
 
     function updateFields() {
         if (tipoSelect.value === 'curso') {
-            fechaRow.style.display = 'none';
+            fechaCol.style.display = 'none';
+            fechaInput.required = false;
             nivelDiv.style.display = '';
         } else {
-            fechaRow.style.display = '';
+            fechaCol.style.display = '';
+            fechaInput.required = true;
             nivelDiv.style.display = 'none';
         }
     }

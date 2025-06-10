@@ -106,14 +106,14 @@
         </div>
 
         <div class="row mb-3" id="fecha-row">
-            <div class="col-md-6">
-            <label for="id-fecha">Fecha</label>
-            <input type="date" id="id-fecha" class="form-control" name="fecha" required style="padding: 10px; border-radius: 10px;">
-        </div>
-        <div class="col-md-6 mt-3 mt-md-0">
-            <label for="id-hora">Hora</label>
-            <input type="time" id="id-hora" class="form-control" name="hora" required style="padding: 10px; border-radius: 10px;">
-        </div>
+            <div class="col-md-6" id="fecha-col">
+                <label for="id-fecha">Fecha</label>
+                <input type="date" id="id-fecha" class="form-control" name="fecha" data-required="true" style="padding: 10px; border-radius: 10px;">
+            </div>
+            <div class="col-md-6 mt-3 mt-md-0" id="hora-col">
+                <label for="id-hora">Hora</label>
+                <input type="time" id="id-hora" class="form-control" name="hora" required style="padding: 10px; border-radius: 10px;">
+            </div>
         </div>
 
         <div class="mb-3" id="nivel-div" style="display:none;">
@@ -139,4 +139,5 @@
 </div>
 
 <script src="{% static 'js/convocatorias/formulario.js' %}"></script>
+<script src="{% static 'js/convocatorias/validar_submit.js' %}"></script>
 {% endblock %}
