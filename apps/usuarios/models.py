@@ -35,12 +35,12 @@ class Usuario(AbstractUser):
     ]
 
     fac = [
-        ('1','FTL'),
-        ('2','FCS'),
-        ('3','FIO'),
-        ('4','FTI'),
-        ('5','CITEC'),
-        ('6','FTE'),
+        ('FTL','FTL'),
+        ('FCS','FCS'),
+        ('FIO','FIO'),
+        ('FTI','FTI'),
+        ('CITEC','CITEC'),
+        ('FTE','FTE'),
     ]
 
     group = [
@@ -61,7 +61,7 @@ class Usuario(AbstractUser):
         ('C2','C2'),
     ]
 
-    facultad = models.CharField(max_length=2, choices=fac, null=True, blank=True)
+    facultad = models.CharField(max_length=10, choices=fac, null=True, blank=True)
     anio_escolar = models.CharField(max_length=1, choices=anios, null=True, blank=True)
     grupo = models.CharField(max_length=20,choices= group, blank=True)
     carrera = models.CharField(max_length=100,choices=car, null=True, blank=True)
