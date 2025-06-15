@@ -21,10 +21,4 @@ document.addEventListener('DOMContentLoaded', function () {
     // Por defecto, el formulario se enviará normalmente.
     // e.preventDefault();
   });
-
-  // Establece la acción del formulario oculto al cargar la página
-  var formOculto = document.getElementById('formNotasCertificacion');
-  if (formOculto) {
-    formOculto.action = formOculto.getAttribute('data-action-url');
-  }
 });

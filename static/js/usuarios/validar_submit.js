@@ -240,6 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     cursoInput.classList.remove('is-invalid');
                 }
             }
+            /*
             if (nivelInput && nivelError) {
                 if (!nivelInput.value) {
                     nivelError.textContent = "El nivel es obligatorio.";
@@ -252,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     nivelError.style.display = "none";
                     nivelInput.classList.remove('is-invalid');
                 }
-            }
+            }*/
         }
 
         // Guardar el id de la pestaña donde está el primer campo inválido

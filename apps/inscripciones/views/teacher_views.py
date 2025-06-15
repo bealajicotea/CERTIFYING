@@ -238,8 +238,7 @@ def evaluar(inscripcion_id, nota):
 def evaluarInscripcion(request):
     """
     Vista para evaluar una inscripción desde un formulario oculto.
-    Espera recibir 'elemento_id' (id de la inscripción), 'codigo' (nota)
-    y los filtros de búsqueda para mantenerlos tras la acción.
+    Si la convocatoria es de tipo curso o colocacion, la nota se asigna también al usuario.
     """
     if not request.user.is_authenticated:
         messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
@@ -277,6 +276,12 @@ def evaluarInscripcion(request):
         else:
             Resultado.objects.create(inscripcion=inscripcion, nota=nota)
             messages.success(request, "La nota fue registrada correctamente para la inscripción seleccionada.")
+
+        # Si la convocatoria es de tipo curso o colocacion, actualizar el nivel del usuario
+        if inscripcion.convocatoria.tipo in ['curso', 'colocacion']:
+            usuario = inscripcion.estudiante
+            usuario.nivel = nota
+            usuario.save()
 
         # Redirigir a la lista de inscripciones con los filtros como parámetros GET
         query_string = urlencode({k: v for k, v in filtros.items() if v})
