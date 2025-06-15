@@ -17,14 +17,32 @@ def lista_convocatorias_e(request):
         else:
             try:
                 convocatoria = get_object_or_404(Convocatoria, id=convocatoria_id)
-                inscripcion, created = Inscripcion.objects.get_or_create(
-                    estudiante=request.user,
-                    convocatoria=convocatoria
-                )
-                if created:
-                    mensaje = {'tipo': 'success', 'texto': '¡Te has inscrito correctamente en la convocatoria!'}
+                # Restricción para certificación: solo A2 o superior
+                if convocatoria.tipo == 'certificacion':
+                    niveles_validos = ['A2', 'B1', 'B2', 'C1', 'C2']
+                    if request.user.nivel not in niveles_validos:
+                        mensaje = {
+                            'tipo': 'danger',
+                            'texto': 'Solo puedes inscribirte en certificaciones si tienes nivel A2 o superior.'
+                        }
+                    else:
+                        inscripcion, created = Inscripcion.objects.get_or_create(
+                            estudiante=request.user,
+                            convocatoria=convocatoria
+                        )
+                        if created:
+                            mensaje = {'tipo': 'success', 'texto': '¡Te has inscrito correctamente en la convocatoria!'}
+                        else:
+                            mensaje = {'tipo': 'danger', 'texto': 'Ya estás inscrito en esta convocatoria.'}
                 else:
-                    mensaje = {'tipo': 'danger', 'texto': 'Ya estás inscrito en esta convocatoria.'}
+                    inscripcion, created = Inscripcion.objects.get_or_create(
+                        estudiante=request.user,
+                        convocatoria=convocatoria
+                    )
+                    if created:
+                        mensaje = {'tipo': 'success', 'texto': '¡Te has inscrito correctamente en la convocatoria!'}
+                    else:
+                        mensaje = {'tipo': 'danger', 'texto': 'Ya estás inscrito en esta convocatoria.'}
             except Exception as e:
                 mensaje = {'tipo': 'danger', 'texto': f'Ocurrió un error al inscribirse: {str(e)}'}
         # No redirigir, solo mostrar mensaje en la misma página
