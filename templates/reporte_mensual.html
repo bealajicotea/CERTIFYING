@@ -11,29 +11,29 @@
   <!-- Filtros y búsqueda -->
   <form method="get" class="row g-2 mb-4">
     <div class="col-auto">
-      <input type="text" name="buscar" class="form-control form-control-sm" placeholder="Buscar..." value="{{ request.GET.buscar }}">
+      <input type="text" name="buscar" class="form-control form-control-sm" placeholder="Buscar..." value="{{ buscar }}">
     </div>
     <div class="col-auto">
       <select name="tipo_convocatoria" class="form-select form-select-sm">
         <option value="">Tipo Convocatoria</option>
-        {% for tipo in convocatorias_por_tipo %}
-          <option value="{{ tipo.tipo }}" {% if request.GET.tipo_convocatoria == tipo.tipo %}selected{% endif %}>{{ tipo.tipo|capfirst }}</option>
+        {% for tipo in todos_tipos %}
+          <option value="{{ tipo }}" {% if selected_tipo_convocatoria == tipo %}selected{% endif %}>{{ tipo|capfirst }}</option>
         {% endfor %}
       </select>
     </div>
     <div class="col-auto">
       <select name="estado_inscripcion" class="form-select form-select-sm">
         <option value="">Estado Inscripción</option>
-        {% for estado in inscripciones_por_estado %}
-          <option value="{{ estado.estado }}" {% if request.GET.estado_inscripcion == estado.estado %}selected{% endif %}>{{ estado.estado|capfirst }}</option>
+        {% for estado in todos_estados %}
+          <option value="{{ estado }}" {% if selected_estado_inscripcion == estado %}selected{% endif %}>{{ estado|capfirst }}</option>
         {% endfor %}
       </select>
     </div>
     <div class="col-auto">
       <select name="nivel" class="form-select form-select-sm">
         <option value="">Nivel</option>
-        {% for nivel in resultados_por_nivel %}
-          <option value="{{ nivel.nota }}" {% if request.GET.nivel == nivel.nota %}selected{% endif %}>{{ nivel.nota }}</option>
+        {% for nivel in todos_niveles %}
+          <option value="{{ nivel }}" {% if selected_nivel == nivel %}selected{% endif %}>{{ nivel }}</option>
         {% endfor %}
       </select>
     </div>
@@ -99,6 +99,27 @@
         {% endfor %}
       </tbody>
     </table>
+    {% if convocatorias_por_tipo.has_other_pages %}
+    <nav aria-label="Paginación">
+      <ul class="pagination justify-content-center">
+        {% if convocatorias_por_tipo.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page_c={{ convocatorias_por_tipo.previous_page_number }}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">Anterior</a>
+          </li>
+        {% endif %}
+        {% for num in convocatorias_por_tipo.paginator.page_range %}
+          <li class="page-item {% if convocatorias_por_tipo.number == num %}active{% endif %}">
+            <a class="page-link" href="?page_c={{ num }}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">{{ num }}</a>
+          </li>
+        {% endfor %}
+        {% if convocatorias_por_tipo.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page_c={{ convocatorias_por_tipo.next_page_number }}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
   </div>
 
   <!-- Tabla de inscripciones por estado -->
@@ -122,6 +143,27 @@
         {% endfor %}
       </tbody>
     </table>
+    {% if inscripciones_por_estado.has_other_pages %}
+    <nav aria-label="Paginación">
+      <ul class="pagination justify-content-center">
+        {% if inscripciones_por_estado.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page_i={{ inscripciones_por_estado.previous_page_number }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">Anterior</a>
+          </li>
+        {% endif %}
+        {% for num in inscripciones_por_estado.paginator.page_range %}
+          <li class="page-item {% if inscripciones_por_estado.number == num %}active{% endif %}">
+            <a class="page-link" href="?page_i={{ num }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">{{ num }}</a>
+          </li>
+        {% endfor %}
+        {% if inscripciones_por_estado.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page_i={{ inscripciones_por_estado.next_page_number }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
   </div>
 
   <!-- Tabla de inscripciones por convocatoria -->
@@ -145,6 +187,27 @@
         {% endfor %}
       </tbody>
     </table>
+    {% if inscripciones_por_convocatoria.has_other_pages %}
+    <nav aria-label="Paginación">
+      <ul class="pagination justify-content-center">
+        {% if inscripciones_por_convocatoria.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page_ic={{ inscripciones_por_convocatoria.previous_page_number }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">Anterior</a>
+          </li>
+        {% endif %}
+        {% for num in inscripciones_por_convocatoria.paginator.page_range %}
+          <li class="page-item {% if inscripciones_por_convocatoria.number == num %}active{% endif %}">
+            <a class="page-link" href="?page_ic={{ num }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">{{ num }}</a>
+          </li>
+        {% endfor %}
+        {% if inscripciones_por_convocatoria.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page_ic={{ inscripciones_por_convocatoria.next_page_number }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_r %}&page_r={{ request.GET.page_r }}{% endif %}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
   </div>
 
   <!-- Tabla de resultados por nivel -->
@@ -168,6 +231,27 @@
         {% endfor %}
       </tbody>
     </table>
+    {% if resultados_por_nivel.has_other_pages %}
+    <nav aria-label="Paginación">
+      <ul class="pagination justify-content-center">
+        {% if resultados_por_nivel.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page_r={{ resultados_por_nivel.previous_page_number }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}">Anterior</a>
+          </li>
+        {% endif %}
+        {% for num in resultados_por_nivel.paginator.page_range %}
+          <li class="page-item {% if resultados_por_nivel.number == num %}active{% endif %}">
+            <a class="page-link" href="?page_r={{ num }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}">{{ num }}</a>
+          </li>
+        {% endfor %}
+        {% if resultados_por_nivel.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page_r={{ resultados_por_nivel.next_page_number }}{% if request.GET.page_c %}&page_c={{ request.GET.page_c }}{% endif %}{% if request.GET.page_i %}&page_i={{ request.GET.page_i }}{% endif %}{% if request.GET.page_ic %}&page_ic={{ request.GET.page_ic }}{% endif %}">Siguiente</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
   </div>
 </div>
 
