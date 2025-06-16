@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from apps.usuarios.models import Usuario
 from apps.convocatorias.models import Convocatoria
@@ -13,6 +14,7 @@ class Inscripcion(models.Model):
     convocatoria = models.ForeignKey(Convocatoria, on_delete=models.CASCADE)
     fecha_inscripcion = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=20, default='pendiente')  # ejemplo
+    fecha_creacion = models.DateTimeField(null=True, blank=True, default=timezone.now)
     
     class Meta:
         constraints = [

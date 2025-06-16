@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from apps.usuarios.models import Usuario
 
@@ -33,6 +34,7 @@ class Convocatoria(models.Model):
     descripcion = models.TextField(max_length=300)
     lugar = models.CharField(max_length=100, choices=lugares)
     fecha = models.DateField(blank=True, null=True)  # Permitir nulos temporalmente
+    fecha_creacion = models.DateTimeField(null=True, blank=True, default=timezone.now)
     hora = models.TimeField()
     profesor = models.ForeignKey(
         Usuario,

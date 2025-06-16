@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 class Resultado(models.Model):
@@ -21,6 +22,7 @@ class Resultado(models.Model):
     notaE = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
     notaC = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
     notaO = models.CharField(max_length=10, choices=NIVELES, blank=True,null=True)
+    fecha_creacion = models.DateTimeField(null=True, blank=True, default=timezone.now)
 
 
     inscripcion = models.ForeignKey('inscripciones.Inscripcion', on_delete=models.CASCADE)

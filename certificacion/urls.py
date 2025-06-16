@@ -27,6 +27,7 @@ urlpatterns = [
     path('', views.login_view, name='login'),
 
     path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('reporte/mensual/', teacher_views.reporte_mensual_view, name='reporte_mensual'),
 
     path('', include('apps.usuarios.urls')),
     path('', include('apps.resultados.urls')),
