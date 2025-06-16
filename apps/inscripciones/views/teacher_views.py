@@ -350,7 +350,6 @@ def evaluar_certificacion(request):
             usuario = resultado.inscripcion.estudiante
             usuario.nivel = resultado.nota
             usuario.save()
-            print("usuario nivel actualizado:", usuario.nivel)
             messages.success(request, "Notas de certificación guardadas correctamente.")
         else:
             messages.error(request, "Esta inscripción no es de tipo certificación.")
